@@ -26,6 +26,7 @@ public class SoldierTest {
     @Test
     public void testCanMoveBfCrossingRiverRed() {
         assertTrue(redS.canMoveTo(2, 5));
+        assertFalse(redS.canMoveTo(2, 4));
         assertFalse(redS.canMoveTo(3, 4));
         assertFalse(redS.canMoveTo(1, 4));
         assertFalse(redS.canMoveTo(2, 6));
@@ -35,6 +36,7 @@ public class SoldierTest {
     @Test
     public void testCanMoveBfCrossingRiverBlack() {
         assertTrue(blackS.canMoveTo(3, 6));
+        assertFalse(blackS.canMoveTo(3, 7));
         assertFalse(blackS.canMoveTo(2, 7));
         assertFalse(blackS.canMoveTo(4, 7));
         assertFalse(blackS.canMoveTo(3, 8));
@@ -45,6 +47,8 @@ public class SoldierTest {
     public void testCanMoveAftCrossingRiverRed() {
         redS.move(4,6);
         assertTrue(redS.crossedRiver());
+
+        assertFalse(redS.canMoveTo(4,6));
 
         // moving one grid
         assertTrue(redS.canMoveTo(3, 6));
@@ -63,6 +67,8 @@ public class SoldierTest {
     public void testCanMoveAftCrossingRiverBlack() {
         blackS.move(3, 3);
         assertTrue(blackS.crossedRiver());
+
+        assertFalse(blackS.canMoveTo(3,3));
 
         // moving one grid
         assertTrue(blackS.canMoveTo(3, 2));

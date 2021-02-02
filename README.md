@@ -1,11 +1,13 @@
-# My Personal Project
+# XiangQi Project
 
-## A subtitle
+## A simple game of Chinese chess
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
+This is a novice programmer's fable attempt at creating a playable game of Chinese chess (XiangQi)
 
-An example of text with **bold** and *italic* fonts.  Note that the IntelliJ markdown previewer doesn't seem to render 
-the bold and italic fonts correctly but they will appear correctly on GitHub.
+## User Story
+
+- As a user, I want to be able to perform the acts of moving and capturing piecea
+- As a user, I want to be able to pull up a log of all the moves made
+- As a user, I want to be able to correct my move had I entered an invalid one
+- As a user, I want to be able to add multiple pieces onto the board
+- As a user, I want to be able to see what pieces have been captured during the game

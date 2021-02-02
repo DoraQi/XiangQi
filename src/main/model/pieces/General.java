@@ -1,15 +1,20 @@
 package model.pieces;
 
-public class General extends Advisor {
+import model.GameBoard;
+
+/**
+ * Represents a General piece of a game of XiangQi
+ */
+public class General extends Piece {
 
 
     public General(int x, int y, boolean side) {
-        super(x, y, side);
+        super(x, y, side, "General");
     }
 
     //
     @Override
-    public boolean canMoveTo(int x, int y) {
+    public boolean canMoveTo(int x, int y, GameBoard b) {
         return false;
     }
 

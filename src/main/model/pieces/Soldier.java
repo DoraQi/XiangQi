@@ -1,30 +1,39 @@
 package model.pieces;
 
+import model.GameBoard;
+
+/**
+ * Represents a Soldier piece of a game of XiangQi
+ */
 public class Soldier extends Piece {
     private boolean crossedRiver;
 
     public Soldier(int x, int y, boolean isRed) {
-        super(x, y, isRed);
+        super(x, y, isRed, "Soldier");
         crossedRiver = false;
     }
 
     // REQUIRES: to is a valid position on the board
     // EFFECTS: produce true if this pawn can move to given position
     @Override
+    public boolean canMoveTo(int x, int y, GameBoard b) {
+        return canMoveTo(x, y);
+    }
+
     public boolean canMoveTo(int x, int y) {
         if (isRed()) {
             if (crossedRiver) {
-                return (x >= getPosX() - 1 && x <= getPosX() + 1 && y == getPosY())
-                        || (x == getPosX() && (y == getPosY() + 1 || y == getPosY()));
+                return ((x == getPosX() - 1 || x == getPosX() + 1) && y == getPosY())
+                        || (x == getPosX() && y == getPosY() + 1);
             } else {
-                return x == getPosX() && y <= getPosY() + 1 && y >= getPosY();
+                return x == getPosX() && y == getPosY() + 1;
             }
         } else {
             if (crossedRiver) {
-                return (y == getPosY() && x >= getPosX() - 1 && x <= getPosX() + 1)
-                        || (x == getPosX() && (y == getPosY() - 1 || y == getPosY()));
+                return (y == getPosY() && (x == getPosX() - 1 || x == getPosX() + 1))
+                        || (x == getPosX() && y == getPosY() - 1);
             } else {
-                return x == getPosX() && y >= getPosY() - 1 && y <= getPosY();
+                return x == getPosX() && y == getPosY() - 1;
             }
         }
     }
