@@ -35,6 +35,4 @@ public class Advisor extends Piece {
         }
         return false;
     }
-
-
 }

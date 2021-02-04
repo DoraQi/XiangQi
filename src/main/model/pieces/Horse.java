@@ -12,7 +12,10 @@ public class Horse extends Piece {
     }
 
     // REQUIRES: given position (x, y) is an open position on the board
-    // EFFECTS: return true if this horse can move to the given position
+    // EFFECTS: return true if this horse can move to the given position:
+    //          up 2 then left 1; up 2 then right 1; left 2 then up 1; or right 2 then up 1
+    //          but if there is another piece in the way for the first move (the first part of the 2 square step), that
+    //          step cannot be made
     @Override
     public boolean canMoveTo(int x, int y, GameBoard b) {
         int deltaX = x - getPosX();

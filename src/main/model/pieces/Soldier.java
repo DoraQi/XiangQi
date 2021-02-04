@@ -14,7 +14,9 @@ public class Soldier extends Piece {
     }
 
     // REQUIRES: to is a valid position on the board
-    // EFFECTS: produce true if this pawn can move to given position
+    // EFFECTS: produce true if this pawn can move to given position:
+    //           if not crossed river: advance by one only
+    //           crossed river: advance by one, or one to the left, or one to the right
     @Override
     public boolean canMoveTo(int x, int y, GameBoard b) {
         return canMoveTo(x, y);

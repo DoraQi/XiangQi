@@ -5,13 +5,13 @@ import model.GameBoard;
 public abstract class Piece {
     private int posX;
     private int posY;
-    private final boolean side;
+    private final boolean redSide;
 
     private String pieceClass;
 
-    public Piece(int x, int y, boolean side, String c) {
+    protected Piece(int x, int y, boolean redSide, String c) {
         move(x, y);
-        this.side = side;
+        this.redSide = redSide;
         this.pieceClass = c;
     }
 
@@ -30,7 +30,7 @@ public abstract class Piece {
         return canMoveTo(x, y, b);
     }
 
-    // REQUIRES: to is a square on the board
+    // REQUIRES: (x, y) to is a valid position on the board
     // EFFECTS: produce true if this piece can move to target location
     public abstract boolean canMoveTo(int x, int y, GameBoard b);
 
@@ -43,16 +43,20 @@ public abstract class Piece {
     }
 
     public boolean isRed() {
-        return side;
+        return redSide;
     }
 
     public String toString() {
         String str = pieceClass + "[" + posX + ", " + posY + "]";
-        if (side) {
+        if (redSide) {
             str += "R";
         } else {
             str += "B";
         }
         return str;
+    }
+
+    public String getPieceClass() {
+        return pieceClass;
     }
 }

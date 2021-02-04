@@ -1,7 +1,6 @@
 package model;
 
 import model.pieces.General;
-import model.pieces.Horse;
 import model.pieces.Piece;
 
 /**
@@ -12,7 +11,7 @@ public class GameBoard {
     Player black;
     String gameLog;
 
-    Piece[][] board;
+    Piece[][] board; // Change to Map
 
     private static final int MAX_X_COORD = 8;
     private static final int MIN_X_COORD = 0;
@@ -57,7 +56,7 @@ public class GameBoard {
     // MODIFIES: playing, other
     // EFFECTS: playing captures p from other, removing p from the board
     public void capture(Piece p, Player playing, Player other) {
-        clearSpot(p.getPosX(), p.getPosY()); // remove p from board
+        removePiece(p.getPosX(), p.getPosY()); // remove p from board
         playing.capture(p);
         other.removePiece(p);
     }
@@ -66,9 +65,12 @@ public class GameBoard {
     // MODIFIES: this, p
     // EFFECTS: move p to location (x, y)
     public void movePiece(Piece p, int x, int y) {
-        clearSpot(p.getPosX(), p.getPosY());    // remove p from board
-        p.move(x, y);                           // update position in p
-        placePiece(p);                        // place p onto (x, y)
+        // remove p from board
+        removePiece(p.getPosX(), p.getPosY());
+        // update position in p
+        p.move(x, y);
+        // place p onto (x, y)
+        placePiece(p);
     }
 
     // EFFECTS: prints all model.pieces and their positions on the board
@@ -141,7 +143,7 @@ public class GameBoard {
     // REQUIRES: position (x, y) is a valid position on the board
     // MODIFIES: this
     // EFFECTS: vacant the given spot
-    private void clearSpot(int x, int y) {
+    private void removePiece(int x, int y) {
         board[y][x] = null;
     }
 
