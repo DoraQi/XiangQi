@@ -1,5 +1,6 @@
 package model;
 
+import model.components.GameBoard;
 import model.pieces.Advisor;
 import model.pieces.General;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,9 +87,4 @@ public class GeneralTest {
         assertFalse(g.canCapture(4, 9, b));
         assertFalse(g.canCapture(3, 8, b));
     }
-
-
-
-
-
 }

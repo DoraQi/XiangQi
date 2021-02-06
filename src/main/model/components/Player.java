@@ -1,4 +1,4 @@
-package model;
+package model.components;
 
 import model.pieces.Piece;
 
@@ -11,6 +11,12 @@ public class Player {
     private boolean isRed;
     private ArrayList<Piece> pieces;
     private ArrayList<Piece> captured;
+
+    public Player(boolean isRed) {
+        this.isRed = isRed;
+        pieces = new ArrayList<>();
+        captured = new ArrayList<>();
+    }
 
     // REQUIRES: from and to are valid positions on the board
     // MODIFIES: this

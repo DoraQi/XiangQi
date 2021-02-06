@@ -1,5 +1,6 @@
 package model;
 
+import model.components.GameBoard;
 import model.pieces.Horse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

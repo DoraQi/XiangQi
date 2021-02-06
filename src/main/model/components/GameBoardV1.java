@@ -1,4 +1,4 @@
-package model;
+package model.components;
 
 import model.pieces.General;
 import model.pieces.Piece;
@@ -6,7 +6,7 @@ import model.pieces.Piece;
 /**
  * Represents a game of XiangQi with the board and players
  */
-public class GameBoard {
+public class GameBoardV1 {
     Player red;
     Player black;
     String gameLog;
@@ -18,7 +18,7 @@ public class GameBoard {
     private static final int MAX_Y_COORD = 9;
     private static final int MIN_Y_COORD = 0;
 
-    public GameBoard() {
+    public GameBoardV1() {
         board = new Piece[][]{{null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},

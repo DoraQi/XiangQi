@@ -1,18 +1,18 @@
 package model.pieces;
 
-import model.GameBoard;
+import model.components.GameBoard;
 
 /**
  * Represents a Cannon piece of a game of XiangQi
  */
 public class Cannon extends Piece {
 
-    public Cannon(int x, int y, boolean isRed) {
-        super(x, y, isRed, "Cannon");
+    public Cannon(int x, int y, GameBoard b, boolean isRed) {
+        super(x, y, isRed, b, "Cannon");
     }
 
     @Override
-    public boolean canMoveTo(int x, int y, GameBoard b) {
+    public boolean canMoveTo(int x, int y) {
         int deltaX = x - getPosX();
         int deltaY = y - getPosY();
         // check if aligned horizontally or vertically
@@ -20,7 +20,7 @@ public class Cannon extends Piece {
         if (deltaY != 0 && deltaX == 0) {
             int step = deltaY / Math.abs(deltaY);
             for (int i = getPosY() + step; i != y; i += step) {
-                if (!b.isEmpty(x, i)) {
+                if (!board.isEmpty(x, i)) {
                     return false;
                 }
             }
@@ -28,7 +28,7 @@ public class Cannon extends Piece {
         } else if (deltaX != 0 && deltaY == 0) {
             int step = deltaX / Math.abs(deltaX);
             for (int i = getPosX() + step; i != x; i += step) {
-                if (!b.isEmpty(i, y)) {
+                if (!board.isEmpty(i, y)) {
                     return false;
                 }
             }
@@ -41,7 +41,7 @@ public class Cannon extends Piece {
     // EFFECTS: produce true iff this piece is aligned horizontally or vertically and
     //          there is 1 other piece between this piece and the given coordinate
     @Override
-    public boolean canCapture(int x, int y, GameBoard b) {
+    public boolean canCapture(int x, int y) {
         // check if aligned horizontally or vertically
         // check if there exist one an only one non-empty square in between current position and target position
         int deltaX = x - getPosX();
@@ -50,7 +50,7 @@ public class Cannon extends Piece {
         if (deltaY != 0 && deltaX == 0) {
             int step = deltaY / Math.abs(deltaY);
             for (int i = getPosY() + step; i != y; i += step) {
-                if (!b.isEmpty(x, i) && countBetween++ > 1) {
+                if (!board.isEmpty(x, i) && countBetween++ > 1) {
                     return false;
                 }
             }
@@ -58,7 +58,7 @@ public class Cannon extends Piece {
         } else if (deltaX != 0 && deltaY == 0) {
             int step = deltaX / Math.abs(deltaX);
             for (int i = getPosX() + step; i != x; i += step) {
-                if (!b.isEmpty(i, y) && countBetween++ > 1) {
+                if (!board.isEmpty(i, y) && countBetween++ > 1) {
                     return false;
                 }
             }

@@ -1,34 +1,34 @@
 package model.pieces;
 
-import model.GameBoard;
+import model.components.GameBoard;
 
 /**
  * Represents a General piece of a game of XiangQi
  */
 public class General extends Piece {
-    private final int MIN_X;
-    private final int MAX_X;
-    private final int MIN_Y;
-    private final int MAX_Y;
+    private final int minX;
+    private final int maxX;
+    private final int minY;
+    private final int maxY;
 
-    public General(int x, int y, boolean isRed) {
-        super(x, y, isRed, "General");
-        MIN_X = 3;
-        MAX_X = 5;
+    public General(int x, int y, GameBoard b, boolean isRed) {
+        super(x, y, isRed, b, "General");
+        minX = 3;
+        maxX = 5;
         if (isRed) {
-            MIN_Y = 0;
-            MAX_Y = 2;
+            minY = 0;
+            maxY = 2;
         } else {
-            MIN_Y = 7;
-            MAX_Y = 9;
+            minY = 7;
+            maxY = 9;
         }
     }
 
     // REQUIRES: given coordinate (x, y) is a valid position on b
     // EFFECTS: return true if given position is in the palace, 1 away, and orthogonal to current position;
     @Override
-    public boolean canMoveTo(int x, int y, GameBoard b) {
-        return x >= MIN_X && x <= MAX_X && y >= MIN_Y && y <= MAX_Y && (
+    public boolean canMoveTo(int x, int y) {
+        return x >= minX && x <= maxX && y >= minY && y <= maxY && (
                 (Math.abs(x - getPosX()) == 1 && y == getPosY())
                         || (Math.abs(y - getPosY()) == 1 && x == getPosX()));
     }
@@ -39,19 +39,20 @@ public class General extends Piece {
     //          the opponent General is at given position, are aligned vertically, and there are no
     //          other pieces in between
     @Override
-    public boolean canCapture(int x, int y, GameBoard b) {
-        if (!canMoveTo(x, y, b)) {
-            int deltaX = x - getPosX();
+    public boolean canCapture(int x, int y) {
+        if (canMoveTo(x, y)) {
+            return true;
+        } else if (x == getPosX() && board.getPAt(x, y).getPieceClass().equals("General")) {
             int deltaY = y - getPosY();
-            if (deltaY != 0 && deltaX == 0) {
-                int step = deltaY / Math.abs(deltaY);
-                for (int i = getPosY() + step; i != y; i += step) {
-                    if (!b.isEmpty(x, i)) {
-                        return false;
-                    }
+            int step = deltaY / Math.abs(deltaY);
+            for (int i = getPosY() + step; i != y; i += step) {
+                if (!board.isEmpty(x, i)) {
+                    return false;
                 }
             }
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 }

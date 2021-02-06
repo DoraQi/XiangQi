@@ -1,6 +1,6 @@
 package model.pieces;
 
-import model.GameBoard;
+import model.components.GameBoard;
 
 /**
  * Represents a Soldier piece of a game of XiangQi
@@ -8,8 +8,8 @@ import model.GameBoard;
 public class Soldier extends Piece {
     private boolean crossedRiver;
 
-    public Soldier(int x, int y, boolean isRed) {
-        super(x, y, isRed, "Soldier");
+    public Soldier(int x, int y, GameBoard b, boolean isRed) {
+        super(x, y, isRed, b, "Soldier");
         crossedRiver = false;
     }
 
@@ -17,11 +17,6 @@ public class Soldier extends Piece {
     // EFFECTS: produce true if this pawn can move to given position:
     //           if not crossed river: advance by one only
     //           crossed river: advance by one, or one to the left, or one to the right
-    @Override
-    public boolean canMoveTo(int x, int y, GameBoard b) {
-        return canMoveTo(x, y);
-    }
-
     public boolean canMoveTo(int x, int y) {
         if (isRed()) {
             if (crossedRiver) {

@@ -1,5 +1,6 @@
 package model;
 
+import model.components.GameBoard;
 import model.pieces.Advisor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,11 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdvisorTest {
     Advisor redA;
     Advisor blackA;
+    GameBoard board;
 
     @BeforeEach
     public void setup() {
-        redA = new Advisor(4, 1, true);
-        blackA = new Advisor(4, 8, false);
+        board = new GameBoard();
+        redA = new Advisor(4, 1, board, true);
+        blackA = new Advisor(4, 8, board, false);
 
         assertTrue(redA.isRed());
         assertFalse(blackA.isRed());
