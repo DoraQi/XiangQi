@@ -1,6 +1,7 @@
 package model;
 
 
+import model.components.GameBoard;
 import model.pieces.Soldier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,19 +11,27 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SoldierTest {
     Soldier redS;
     Soldier blackS;
+    GameBoard b;
 
     @BeforeEach
     public void setup() {
-        redS = new Soldier(2, 4, true);
-        blackS = new Soldier(3, 7, false);
+        b = new GameBoard();
+        redS = new Soldier(2, 4, b, true);
+        blackS = new Soldier(3, 7, b, false);
+    }
 
+    @Test
+    public void testConstructor() {
         assertEquals(2, redS.getPosX());
         assertEquals(3, blackS.getPosX());
         assertEquals(4, redS.getPosY());
         assertEquals(7, blackS.getPosY());
         assertTrue(redS.isRed());
         assertFalse(blackS.isRed());
+        assertEquals(redS, b.getPAt(2, 4));
+        assertEquals(blackS, b.getPAt(3, 7));
     }
+
     @Test
     public void testCanMoveBfCrossingRiverRed() {
         assertTrue(redS.canMoveTo(2, 5));

@@ -9,13 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HorseTest {
     Horse h;
-    GameBoard g;
+    GameBoard b;
 
     @BeforeEach
     public void setup() {
-        h = new Horse(3, 4, true);
-        g = new GameBoard();
-        g.placePiece(h);
+        b = new GameBoard();
+        h = new Horse(3, 4, b,true);
+
+        b.placePiece(h);
 
         assertTrue(h.isRed());
         assertEquals(3, h.getPosX());
@@ -24,52 +25,50 @@ public class HorseTest {
 
     @Test
     public void testCanMoveToEmptyBoard() {
-        assertTrue(h.canMoveTo(2, 6, g));
-        assertTrue(h.canMoveTo(2,2, g));
-        assertTrue(h.canMoveTo(4,6, g));
-        assertTrue(h.canMoveTo(4,2, g));
-        assertTrue(h.canMoveTo(1,5, g));
-        assertTrue(h.canMoveTo(5,5, g));
-        assertTrue(h.canMoveTo(1,3, g));
-        assertTrue(h.canMoveTo(5,3, g));
+        assertTrue(h.canMoveTo(2, 6));
+        assertTrue(h.canMoveTo(2,2));
+        assertTrue(h.canMoveTo(4,6));
+        assertTrue(h.canMoveTo(4,2));
+        assertTrue(h.canMoveTo(1,5));
+        assertTrue(h.canMoveTo(5,5));
+        assertTrue(h.canMoveTo(1,3));
+        assertTrue(h.canMoveTo(5,3));
 
-        assertFalse(h.canMoveTo(3, 4, g));
-        assertFalse(h.canMoveTo(3, 5, g));
-        assertFalse(h.canMoveTo(3, 4, g));
-        assertFalse(h.canMoveTo(3, 4, g));
-        assertFalse(h.canMoveTo(3, 4, g));
+        assertFalse(h.canMoveTo(3, 4));
+        assertFalse(h.canMoveTo(3, 5));
+        assertFalse(h.canMoveTo(3, 4));
+        assertFalse(h.canMoveTo(3, 4));
+        assertFalse(h.canMoveTo(3, 4));
     }
 
     @Test
     public void testCanMoveToBlockedHorizontal() {
-        Horse h2 = new Horse(4, 4, true);
-        g.placePiece(h2);
+        new Horse(4, 4, b,true);
 
-        assertTrue(h.canMoveTo(2, 6, g));
-        assertTrue(h.canMoveTo(2,2, g));
-        assertTrue(h.canMoveTo(4,6, g));
-        assertTrue(h.canMoveTo(4,2, g));
-        assertTrue(h.canMoveTo(1,5, g));
-        assertTrue(h.canMoveTo(1,3, g));
+        assertTrue(h.canMoveTo(2, 6));
+        assertTrue(h.canMoveTo(2,2));
+        assertTrue(h.canMoveTo(4,6));
+        assertTrue(h.canMoveTo(4,2));
+        assertTrue(h.canMoveTo(1,5));
+        assertTrue(h.canMoveTo(1,3));
 
-        assertFalse(h.canMoveTo(5,3, g));
-        assertFalse(h.canMoveTo(5,5, g));
+        assertFalse(h.canMoveTo(5,3));
+        assertFalse(h.canMoveTo(5,5));
     }
 
     @Test
     public void testCanMoveToBlockedVertical() {
-        Horse h2 = new Horse(3, 3, true);
-        g.placePiece(h2);
+        new Horse(3, 3, b, true);
 
-        assertTrue(h.canMoveTo(2, 6, g));
-        assertTrue(h.canMoveTo(4,6, g));
-        assertTrue(h.canMoveTo(1,5, g));
-        assertTrue(h.canMoveTo(5,5, g));
-        assertTrue(h.canMoveTo(1,3, g));
-        assertTrue(h.canMoveTo(5,3, g));
+        assertTrue(h.canMoveTo(2, 6));
+        assertTrue(h.canMoveTo(4,6));
+        assertTrue(h.canMoveTo(1,5));
+        assertTrue(h.canMoveTo(5,5));
+        assertTrue(h.canMoveTo(1,3));
+        assertTrue(h.canMoveTo(5,3));
 
-        assertFalse(h.canMoveTo(2,2, g));
-        assertFalse(h.canMoveTo(4,2, g));
+        assertFalse(h.canMoveTo(2,2));
+        assertFalse(h.canMoveTo(4,2));
     }
 
 }

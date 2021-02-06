@@ -15,8 +15,8 @@ public class Main {
     private static Player black;
     private static GameBoard game;
 
-    private static ArrayList<String> VALID_X_INPUTS = new ArrayList<>(); // = {'0', '1', '2', '3', '4', '5', '6', '7', '8'};
-    private static ArrayList<String> VALID_Y_INPUTS = new ArrayList<>(); // = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    private static ArrayList<String> VALID_X_INPUTS = new ArrayList<>();
+    private static ArrayList<String> VALID_Y_INPUTS = new ArrayList<>();
 
     public static void main(String[] args) {
         setup();
