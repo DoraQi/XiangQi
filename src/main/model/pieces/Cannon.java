@@ -50,7 +50,7 @@ public class Cannon extends Piece {
         if (deltaY != 0 && deltaX == 0) {
             int step = deltaY / Math.abs(deltaY);
             for (int i = getPosY() + step; i != y; i += step) {
-                if (!board.isEmpty(x, i) && countBetween++ > 1) {
+                if (!board.isEmpty(x, i) && ++countBetween > 1) {
                     return false;
                 }
             }
@@ -58,7 +58,7 @@ public class Cannon extends Piece {
         } else if (deltaX != 0 && deltaY == 0) {
             int step = deltaX / Math.abs(deltaX);
             for (int i = getPosX() + step; i != x; i += step) {
-                if (!board.isEmpty(i, y) && countBetween++ > 1) {
+                if (!board.isEmpty(i, y) && ++countBetween > 1) {
                     return false;
                 }
             }

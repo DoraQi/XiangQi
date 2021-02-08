@@ -46,8 +46,4 @@ public class Soldier extends Piece {
             crossedRiver = true;
         }
     }
-
-    public boolean crossedRiver() {
-        return crossedRiver;
-    }
 }

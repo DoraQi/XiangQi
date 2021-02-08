@@ -49,6 +49,7 @@ public abstract class Piece {
         return redSide;
     }
 
+    // Need test????
     public String toString() {
         String str = pieceClass + "[" + posX + ", " + posY + "]";
         if (redSide) {

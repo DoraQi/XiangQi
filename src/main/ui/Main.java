@@ -1,6 +1,5 @@
 package ui;
 
-import javafx.util.Pair;
 import model.components.GameBoard;
 import model.components.Player;
 
@@ -66,7 +65,7 @@ public class Main {
                 System.out.print("RED move: ");
                 moveSuccessful = game.redMove(getMove());
             } else {
-                game.printBoard();
+                game.toString();
                 System.out.print("BLACK move: ");
                 moveSuccessful = game.blackMove(getMove());
             }
@@ -78,7 +77,7 @@ public class Main {
                 winMessage();
                 return;
             }
-            game.printBoard();
+            game.toString();
             redMoving = !redMoving;
         }
     }

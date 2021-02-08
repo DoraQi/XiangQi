@@ -32,28 +32,29 @@ public class GameBoard {
         gameLog = "";
     }
 
+    // REQUIRES: a game has been set up
     // EFFECTS: return true if a player has won
     public boolean checkWin() {
         return false;
     }
 
-    // EFFECTS: print out messages to end the game
-    public void endGame() {
-    }
+//    // EFFECTS: print out messages to end the game
+//    public void endGame() {
+//    }
+//
+//    // MODIFIES: p, this
+//    // EFFECTS: prompt for player p to make the move, and make move
+//    public void play(Player p) {
+//    }
 
-    // MODIFIES: p, this
-    // EFFECTS: prompt for player p to make the move, and make move
-    public void play(Player p) {
-    }
-
-    // REQUIRES: pos is a valid position on the board
+    // REQUIRES: pos is a valid position within range ([MIN_X_COORD, MAX_X_COORD], [MIN_Y_COORD, MAX_Y_COORD])
     // EFFECTS: checks if the given position (x, y) is occupied by any piece
     public boolean isEmpty(int x, int y) {
         return !board.containsKey(toStringLoc(x, y));
     }
 
 
-    // REQUIRES: p is a piece owned by other
+    // REQUIRES: hunter is a piece owned by playing and prey is a piece owned by other
     // MODIFIES: playing, other
     // EFFECTS: playing captures p from other, removing p from the board and moving hunter to prey's position
     public void capture(Piece hunter, Piece prey, Player playing, Player other) {
@@ -71,12 +72,13 @@ public class GameBoard {
         removePiece(p.getPosX(), p.getPosY());
         // update position in p
         p.move(x, y);
-        // place p onto (x, y)
+        // update position on board
         placePiece(p);
     }
 
     // EFFECTS: prints all pieces on board with their positions
-    public void printBoard() {
+    public String toString() {
+        return null;
     }
 
     // REQUIRES: position of p is currently empty on this board
@@ -104,36 +106,71 @@ public class GameBoard {
         makeGenerals();
     }
 
-    // REQUIRES: the given array must be of length 4
+    // REQUIRES: the given array must be of length 4 that specifies a valid location on board
     // MODIFIES: this
-    // EFFECTS: move the piece at given location to the specified location and return true if the move is valid
+    // EFFECTS: move the piece at given location to the specified location and return true if successful
     public boolean blackMove(int[] move) {
-        int fromX = move[0];
-        int fromY = move[1];
-        int toX = move[2];
-        int toY = move[3];
-        if (isEmpty(fromX, fromY)) {
-            return false;
-        }
-        Piece p = getPAt(fromX, fromY);
-        if (!p.isRed()) {
-            if (isEmpty(toX, toY)) {
-                if (p.canMoveTo(toX, toY)) {
-                    movePiece(p, toX, toY);
-                    return true;
-                }
-            } else {
-                Piece prey = getPAt(toX, toY);
-                if (prey.isRed() && p.canCapture(toX, toY)) {
-                    capture(p, prey, black, red);
-                    return true;
-                }
-            }
-        }
-        return false;
+        return playerMove(move, black, red);
+//        int fromX = move[0];
+//        int fromY = move[1];
+//        int toX = move[2];
+//        int toY = move[3];
+//        if (isEmpty(fromX, fromY)) {
+//            return false;
+//        }
+//        Piece p = getPAt(fromX, fromY);
+//        if (!p.isRed()) {
+//            if (isEmpty(toX, toY)) {
+//                if (p.canMoveTo(toX, toY)) {
+//                    movePiece(p, toX, toY);
+//                    return true;
+//                }
+//            } else {
+//                Piece prey = getPAt(toX, toY);
+//                if (prey.isRed() && p.canCapture(toX, toY)) {
+//                    capture(p, prey, black, red);
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
     }
 
+    // REQUIRES: the given array must be of length 4 that specifies a valid location on board
+    // MODIFIES: this
+    // EFFECTS: move the piece at given location to the specified location and return true if successful
     public boolean redMove(int[] move) {
+        return playerMove(move, red, black);
+//        int fromX = move[0];
+//        int fromY = move[1];
+//        int toX = move[2];
+//        int toY = move[3];
+//        if (isEmpty(fromX, fromY)) {
+//            return false;
+//        }
+//        Piece p = getPAt(fromX, fromY);
+//        if (p.isRed()) {
+//            if (isEmpty(toX, toY)) {
+//                if (p.canMoveTo(toX, toY)) {
+//                    movePiece(p, toX, toY);
+//                    return true;
+//                }
+//            } else {
+//                Piece prey = getPAt(toX, toY);
+//                if (!prey.isRed() && p.canCapture(toX, toY)) {
+//                    capture(p, prey, red, black);
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+    }
+
+    // REQUIRES: move has a length of 4 that specifies a valid location on board,
+    //           moving is the player making the move, other is the other player
+    // MODIFIES: this, moving, other
+    // EFFECTS: player playing makes the given move and return true if successful, false if not
+    private boolean playerMove(int[] move, Player moving, Player other) {
         int fromX = move[0];
         int fromY = move[1];
         int toX = move[2];
@@ -142,7 +179,7 @@ public class GameBoard {
             return false;
         }
         Piece p = getPAt(fromX, fromY);
-        if (p.isRed()) {
+        if (p.isRed() == moving.isRed()) {
             if (isEmpty(toX, toY)) {
                 if (p.canMoveTo(toX, toY)) {
                     movePiece(p, toX, toY);
@@ -150,8 +187,8 @@ public class GameBoard {
                 }
             } else {
                 Piece prey = getPAt(toX, toY);
-                if (!prey.isRed() && p.canCapture(toX, toY)) {
-                    capture(p, prey, red, black);
+                if (prey.isRed() == other.isRed() && p.canCapture(toX, toY)) {
+                    capture(p, prey, moving, other);
                     return true;
                 }
             }

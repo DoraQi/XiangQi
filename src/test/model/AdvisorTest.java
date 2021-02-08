@@ -7,27 +7,73 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AdvisorTest {
-    Advisor redA;
-    Advisor blackA;
-    GameBoard board;
+public class AdvisorTest extends PieceTest{
 
     @BeforeEach
     public void setup() {
         board = new GameBoard();
-        redA = new Advisor(4, 1, board, true);
-        blackA = new Advisor(4, 8, board, false);
+        redP = new Advisor(4, 1, board, true);
+        blackP = new Advisor(4, 8, board, false);
 
-        assertTrue(redA.isRed());
-        assertFalse(blackA.isRed());
-        assertEquals(4, redA.getPosX());
-        assertEquals(1, redA.getPosY());
-        assertEquals(4, blackA.getPosX());
-        assertEquals(8, blackA.getPosY());
+        assertTrue(redP.isRed());
+        assertFalse(blackP.isRed());
+        assertEquals(4, redP.getPosX());
+        assertEquals(1, redP.getPosY());
+        assertEquals(4, blackP.getPosX());
+        assertEquals(8, blackP.getPosY());
     }
 
     @Test
-    public void testCanMoveTo() {}
+    public void testCanMoveToInPalaceRed() {
+        assertTrue(redP.canMoveTo(3, 2));
+        assertTrue(redP.canMoveTo(3, 0));
+        assertTrue(redP.canMoveTo(5, 2));
+        assertTrue(redP.canMoveTo(5, 0));
+
+        assertFalse(redP.canMoveTo(4, 2));
+        assertFalse(redP.canMoveTo(4, 0));
+        assertFalse(redP.canMoveTo(3, 1));
+        assertFalse(redP.canMoveTo(5, 1));
+    }
+
+    @Test
+    public void testCanMoveToInPalaceBlack() {
+        assertTrue(blackP.canMoveTo(3, 9));
+        assertTrue(blackP.canMoveTo(3, 7));
+        assertTrue(blackP.canMoveTo(5, 9));
+        assertTrue(blackP.canMoveTo(5, 7));
+
+        assertFalse(blackP.canMoveTo(4, 9));
+        assertFalse(blackP.canMoveTo(4, 7));
+        assertFalse(blackP.canMoveTo(3, 8));
+        assertFalse(blackP.canMoveTo(5, 8));
+    }
+
+    @Test
+    public void testCanMoveToOutPalaceRed() {
+        redP.move(3, 2);
+        assertFalse(redP.canMoveTo(2, 3));
+        assertFalse(redP.canMoveTo(4, 3));
+        assertFalse(redP.canMoveTo(2, 1));
+
+        redP.move(5, 2);
+        assertFalse(redP.canMoveTo(4, 3));
+        assertFalse(redP.canMoveTo(6, 3));
+        assertFalse(redP.canMoveTo(6, 1));
+    }
+
+    @Test
+    public void testCanMoveToOutPalaceBlack() {
+        redP.move(3, 7);
+        assertFalse(redP.canMoveTo(2, 8));
+        assertFalse(redP.canMoveTo(4, 6));
+        assertFalse(redP.canMoveTo(2, 6));
+
+        redP.move(5, 7);
+        assertFalse(redP.canMoveTo(4, 6));
+        assertFalse(redP.canMoveTo(6, 6));
+        assertFalse(redP.canMoveTo(6, 8));
+    }
 
 
 }

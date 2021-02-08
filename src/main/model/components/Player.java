@@ -55,4 +55,8 @@ public class Player {
     public void setSide(boolean side) {
         this.isRed = side;
     }
+
+    public boolean isRed() {
+        return isRed;
+    }
 }
