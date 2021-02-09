@@ -14,99 +14,87 @@ public class Main {
     private static Player black;
     private static GameBoard game;
 
-    private static ArrayList<String> VALID_X_INPUTS = new ArrayList<>();
-    private static ArrayList<String> VALID_Y_INPUTS = new ArrayList<>();
+//    private static ArrayList<String> VALID_X_INPUTS = new ArrayList<>();
+//    private static ArrayList<String> VALID_Y_INPUTS = new ArrayList<>();
 
     public static void main(String[] args) {
-        setup();
+//        setup();
         int opt = greet();
         if (opt == 1) {
-            return;
+            ;
         } else if (opt == 2) {
             playClassicGame();
         } else if (opt == 3) {
             playCustomGame();
         } else {
-            return;
+            ;
         }
     }
+//
+//    private static void setup() {
+//        Collections.addAll(VALID_X_INPUTS, "0", "1", "2", "3", "4", "5", "6", "7", "8");
+//        Collections.addAll(VALID_Y_INPUTS, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+//    }
 
-    private static void setup() {
-        Collections.addAll(VALID_X_INPUTS, "0", "1", "2", "3", "4", "5", "6", "7", "8");
-        Collections.addAll(VALID_Y_INPUTS, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
-    }
-
-    private static void playCustomGame() {
+    protected static void playCustomGame() {
         game = new GameBoard();
         setupCustomGame(game);
         playGame();
     }
 
 
-    private static void playClassicGame() {
+    protected static void playClassicGame() {
         game = new GameBoard();
+        System.out.println("Welcome to a classic game of XiangQi!");
         game.setUpClassicGame();
-        classicGameStartMessage();
+        System.out.println(game);
         playGame();
     }
 
-    private static void classicGameStartMessage() {
-        System.out.println(SEPARATOR);
-    }
-
     private static void setupCustomGame(GameBoard gb) {
+        System.out.println(SEPARATOR);
+        while (true) {
+            System.out.println("Add piece: ");
+            String inpt = console.nextLine().trim().toLowerCase();
+            if (inpt.equalsIgnoreCase("done")) {
+                System.out.println(game);
+                return;
+            }
+            try {
+                game.putPiece(inpt);
+            } catch (Exception e) {
+                System.out.println("<invalid input>");
+            }
+        }
     }
 
     private static void playGame() {
         boolean redMoving = true;
         while (true) {
-            boolean moveSuccessful;
-            if (redMoving) {
-                System.out.print("RED move: ");
-                moveSuccessful = game.redMove(getMove());
-            } else {
-                game.toString();
-                System.out.print("BLACK move: ");
-                moveSuccessful = game.blackMove(getMove());
-            }
-            if (!moveSuccessful) {
+            System.out.println(SEPARATOR);
+            try {
+                if (redMoving) {
+                    System.out.print("RED move: ");
+                    game.redMove(console.nextLine().trim().toLowerCase());
+                } else {
+                    System.out.print("BLACK move: ");
+                    game.blackMove(console.nextLine().trim().toLowerCase());
+                }
+                System.out.println(game);
+                if (game.checkWin()) {
+                    winMessage();
+                    return;
+                }
+                redMoving = !redMoving;
+            } catch (Exception e) {
                 System.out.println("<invalid move>");
-                continue;
             }
-            if (game.checkWin()) {
-                winMessage();
-                return;
-            }
-            game.toString();
-            redMoving = !redMoving;
         }
     }
 
-    private static int[] getMove() {
-        while (true) {
-            String inpt = console.nextLine().trim();
-            if (inpt.equalsIgnoreCase("surrender")) {
-                endGameMessage();
-                System.exit(0);
-            }
-            if (inpt.length() != 5) {
-                System.out.println("<invalid input>");
-                continue;
-            }
-            String fromX = String.valueOf(inpt.charAt(0));
-            String fromY = String.valueOf(inpt.charAt(1));
-            String toX = String.valueOf(inpt.charAt(3));
-            String toY = String.valueOf(inpt.charAt(4));
-            if (VALID_X_INPUTS.contains(fromX) && VALID_Y_INPUTS.contains(fromY)
-                    && VALID_X_INPUTS.contains(toX) && VALID_Y_INPUTS.contains(toY)) {
-                return new int[]{Integer.parseInt(fromX), Integer.parseInt(fromY),
-                        Integer.parseInt(toX), Integer.parseInt(toY)};
-            }
-            System.out.println("<invalid input>");
-        }
-    }
 
     private static void winMessage() {
+        System.out.println("Congratulations! You win!");
     }
 
     private static void endGameMessage() {

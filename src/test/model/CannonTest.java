@@ -28,7 +28,8 @@ public class CannonTest extends PieceTest{
         assertTrue(redP.canMoveTo(1, 4));
         assertTrue(redP.canMoveTo(0, 2));
         assertTrue(redP.canMoveTo(7, 2));
-        assertTrue(redP.canMoveTo(1, 6));
+        assertTrue(redP.canMoveTo(1, 0));
+        assertTrue(blackP.canMoveTo(1, 7));
 
         assertFalse(redP.canMoveTo(2, 3));
         assertFalse(redP.canMoveTo(0, 1));
@@ -58,19 +59,26 @@ public class CannonTest extends PieceTest{
         assertFalse(redP.canMoveTo(1, 6));
     }
 
-    @Test //?
-    @Override
-    public void testCanCapture() {}
-
     @Test
-    public void testCanCaptureNoInBetween() {
-        assertFalse(redP.canCapture(1, 4));
-        assertFalse(redP.canCapture(1, 2));
-        assertFalse(redP.canCapture(5, 2));
+    @Override
+    public void testCanCapture() {
+        assertFalse(redP.canCapture(2, 4));
+        assertFalse(redP.canCapture(0, 4));
+        assertFalse(redP.canCapture(2, 1));
+        assertFalse(redP.canCapture(0, 1));
     }
 
     @Test
-    public void testCanCapture1OnBoardV() {
+    public void testCanCaptureNoInBetweenStraightline() {
+        assertFalse(redP.canCapture(1, 4));
+        assertFalse(redP.canCapture(1, 1));
+        assertFalse(redP.canCapture(6, 2));
+        assertFalse(redP.canCapture(0, 2));
+        assertFalse(redP.canCapture(1, 2));
+    }
+
+    @Test
+    public void testCanCapture1OnBoardH() {
         addPiece(5, 2);
         assertTrue(redP.canCapture(6, 2));
         assertTrue(redP.canCapture(7, 2));
@@ -79,7 +87,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanCaptureMultipleInBetweenersV() {
+    public void testCanCaptureMultipleInBetweenersH() {
         addPiece(5, 2);
         addPiece(7, 2);
         assertTrue(redP.canCapture(6, 2));
@@ -95,7 +103,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanCapture1OnBoardH() {
+    public void testCanCapture1OnBoardV() {
         addPiece(1, 4);
         assertTrue(redP.canCapture(1, 5));
         assertTrue(redP.canCapture(1, 7));
@@ -104,7 +112,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanCaptureMultipleInBetweenersH() {
+    public void testCanCaptureMultipleInBetweenersV() {
         addPiece(1, 4);
         addPiece(1, 6);
         assertTrue(redP.canCapture(1, 5));
