@@ -23,6 +23,14 @@ public class GameBoard {
     private static final int MAX_Y_COORD = 9;
     private static final int MIN_Y_COORD = 0;
 
+    private static final String rules =
+            "Rules: https://ancientchess.com/page/play-xiangqi.htm \n\n"
+                    + "input formats:\n"
+                    + "  - moves: <from x><from y><space><to x><to y>\n"
+                    + "           - ex. 01 11\n"
+                    + "  -  add a piece in custom game: <class of the piece><space>[<x>,<y>]<R/B>\n"
+                    + "           - ex. Soldier [1,0]R, Cannon [7,4]B";
+
     // EFFECTS: instantiate a GameBoard
     public GameBoard() {
         red = new Player(true);
@@ -118,7 +126,11 @@ public class GameBoard {
     // EFFECTS: returns a string representation of the status of this board
     public String toString() {
         String str = "";
-        for (Piece p : board.values()) {
+        for (Piece p : red.getPieces()) {
+            str += p.toString() + " ";
+        }
+        str += "\n";
+        for (Piece p : black.getPieces()) {
             str += p.toString() + " ";
         }
         return str.trim();
@@ -190,7 +202,6 @@ public class GameBoard {
         }
         throw new IllegalArgumentException();
     }
-
 
     // MODIFIES: this
     // EFFECTS: makes all generals for both red and black sides and place on board
@@ -324,19 +335,7 @@ public class GameBoard {
         return x + String.valueOf(y);
     }
 
-    public static int getMaxXCoord() {
-        return MAX_X_COORD;
-    }
-
-    public static int getMinXCoord() {
-        return MIN_X_COORD;
-    }
-
-    public static int getMaxYCoord() {
-        return MAX_Y_COORD;
-    }
-
-    public static int getMinYCoord() {
-        return MIN_Y_COORD;
+    public static String getRules() {
+        return rules;
     }
 }

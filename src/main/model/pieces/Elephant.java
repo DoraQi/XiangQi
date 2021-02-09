@@ -25,7 +25,6 @@ public class Elephant extends Piece {
         if (y > maxY || y < minY) {
             return false;
         }
-
         int deltaX = x - getPosX();
         int deltaY = y - getPosY();
         if (Math.abs(deltaX) == 2 && Math.abs(deltaY) == 2) {

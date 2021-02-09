@@ -2,6 +2,7 @@ package model.components;
 
 import model.pieces.Piece;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -35,6 +36,10 @@ public class Player {
     // EFFECTS: remove the given piece from the possession of this player
     public void removePiece(Piece p) {
         pieces.remove(p);
+    }
+
+    public ArrayList<Piece> getPieces() {
+        return pieces;
     }
 
     public boolean isRed() {

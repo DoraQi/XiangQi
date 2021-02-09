@@ -10,18 +10,13 @@ import java.util.Scanner;
 public class Main {
     private static String SEPARATOR = "==============================";
     private static Scanner console = new Scanner(System.in);
-    private static Player red;
-    private static Player black;
     private static GameBoard game;
 
-//    private static ArrayList<String> VALID_X_INPUTS = new ArrayList<>();
-//    private static ArrayList<String> VALID_Y_INPUTS = new ArrayList<>();
 
     public static void main(String[] args) {
-//        setup();
         int opt = greet();
         if (opt == 1) {
-            ;
+            System.out.println(GameBoard.getRules());
         } else if (opt == 2) {
             playClassicGame();
         } else if (opt == 3) {
@@ -30,11 +25,6 @@ public class Main {
             ;
         }
     }
-//
-//    private static void setup() {
-//        Collections.addAll(VALID_X_INPUTS, "0", "1", "2", "3", "4", "5", "6", "7", "8");
-//        Collections.addAll(VALID_Y_INPUTS, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
-//    }
 
     protected static void playCustomGame() {
         game = new GameBoard();
@@ -92,12 +82,8 @@ public class Main {
         }
     }
 
-
     private static void winMessage() {
         System.out.println("Congratulations! You win!");
-    }
-
-    private static void endGameMessage() {
     }
 
     private static int greet() {
