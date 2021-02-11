@@ -47,4 +47,14 @@ public class Player {
     public boolean isRed() {
         return isRed;
     }
+
+    // EFFECTS: returns true if this player has p
+    public boolean has(Piece p) {
+        return pieces.contains(p);
+    }
+
+    // EFFECTS: returns true if this player has captured p
+    public boolean hasCaptured(Piece p) {
+        return captured.contains(p);
+    }
 }

@@ -21,6 +21,11 @@ public class CannonTest extends PieceTest{
         assertEquals(1, redP.getPosX());
         assertEquals(2, redP.getPosY());
         assertEquals(redP, board.getPAt(1, 2));
+        assertFalse(blackP.isRed());
+        assertEquals(4, blackP.getPosX());
+        assertEquals(7, blackP.getPosY());
+        assertEquals(blackP, board.getPAt(4, 7));
+
     }
 
     @Test

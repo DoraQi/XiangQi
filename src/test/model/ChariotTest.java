@@ -18,6 +18,8 @@ public class ChariotTest extends PieceTest{
 
     @Test
     public void testConstructor() {
+        assertEquals(redP, board.getPAt(1, 2));
+        assertEquals(blackP, board.getPAt(4, 7));
         assertTrue(redP.isRed());
         assertFalse(blackP.isRed());
         assertEquals(1, redP.getPosX());
