@@ -12,7 +12,6 @@ public class Main {
     private static Scanner console = new Scanner(System.in);
     private static GameBoard game;
 
-
     public static void main(String[] args) {
         int opt = greet();
         if (opt == 1) {
@@ -21,8 +20,6 @@ public class Main {
             playClassicGame();
         } else if (opt == 3) {
             playCustomGame();
-        } else {
-            ;
         }
     }
 
@@ -31,7 +28,6 @@ public class Main {
         setupCustomGame(game);
         playGame();
     }
-
 
     protected static void playClassicGame() {
         game = new GameBoard();

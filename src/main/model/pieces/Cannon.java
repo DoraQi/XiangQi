@@ -7,10 +7,14 @@ import model.components.GameBoard;
  */
 public class Cannon extends Piece {
 
+    // REQUIRES: given (x, y) is a valid empty position on board b
+    // EFFECTS: instantiates an instance of Cannon
     public Cannon(int x, int y, GameBoard b, boolean isRed) {
         super(x, y, isRed, b, "Cannon");
     }
 
+    // EFFECTS: produce true iff this piece is orthogonal to the current position and there are no other pieces
+    //          in between
     @Override
     public boolean canMoveTo(int x, int y) {
         int deltaX = x - getPosX();
@@ -37,13 +41,10 @@ public class Cannon extends Piece {
         return false;
     }
 
-    // REQUIRES: given coordinates is a valid position on the board that is currently occupied by an opponent piece
-    // EFFECTS: produce true iff this piece is aligned horizontally or vertically and
-    //          there is 1 other piece between this piece and the given coordinate
+    // EFFECTS: produce true iff this piece is orthogonal to the current position and there is exactly one piece in
+    //          between
     @Override
     public boolean canCapture(int x, int y) {
-        // check if aligned horizontally or vertically
-        // check if there exist one an only one non-empty square in between current position and target position
         int deltaX = x - getPosX();
         int deltaY = y - getPosY();
         int countBetween = 0;

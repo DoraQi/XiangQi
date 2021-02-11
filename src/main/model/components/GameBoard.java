@@ -17,7 +17,6 @@ public class GameBoard {
 
     HashMap<String, Piece> board; // Change to Map
 
-
     private static final int MAX_X_COORD = 8;
     private static final int MIN_X_COORD = 0;
     private static final int MAX_Y_COORD = 9;
@@ -100,9 +99,9 @@ public class GameBoard {
         System.out.println("Added " + p);
     }
 
-    /**
-     * spec needed
-     */
+    // REQUIRES: given x, y position is empty on this board
+    // MODIFIES: this
+    // EFFECTS: place a piece of class pc and red if isRed, black if not, onto (x, y) of this board
     private Piece makeNew(String pc, int x, int y, boolean isRed) {
         switch (pc) {
             case "soldier":
@@ -123,7 +122,8 @@ public class GameBoard {
         throw new IllegalArgumentException();
     }
 
-    // EFFECTS: returns a string representation of the status of this board
+    // EFFECTS: returns a string representation of the status of this board that includes
+    //          positions of all pieces on board
     public String toString() {
         String str = "";
         for (Piece p : red.getPieces()) {
@@ -172,6 +172,11 @@ public class GameBoard {
     // EFFECTS: move the piece at given location to the specified location and return true if successful
     public void blackMove(String inpt) {
         playerMove(inpt, black, red);
+    }
+
+    // EFFECTS: returns the rules
+    public static String getRules() {
+        return rules;
     }
 
     // REQUIRES: moving is the player moving, other is the other player
@@ -331,11 +336,8 @@ public class GameBoard {
         board.remove(toStrLoc(x, y));
     }
 
+    // EFFECTS: produce a string version of x*10 + y
     private String toStrLoc(int x, int y) {
         return x + String.valueOf(y);
-    }
-
-    public static String getRules() {
-        return rules;
     }
 }

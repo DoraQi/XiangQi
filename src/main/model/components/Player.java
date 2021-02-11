@@ -38,10 +38,12 @@ public class Player {
         pieces.remove(p);
     }
 
+    // EFFECTS: returns a list of all the pieces this player has
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
 
+    // EFFECTS: returns true if this player is on the red side, false otherwise
     public boolean isRed() {
         return isRed;
     }

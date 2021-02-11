@@ -11,6 +11,8 @@ public class General extends Piece {
     private final int minY;
     private final int maxY;
 
+    // REQUIRES: the given position is in the palace
+    // EFFECTS: creates a General on (x, y) of b, and red if isRed, black if not
     public General(int x, int y, GameBoard b, boolean isRed) {
         super(x, y, isRed, b, "General");
         minX = 3;
@@ -24,7 +26,7 @@ public class General extends Piece {
         }
     }
 
-    // REQUIRES: given coordinate (x, y) is a valid position on b
+    // REQUIRES: given coordinate (x, y) is a valid position on b and is empty
     // EFFECTS: return true if given position is in the palace, 1 away, and orthogonal to current position;
     @Override
     public boolean canMoveTo(int x, int y) {

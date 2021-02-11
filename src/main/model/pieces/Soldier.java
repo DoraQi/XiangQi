@@ -8,6 +8,8 @@ import model.components.GameBoard;
 public class Soldier extends Piece {
     private boolean crossedRiver;
 
+    // REQUIRES: given (x, y) is a valid empty position on board b
+    // EFFECTS: create an instance of a Soldier
     public Soldier(int x, int y, GameBoard b, boolean isRed) {
         super(x, y, isRed, b, "Soldier");
         crossedRiver = false;

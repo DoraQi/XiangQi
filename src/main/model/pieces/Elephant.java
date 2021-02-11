@@ -9,6 +9,8 @@ public class Elephant extends Piece {
     private final int maxY;
     private final int minY;
 
+    // REQUIRES: the given position is on the correct side of the river and a valid position on the board
+    // EFFECTS: instantiates an instance of Elephant
     public Elephant(int x, int y, GameBoard b, boolean isRed) {
         super(x, y, isRed, b, "Elephant");
         if (isRed) {
@@ -20,6 +22,9 @@ public class Elephant extends Piece {
         }
     }
 
+    // REQUIRES: (x, y) to is a valid position on the board and is empty
+    // EFFECTS: returns true if the given coordinate is orthogonal to the current position and that there are no
+    //          other pieces in between
     @Override
     public boolean canMoveTo(int x, int y) {
         if (y > maxY || y < minY) {
