@@ -22,7 +22,7 @@ public class GameBoard {
     private static final int MAX_Y_COORD = 9;
     private static final int MIN_Y_COORD = 0;
 
-    private static final String rules =
+    public static final String RULES =
             "Rules: https://ancientchess.com/page/play-xiangqi.htm \n\n"
                     + "input formats:\n"
                     + "  - moves: <from x><from y><space><to x><to y>\n"
@@ -107,11 +107,6 @@ public class GameBoard {
     // EFFECTS: return the piece on the given position
     public Piece getPAt(int x, int y) {
         return board.get(toStrLoc(x, y));
-    }
-
-    // EFFECTS: returns the rules
-    public static String getRules() {
-        return rules;
     }
 
     // MODIFIES: this

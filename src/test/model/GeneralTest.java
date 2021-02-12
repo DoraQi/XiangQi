@@ -36,13 +36,13 @@ public class GeneralTest extends PieceTest{
 
     @Test
     public void testCanMoveToInPalaceMultipleGrids() {
-        board.redMove("41 30");
+        redP = new General(3, 0, board, true);
         assertTrue(redP.canMoveTo(4, 0));
         assertFalse(redP.canMoveTo(5, 0));
         assertFalse(redP.canMoveTo(3, 2));
         assertFalse(redP.canMoveTo(5, 2));
 
-        board.redMove("41 52");
+        redP = new General(5, 2, board, true);
         assertFalse(redP.canMoveTo(3, 2));
         assertFalse(redP.canMoveTo(5, 0));
         assertFalse(redP.canMoveTo(3, 0));
@@ -50,19 +50,19 @@ public class GeneralTest extends PieceTest{
 
     @Test
     public void testCanMoveToOutOfPalace() {
-        board.redMove("41 32");
+        redP = new General(3, 2, board, true);
         assertFalse(redP.canMoveTo(2, 2));
         assertFalse(redP.canMoveTo(2, 3));
 
-        board.redMove("41 52");
+        redP = new General(5, 2, board, true);
         assertFalse(redP.canMoveTo(5, 3));
         assertFalse(redP.canMoveTo(6, 2));
 
-        board.redMove("41 27");
+        blackP = new General(3, 7, board, true);
         assertFalse(blackP.canMoveTo(2, 7));
         assertFalse(blackP.canMoveTo(3, 6));
 
-        board.redMove("41 37");
+        blackP = new General(5, 1, board, true);
         assertFalse(blackP.canMoveTo(6, 7));
         assertFalse(blackP.canMoveTo(5, 6));
     }

@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
         int opt = greet();
         if (opt == 1) {
-            System.out.println(GameBoard.getRules());
+            System.out.println(GameBoard.RULES);
         } else if (opt == 2) {
             playClassicGame();
         } else if (opt == 3) {
