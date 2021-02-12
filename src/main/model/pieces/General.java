@@ -48,7 +48,7 @@ public class General extends Piece {
             int deltaY = y - getPosY();
             int step = deltaY / Math.abs(deltaY);
             for (int i = getPosY() + step; i != y; i += step) {
-                if (!board.isEmpty(x, i)) {
+                if (!board.isEmptyAt(x, i)) {
                     return false;
                 }
             }

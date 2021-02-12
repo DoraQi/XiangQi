@@ -68,10 +68,8 @@ public class ElephantTest extends PieceTest{
 
     @Test
     public void testCanMoveToCrossRiverNotBlocked() {
-        redP = new Elephant(4, 2, board, true);
-        blackP = new Elephant(4, 7, board, false);
-        board.movePiece(redP, 3, 4);
-        board.movePiece(blackP, 6, 5);
+        redP = new Elephant(3, 4, board, true);
+        blackP = new Elephant(6, 5, board, false);
         assertFalse(redP.canMoveTo(1, 6));
         assertFalse(redP.canMoveTo(5, 6));
         assertFalse(blackP.canMoveTo(4, 3));

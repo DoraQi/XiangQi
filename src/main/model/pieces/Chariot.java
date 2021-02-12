@@ -23,7 +23,7 @@ public class Chariot extends Piece {
         if (deltaY != 0 && deltaX == 0) {
             int step = deltaY / Math.abs(deltaY);
             for (int i = getPosY() + step; i != y; i += step) {
-                if (!board.isEmpty(x, i)) {
+                if (!board.isEmptyAt(x, i)) {
                     return false;
                 }
             }
@@ -31,7 +31,7 @@ public class Chariot extends Piece {
         } else if (deltaX != 0 && deltaY == 0) {
             int step = deltaX / Math.abs(deltaX);
             for (int i = getPosX() + step; i != x; i += step) {
-                if (!board.isEmpty(i, y)) {
+                if (!board.isEmptyAt(i, y)) {
                     return false;
                 }
             }

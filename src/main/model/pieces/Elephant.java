@@ -35,7 +35,7 @@ public class Elephant extends Piece {
         if (Math.abs(deltaX) == 2 && Math.abs(deltaY) == 2) {
             int legSpotX = (getPosX() + x) / 2;
             int legSpotY = (getPosY() + y) / 2;
-            return board.isEmpty(legSpotX, legSpotY);
+            return board.isEmptyAt(legSpotX, legSpotY);
         } else {
             return false;
         }

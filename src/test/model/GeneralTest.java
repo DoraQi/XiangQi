@@ -36,13 +36,13 @@ public class GeneralTest extends PieceTest{
 
     @Test
     public void testCanMoveToInPalaceMultipleGrids() {
-        board.movePiece(redP, 3, 0);
+        board.redMove("41 30");
         assertTrue(redP.canMoveTo(4, 0));
         assertFalse(redP.canMoveTo(5, 0));
         assertFalse(redP.canMoveTo(3, 2));
         assertFalse(redP.canMoveTo(5, 2));
 
-        board.movePiece(redP, 5, 2);
+        board.redMove("41 52");
         assertFalse(redP.canMoveTo(3, 2));
         assertFalse(redP.canMoveTo(5, 0));
         assertFalse(redP.canMoveTo(3, 0));
@@ -50,18 +50,19 @@ public class GeneralTest extends PieceTest{
 
     @Test
     public void testCanMoveToOutOfPalace() {
-        board.movePiece(redP, 3, 2);
+        board.redMove("41 32");
         assertFalse(redP.canMoveTo(2, 2));
         assertFalse(redP.canMoveTo(2, 3));
 
-        board.movePiece(redP, 5, 2);
+        board.redMove("41 52");
         assertFalse(redP.canMoveTo(5, 3));
         assertFalse(redP.canMoveTo(6, 2));
 
-        board.movePiece(blackP, 3, 7);
+        board.redMove("41 27");
         assertFalse(blackP.canMoveTo(2, 7));
         assertFalse(blackP.canMoveTo(3, 6));
-        board.movePiece(blackP, 5, 7);
+
+        board.redMove("41 37");
         assertFalse(blackP.canMoveTo(6, 7));
         assertFalse(blackP.canMoveTo(5, 6));
     }
@@ -80,7 +81,7 @@ public class GeneralTest extends PieceTest{
     public void testCanCaptureOppGeneral() {
         assertTrue(redP.canCapture(4, 9));
 
-        board.placePiece(new Advisor(4, 8, board, false));
+        new Advisor(4, 8, board, false);
         assertFalse(redP.canCapture(4, 9));
         assertFalse(redP.canCapture(3, 8));
     }

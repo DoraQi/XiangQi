@@ -55,72 +55,31 @@ public class GameBoard {
 
     // REQUIRES: pos is a valid position within range ([MIN_X_COORD, MAX_X_COORD], [MIN_Y_COORD, MAX_Y_COORD])
     // EFFECTS: checks if the given position (x, y) is occupied by any piece
-    public boolean isEmpty(int x, int y) {
+    public boolean isEmptyAt(int x, int y) {
         return !board.containsKey(toStrLoc(x, y));
     }
 
-
-    // REQUIRES: hunter is a piece owned by playing and prey is a piece owned by other
-    // MODIFIES: playing, other
-    // EFFECTS: playing captures p from other, removing p from the board and moving hunter to prey's position
-    public void capture(Piece hunter, Piece prey, Player playing, Player other) {
-        removePiece(prey.getPosX(), prey.getPosY());
-        playing.capture(prey);
-        other.removePiece(prey);
-        hunter.move(prey.getPosX(), prey.getPosY());
-    }
-
-    // REQUIRES: given piece can be moved to given coordinate (x, y)
-    // MODIFIES: this, p
-    // EFFECTS: move p to location (x, y)
-    public void movePiece(Piece p, int x, int y) {
-        // remove p from board
-        removePiece(p.getPosX(), p.getPosY());
-        // update position in p
-        p.move(x, y);
-        // update position on board
-        placePiece(p);
-    }
-
-    // REQUIRES inpt to be in the format ex. "soldier [1,2]R"
+    // REQUIRES: input string is in all lower case
     // MODIFIES: this
     // EFFECTS: add a piece according to the given instruction; if unsuccessful prints the reason for failure
     public void putPiece(String inpt) {
-        String[] inptSplit = inpt.split(" ");
+        String[] inptSplit = inpt.split(" \\[|,|\\]");
         String pieceClass = inptSplit[0];
-        String[] coordinate = inptSplit[1].substring(1, 4).split(",");
-        String side = String.valueOf(inptSplit[1].charAt(5));
-        int x = Integer.parseInt(coordinate[0]);
-        int y = Integer.parseInt(coordinate[1]);
+        int x = Integer.parseInt(inptSplit[1]);
+        int y = Integer.parseInt(inptSplit[2]);
+        boolean isRed = inptSplit[3].equals("r");
         if (x > MAX_X_COORD || x < MIN_X_COORD || y > MAX_Y_COORD || y < MIN_Y_COORD) {
             throw new IllegalArgumentException();
         }
-        Piece p = makeNew(pieceClass, x, y, side.equals("r"));
+        Piece p = makeNew(pieceClass, x, y, isRed);
+        if (isRed) {
+            red.addPiece(p);
+        } else {
+            black.addPiece(p);
+        }
         System.out.println("Added " + p);
     }
 
-    // REQUIRES: given x, y position is empty on this board
-    // MODIFIES: this
-    // EFFECTS: place a piece of class pc and red if isRed, black if not, onto (x, y) of this board
-    private Piece makeNew(String pc, int x, int y, boolean isRed) {
-        switch (pc) {
-            case "soldier":
-                return new Soldier(x, y, this, isRed);
-            case "general":
-                return new General(x, y, this, isRed);
-            case "cannon":
-                return new Cannon(x, y, this, isRed);
-            case "chariot":
-                return new Chariot(x, y, this, isRed);
-            case "advisor":
-                return new Advisor(x, y, this, isRed);
-            case "horse":
-                return new Horse(x, y, this, isRed);
-            case "elephant":
-                return new Elephant(x, y, this, isRed);
-        }
-        throw new IllegalArgumentException();
-    }
 
     // EFFECTS: returns a string representation of the status of this board that includes
     //          positions of all pieces on board
@@ -150,6 +109,11 @@ public class GameBoard {
         return board.get(toStrLoc(x, y));
     }
 
+    // EFFECTS: returns the rules
+    public static String getRules() {
+        return rules;
+    }
+
     // MODIFIES: this
     // EFFECTS: sets up the board and players to play the game
     public void setUpClassicGame() {
@@ -174,11 +138,6 @@ public class GameBoard {
         playerMove(inpt, black, red);
     }
 
-    // EFFECTS: returns the rules
-    public static String getRules() {
-        return rules;
-    }
-
     // REQUIRES: moving is the player moving, other is the other player
     // MODIFIES: this
     // EFFECTS: move the piece at given location to the specified location and return true if successful
@@ -187,12 +146,12 @@ public class GameBoard {
         int fromY = Integer.parseInt(move.substring(1, 2));
         int toX = Integer.parseInt(move.substring(3,4));
         int toY = Integer.parseInt(move.substring(4,5));
-        if (isEmpty(fromX, fromY)) {
+        if (isEmptyAt(fromX, fromY)) {
             throw new NullPointerException();
         }
         Piece p = getPAt(fromX, fromY);
         if (p.isRed() == moving.isRed()) {
-            if (isEmpty(toX, toY)) {
+            if (isEmptyAt(toX, toY)) {
                 if (p.canMoveTo(toX, toY)) {
                     movePiece(p, toX, toY);
                     return;
@@ -204,6 +163,51 @@ public class GameBoard {
                     return;
                 }
             }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    // REQUIRES: hunter is a piece owned by playing and prey is a piece owned by other
+    // MODIFIES: playing, other
+    // EFFECTS: playing captures p from other, removing p from the board and moving hunter to prey's position
+    private void capture(Piece hunter, Piece prey, Player playing, Player other) {
+        removePiece(prey.getPosX(), prey.getPosY());
+        playing.capture(prey);
+        other.removePiece(prey);
+        hunter.move(prey.getPosX(), prey.getPosY());
+    }
+
+    // REQUIRES: given piece can be moved to given coordinate (x, y)
+    // MODIFIES: this, p
+    // EFFECTS: move p to location (x, y)
+    private void movePiece(Piece p, int x, int y) {
+        // remove p from board
+        removePiece(p.getPosX(), p.getPosY());
+        // update position in p
+        p.move(x, y);
+        // update position on board
+        placePiece(p);
+    }
+
+    // REQUIRES: given x, y position is empty on this board
+    // MODIFIES: this
+    // EFFECTS: place a piece of class pc and red if isRed, black if not, onto (x, y) of this board
+    private Piece makeNew(String pc, int x, int y, boolean isRed) {
+        switch (pc) {
+            case "soldier":
+                return new Soldier(x, y, this, isRed);
+            case "general":
+                return new General(x, y, this, isRed);
+            case "cannon":
+                return new Cannon(x, y, this, isRed);
+            case "chariot":
+                return new Chariot(x, y, this, isRed);
+            case "advisor":
+                return new Advisor(x, y, this, isRed);
+            case "horse":
+                return new Horse(x, y, this, isRed);
+            case "elephant":
+                return new Elephant(x, y, this, isRed);
         }
         throw new IllegalArgumentException();
     }
@@ -236,7 +240,6 @@ public class GameBoard {
             }
         }
     }
-
 
 
     // MODIFIES: this

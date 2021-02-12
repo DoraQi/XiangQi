@@ -25,10 +25,10 @@ public class Horse extends Piece {
 
         if ((deltaY == -1 || deltaY == 1) && (deltaX == 2 || deltaX == -2)) {
             int legSpotX = getPosX() + deltaX / 2;
-            return board.isEmpty(legSpotX, getPosY());
+            return board.isEmptyAt(legSpotX, getPosY());
         } else if ((deltaX == -1 || deltaX == 1) && (deltaY == 2 || deltaY == -2)) {
             int legSpotY = getPosY() + deltaY / 2;
-            return board.isEmpty(getPosX(), legSpotY);
+            return board.isEmptyAt(getPosX(), legSpotY);
         }
 
         return false;

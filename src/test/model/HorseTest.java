@@ -14,8 +14,6 @@ public class HorseTest extends PieceTest{
         redP = new Horse(3, 4, board,true);
         blackP = new Horse(7, 7, board, false);
 
-        board.placePiece(redP);
-
         assertTrue(redP.isRed());
         assertEquals(3, redP.getPosX());
         assertEquals(4, redP.getPosY());
@@ -41,7 +39,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedHorizontal() {
-        board.movePiece(blackP, 4, 4);
+        board.putPiece("soldier [4,4]b");
 
         assertTrue(redP.canMoveTo(2, 6));
         assertTrue(redP.canMoveTo(2,2));
@@ -56,7 +54,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedVertical() {
-        board.movePiece(blackP, 3, 3);
+        board.putPiece("soldier [3,3]b");
 
         assertTrue(redP.canMoveTo(2, 6));
         assertTrue(redP.canMoveTo(4,6));
