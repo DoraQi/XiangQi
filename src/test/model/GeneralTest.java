@@ -32,12 +32,13 @@ public class GeneralTest extends PieceTest{
         assertTrue(redP.canMoveTo(5, 1));
         assertFalse(redP.canMoveTo(3, 0));
         assertFalse(redP.canMoveTo(3, 2));
+        assertFalse(redP.canMoveTo(5, 0));
+        assertFalse(redP.canMoveTo(5, 2));
     }
 
     @Test
     public void testCanMoveToInPalaceMultipleGrids() {
         redP = new General(3, 0, board, true);
-        assertTrue(redP.canMoveTo(4, 0));
         assertFalse(redP.canMoveTo(5, 0));
         assertFalse(redP.canMoveTo(3, 2));
         assertFalse(redP.canMoveTo(5, 2));
@@ -83,6 +84,7 @@ public class GeneralTest extends PieceTest{
 
         new Advisor(4, 8, board, false);
         assertFalse(redP.canCapture(4, 9));
-        assertFalse(redP.canCapture(3, 8));
+        assertFalse(redP.canCapture(4, 8));
     }
+
 }

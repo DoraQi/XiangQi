@@ -51,14 +51,14 @@ public class SoldierTest extends PieceTest{
     @Test
     public void testCanMoveAftCrossingRiverRed() {
         redP.move(4,6);
-        assertFalse(redP.canMoveTo(4,6));
 
         // moving one grid
+        assertTrue(redP.canMoveTo(4, 7));
         assertTrue(redP.canMoveTo(3, 6));
         assertTrue(redP.canMoveTo(5, 6));
         assertFalse(redP.canMoveTo(3, 7));
         assertFalse(redP.canMoveTo(4,5));
-        assertFalse(redP.canMoveTo(3,7));
+        assertFalse(redP.canMoveTo(5,7));
 
         // try to move two grids
         assertFalse(redP.canMoveTo(2,6));
@@ -70,28 +70,17 @@ public class SoldierTest extends PieceTest{
     public void testCanMoveAftCrossingRiverBlack() {
         blackP.move(3, 3);
 
-        assertFalse(blackP.canMoveTo(3,3));
-
         // moving one grid
         assertTrue(blackP.canMoveTo(3, 2));
         assertTrue(blackP.canMoveTo(4, 3));
         assertTrue(blackP.canMoveTo(2, 3));
         assertFalse(blackP.canMoveTo(3,4));
         assertFalse(blackP.canMoveTo(2,2));
+        assertFalse(blackP.canMoveTo(4,4));
 
         // try to move two grids
         assertFalse(blackP.canMoveTo(5,3));
         assertFalse(blackP.canMoveTo(3,5));
         assertFalse(blackP.canMoveTo(3,1));
-    }
-
-    public void testMoveToCurrentPosition() {
-        redP.move(1,4);
-        assertEquals(1, redP.getPosX());
-        assertEquals(4, redP.getPosY());
-
-        blackP.move(3,6);
-        assertEquals(3, blackP.getPosX());
-        assertEquals(6, blackP.getPosY());
     }
 }
