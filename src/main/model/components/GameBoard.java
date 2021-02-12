@@ -174,7 +174,7 @@ public class GameBoard {
         removePiece(prey.getPosX(), prey.getPosY());
         playing.capture(prey);
         other.removePiece(prey);
-        hunter.move(prey.getPosX(), prey.getPosY());
+        movePiece(hunter, prey.getPosX(), prey.getPosY());
     }
 
     // REQUIRES: given piece can be moved to given coordinate (x, y)

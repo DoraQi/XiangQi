@@ -125,6 +125,18 @@ class GameBoardTest {
 
         }
     }
+    
+    @Test
+    public void testPutPieceIllegalPieceClass() {
+        try {
+            board.putPiece("brook [0,0]r");
+            fail();
+        } catch (IllegalArgumentException ignored) {
+
+        } catch (Exception e) {
+            fail();
+        }
+    }
 
     @Test
     public void testPutPieceIllegalInputFormat2() {
@@ -240,4 +252,141 @@ class GameBoardTest {
         }
     }
 
+    @Test
+    public void testRedMoveNoPieceSelected() {
+        try {
+            board.redMove("00 03");
+            fail();
+        } catch (NullPointerException e) {
+
+        }
+        
+    }
+
+    @Test
+    public void testRedMoveSelectedBlackPiece() {
+        board.putPiece("soldier [3,4]b");
+        try {
+            board.redMove("34 35");
+            fail();
+        } catch (IllegalArgumentException ignored) {
+
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testRedMoveToEmptySpot() {
+        board.putPiece("soldier [3,4]r");
+        Piece p = board.getPAt(3, 4);
+        board.redMove("34 35");
+        assertTrue(board.isEmptyAt(3, 4));
+        assertFalse(board.isEmptyAt(3, 5));
+        assertEquals(p, board.getPAt(3, 5));
+        assertEquals(3, p.getPosX());
+        assertEquals(5, p.getPosY());
+    }
+
+    @Test
+    public void testRedMoveToEmptySpotCannonMoveTo() {
+        board.putPiece("soldier [3,4]r");
+        Piece p = board.getPAt(3, 4);
+        try {
+            board.redMove("34 37");
+        } catch (IllegalArgumentException iae) {
+            assertEquals(p, board.getPAt(3, 4));
+            assertTrue(board.isEmptyAt(3, 7));
+            assertEquals(3, p.getPosX());
+            assertEquals(4, p.getPosY());
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testRedMoveToSpotFilledByRedP() {
+        board.putPiece("soldier [3,4]r");
+        Piece p1 = board.getPAt(3, 4);
+        board.putPiece("soldier [3,5]r");
+        Piece p2 = board.getPAt(3, 5);
+        try {
+            board.redMove("34 35");
+        } catch (IllegalArgumentException ignored) {
+            assertEquals(p1, board.getPAt(3, 4));
+            assertEquals(p2, board.getPAt(3, 5));
+            assertEquals(3, p1.getPosX());
+            assertEquals(4, p1.getPosY());
+            assertEquals(3, p2.getPosX());
+            assertEquals(5, p2.getPosY());
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testRedMoveToSpotFilledByRedCannontCapture() {
+        board.putPiece("soldier [3,4]r");
+        Piece p1 = board.getPAt(3, 4);
+        board.putPiece("soldier [3,7]r");
+        Piece p2 = board.getPAt(3, 7);
+        try {
+            board.redMove("34 37");
+        } catch (IllegalArgumentException ignored) {
+            assertEquals(p1, board.getPAt(3, 4));
+            assertEquals(p2, board.getPAt(3, 7));
+            assertEquals(3, p1.getPosX());
+            assertEquals(4, p1.getPosY());
+            assertEquals(3, p2.getPosX());
+            assertEquals(7, p2.getPosY());
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testRedMoveToSpotFilledByBlackCannontCapture() {
+        board.putPiece("soldier [3,4]r");
+        Piece p1 = board.getPAt(3, 4);
+        board.putPiece("soldier [3,7]b");
+        Piece p2 = board.getPAt(3, 7);
+        try {
+            board.redMove("34 37");
+        } catch (IllegalArgumentException ignored) {
+            assertEquals(p1, board.getPAt(3, 4));
+            assertEquals(p2, board.getPAt(3, 7));
+            assertEquals(3, p1.getPosX());
+            assertEquals(4, p1.getPosY());
+            assertEquals(3, p2.getPosX());
+            assertEquals(7, p2.getPosY());
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testRedMoveSpotFilledByBlackCanCapture() {
+        board.putPiece("soldier [3,4]r");
+        Piece p1 = board.getPAt(3, 4);
+        board.putPiece("soldier [3,5]b");
+        Piece p2 = board.getPAt(3, 5);
+        board.redMove("34 35");
+        assertTrue(board.isEmptyAt(3, 4));
+        assertEquals(p1, board.getPAt(3, 5));
+        assertEquals(3, p1.getPosX());
+        assertEquals(5, p1.getPosY());
+    }
+
+    @Test
+    public void testBlackMoveSpotFilledByRedCanCapture() {
+        board.putPiece("soldier [3,4]r");
+        Piece p1 = board.getPAt(3, 4);
+        board.putPiece("soldier [3,5]b");
+        Piece p2 = board.getPAt(3, 5);
+        board.blackMove("35 34");
+        assertTrue(board.isEmptyAt(3, 5));
+        assertEquals(p2, board.getPAt(3, 4));
+        assertEquals(3, p2.getPosX());
+        assertEquals(4, p2.getPosY());
+    }
 }
