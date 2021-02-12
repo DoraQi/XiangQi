@@ -224,4 +224,20 @@ class GameBoardTest {
         assertEquals(p, board.getPAt(3, 0));
     }
 
+    @Test
+    public void testSetUpClassicGame() {
+        board.setUpClassicGame();
+        for (int i = 0; i <= 8; i++) {
+            assertFalse(board.isEmptyAt(i, 0));
+            assertFalse(board.isEmptyAt(i, 9));
+            if (i % 2 == 0) {
+                assertFalse(board.isEmptyAt(i, 3));
+                assertFalse(board.isEmptyAt(i, 6));
+            }
+            if (i == 1 || i == 7) {
+                assertFalse(board.isEmptyAt(i, 2));
+            }
+        }
+    }
+
 }

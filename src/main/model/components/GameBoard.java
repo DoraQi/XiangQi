@@ -303,7 +303,7 @@ public class GameBoard {
         pieces.add(new Chariot(0, 9, this, false));
         pieces.add(new Chariot(8, 9, this, false));
         pieces.add(new Chariot(0, 0, this, true));
-        pieces.add(new Chariot(0, 8, this, true));
+        pieces.add(new Chariot(8, 0, this, true));
         for (Piece p : pieces) {
             this.placePiece(p);
             if (p.isRed()) {
