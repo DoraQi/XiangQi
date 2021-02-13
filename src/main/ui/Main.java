@@ -25,7 +25,7 @@ public class Main {
 
     protected static void playCustomGame() {
         game = new GameBoard();
-        setupCustomGame(game);
+        setupCustomGame();
         playGame();
     }
 
@@ -37,14 +37,21 @@ public class Main {
         playGame();
     }
 
-    private static void setupCustomGame(GameBoard gb) {
+    private static void setupCustomGame() {
+        System.out.println("Add pieces by entering \"<piece class> [x,y]<R/B>\"\n"
+                + "                       ex. Soldier [2,3]R\n"
+                + "Enter \"check\" to check the current status of the board\n"
+                + "Enter \"done\" when you're ready to play!");
         System.out.println(SEPARATOR);
         while (true) {
-            System.out.println("Add piece: ");
+            System.out.print("Add piece: ");
             String inpt = console.nextLine().trim().toLowerCase();
             if (inpt.equalsIgnoreCase("done")) {
                 System.out.println(game);
                 return;
+            } else if (inpt.equalsIgnoreCase("check")) {
+                System.out.println(game);
+                continue;
             }
             try {
                 game.putPiece(inpt);
@@ -59,13 +66,7 @@ public class Main {
         while (true) {
             System.out.println(SEPARATOR);
             try {
-                if (redMoving) {
-                    System.out.print("RED move: ");
-                    game.redMove(console.nextLine().trim().toLowerCase());
-                } else {
-                    System.out.print("BLACK move: ");
-                    game.blackMove(console.nextLine().trim().toLowerCase());
-                }
+                playerMove(redMoving);
                 System.out.println(game);
                 if (game.checkWin()) {
                     winMessage();
@@ -74,6 +75,28 @@ public class Main {
                 redMoving = !redMoving;
             } catch (Exception e) {
                 System.out.println("<invalid move>");
+            }
+        }
+    }
+
+    private static void playerMove(boolean redMoving) throws IllegalArgumentException {
+        String inpt = "";
+        try {
+            if (redMoving) {
+                System.out.print("RED move: ");
+                inpt = console.nextLine().trim().toLowerCase();
+                game.redMove(inpt);
+            } else {
+                System.out.print("BLACK move: ");
+                inpt = console.nextLine().trim().toLowerCase();
+                game.blackMove(inpt);
+            }
+        } catch (NumberFormatException e) {
+            if (inpt.equalsIgnoreCase("quit")) {
+                System.out.println("Game over!");
+                System.exit(0);
+            } else {
+                throw new IllegalArgumentException();
             }
         }
     }

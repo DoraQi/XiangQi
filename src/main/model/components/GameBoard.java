@@ -28,7 +28,8 @@ public class GameBoard {
                     + "  - moves: <from x><from y><space><to x><to y>\n"
                     + "           - ex. 01 11\n"
                     + "  -  add a piece in custom game: <class of the piece><space>[<x>,<y>]<R/B>\n"
-                    + "           - ex. Soldier [1,0]R, Cannon [7,4]B";
+                    + "           - ex. Soldier [1,0]R, Cannon [7,4]B\n"
+                    + "You can exit the program anytime by entering \"quit\"";
 
     // EFFECTS: instantiate a GameBoard
     public GameBoard() {
