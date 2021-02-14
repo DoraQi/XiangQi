@@ -20,7 +20,7 @@ public class Player {
     }
 
     // REQUIRES: given piece is owned by the opponent
-    // MODIFIES: this, target
+    // MODIFIES: this
     // EFFECTS: captures the given piece
     public void capture(Piece target) {
         captured.add(target);

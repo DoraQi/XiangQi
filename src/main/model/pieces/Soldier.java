@@ -37,7 +37,6 @@ public class Soldier extends Piece {
         }
     }
 
-
     // REQUIRES: to is a valid position on the board that this pawn can move to
     // EFFECTS: move to given position, check if crossed river
     public void move(int x, int y) {

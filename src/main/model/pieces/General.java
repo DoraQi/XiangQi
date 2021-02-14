@@ -36,7 +36,7 @@ public class General extends Piece {
     }
 
 
-    // REQUIRES: given coordinate (x, y) is a valid position on b
+    // REQUIRES: given coordinate (x, y) is a valid position on b and is currently occupied by an opponent's piece
     // EFFECTS: return true if given position is in the palace, 1 away, and orthogonal to current position; or
     //          the opponent General is at given position, are aligned vertically, and there are no
     //          other pieces in between

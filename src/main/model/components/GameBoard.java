@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Represents a game of XiangQi with the board and players on Black and Red sides
- * Coordinate (x, y) start with (0,0) on the bottom right, increasing to the right and up
+ * Represents XiangQi game board with players on Black and Red sides
+ * Coordinate (x, y) start with (0,0) on the bottom left, increasing to the right and up
  * The River is between row 4 and 5, certain pieces may not cross the river
  */
 public class GameBoard {
@@ -53,7 +53,6 @@ public class GameBoard {
         return true;
     }
 
-
     // REQUIRES: pos is a valid position within range ([MIN_X_COORD, MAX_X_COORD], [MIN_Y_COORD, MAX_Y_COORD])
     // EFFECTS: checks if the given position (x, y) is occupied by any piece
     public boolean isEmptyAt(int x, int y) {
@@ -63,7 +62,7 @@ public class GameBoard {
     // REQUIRES: input string is in all lower case
     // MODIFIES: this
     // EFFECTS: add a piece according to the given instruction and returned added piece
-    public Piece putPiece(String inpt) {
+    public Piece createPiece(String inpt) {
         String[] inptSplit = inpt.split(" \\[|,|\\]");
         String pieceClass = inptSplit[0];
         int x = Integer.parseInt(inptSplit[1]);
@@ -123,20 +122,20 @@ public class GameBoard {
     }
 
     // MODIFIES: this
-    // EFFECTS: move the piece at given location to the specified location and return true if successful
+    // EFFECTS: move the piece at given location to the specified location
     public void redMove(String inpt) {
         playerMove(inpt, red, black);
     }
 
     // MODIFIES: this
-    // EFFECTS: move the piece at given location to the specified location and return true if successful
+    // EFFECTS: move the piece at given location to the specified location
     public void blackMove(String inpt) {
         playerMove(inpt, black, red);
     }
 
     // REQUIRES: moving is the player moving, other is the other player
     // MODIFIES: this
-    // EFFECTS: move the piece at given location to the specified location and return true if successful
+    // EFFECTS: move the piece at given location to the specified location
     private void playerMove(String move, Player moving, Player other) {
         int fromX = Integer.parseInt(move.substring(0, 1));
         int fromY = Integer.parseInt(move.substring(1, 2));
@@ -185,7 +184,7 @@ public class GameBoard {
         placePiece(p);
     }
 
-    // REQUIRES: given x, y position is empty on this board
+    // REQUIRES: given (x, y) position is empty on this board
     // MODIFIES: this
     // EFFECTS: place a piece of class pc and red if isRed, black if not, onto (x, y) of this board
     private Piece makeNew(String pc, int x, int y, boolean isRed) {
@@ -209,7 +208,7 @@ public class GameBoard {
     }
 
     // MODIFIES: this
-    // EFFECTS: makes all generals for both red and black sides and place on board
+    // EFFECTS: makes all generals for both red and black sides
     private void makeGenerals() {
         General redG = new General(4, 0, this, true);
         General blackG = new General(4, 9, this, false);
@@ -220,7 +219,7 @@ public class GameBoard {
     }
 
     // MODIFIES: this
-    // EFFECTS: makes all advisors for both red and black sides and place on board
+    // EFFECTS: makes all advisors for both red and black sides
     private void makeAdvisors() {
         ArrayList<Piece> pieces = new ArrayList<>();
         pieces.add(new Advisor(3, 9, this, false));
@@ -239,7 +238,7 @@ public class GameBoard {
 
 
     // MODIFIES: this
-    // EFFECTS: makes all horses for both red and black sides and place on board
+    // EFFECTS: makes all horses for both red and black sides
     private void makeHorses() {
         ArrayList<Horse> horses = new ArrayList<>();
         horses.add(new Horse(1, 9, this, false));
@@ -257,7 +256,7 @@ public class GameBoard {
     }
 
     // MODIFIES: this
-    // EFFECTS: makes all elephants for both red and black sides and place on board
+    // EFFECTS: makes all elephants for both red and black sides
     private void makeElephants() {
         ArrayList<Elephant> elephants = new ArrayList<>();
         elephants.add(new Elephant(2, 9, this, false));
@@ -275,7 +274,7 @@ public class GameBoard {
     }
 
     // MODIFIES: this
-    // EFFECTS: makes all cannons for both red and black sides and place on board
+    // EFFECTS: makes all cannons for both red and black sides
     private void makeCannons() {
         ArrayList<Piece> pieces = new ArrayList<>();
         pieces.add(new Cannon(1, 7, this, false));
@@ -293,7 +292,7 @@ public class GameBoard {
     }
 
     // MODIFIES: this
-    // EFFECTS: makes all soldiers for both red and black sides and place on board
+    // EFFECTS: makes all soldiers for both red and black sides
     private void makeChariots() {
         ArrayList<Piece> pieces = new ArrayList<>();
         pieces.add(new Chariot(0, 9, this, false));
@@ -311,7 +310,7 @@ public class GameBoard {
     }
 
     // MODIFIES: this
-    // EFFECTS: makes all soldiers for both red and black sides and place on board
+    // EFFECTS: makes all soldiers for both red and black sides
     private void makeSoldiers() {
         ArrayList<Piece> pieces = new ArrayList<>();
         for (int i = 0; i <= 8; i += 2) {
@@ -328,7 +327,7 @@ public class GameBoard {
         }
     }
 
-    // REQUIRES: position (x, y) is a valid position on the board
+    // REQUIRES: position (x, y) is a valid position on the board and occupied by a piece
     // MODIFIES: this
     // EFFECTS: vacant the given spot
     private void removePiece(int x, int y) {

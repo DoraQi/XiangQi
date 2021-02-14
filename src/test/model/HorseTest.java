@@ -39,7 +39,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedHorizontalR() {
-        board.putPiece("soldier [4,4]b");
+        board.createPiece("soldier [4,4]b");
 
         assertTrue(redP.canMoveTo(2, 6));
         assertTrue(redP.canMoveTo(2,2));
@@ -54,7 +54,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedHorizontalL() {
-        board.putPiece("soldier [2,4]b");
+        board.createPiece("soldier [2,4]b");
 
         assertTrue(redP.canMoveTo(2, 6));
         assertTrue(redP.canMoveTo(2,2));
@@ -69,7 +69,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedVerticalBelow() {
-        board.putPiece("soldier [3,3]b");
+        board.createPiece("soldier [3,3]b");
 
         assertTrue(redP.canMoveTo(2, 6));
         assertTrue(redP.canMoveTo(4,6));
@@ -84,7 +84,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedVerticalAbove() {
-        board.putPiece("soldier [3,5]b");
+        board.createPiece("soldier [3,5]b");
 
         assertTrue(redP.canMoveTo(1,5));
         assertTrue(redP.canMoveTo(5,5));

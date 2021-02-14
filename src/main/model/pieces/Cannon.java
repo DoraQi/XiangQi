@@ -13,14 +13,13 @@ public class Cannon extends Piece {
         super(x, y, isRed, b, "Cannon");
     }
 
+    // REQUIRES: given position (x,y) is a valid, empty position on board
     // EFFECTS: produce true iff this piece is orthogonal to the current position and there are no other pieces
     //          in between
     @Override
     public boolean canMoveTo(int x, int y) {
         int deltaX = x - getPosX();
         int deltaY = y - getPosY();
-        // check if aligned horizontally or vertically
-        // check if each square along the way are vacant
         if (deltaY != 0 && deltaX == 0) {
             int step = deltaY / Math.abs(deltaY);
             for (int i = getPosY() + step; i != y; i += step) {
@@ -41,6 +40,7 @@ public class Cannon extends Piece {
         return false;
     }
 
+    // REQUIRES: given position (x,y) is a valid position on board and occupied by an opponent's piece
     // EFFECTS: produce true iff this piece is orthogonal to the current position and there is exactly one piece in
     //          between
     @Override

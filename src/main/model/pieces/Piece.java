@@ -2,6 +2,9 @@ package model.pieces;
 
 import model.components.GameBoard;
 
+/**
+ * A generic Piece of XiangQi
+ */
 public abstract class Piece {
     private int posX;
     private int posY;
@@ -19,7 +22,6 @@ public abstract class Piece {
         this.redSide = redSide;
         this.pieceClass = c;
     }
-
 
     // REQUIRES: this piece can move to the given coordinate and that it's empty on board
     // MODIFIES: this

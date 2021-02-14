@@ -19,29 +19,29 @@ class GameBoardTest {
     @Test
     public void testCheckWin() {
         // 1 general on board
-        board.putPiece("general [4,0]r");
+        board.createPiece("general [4,0]r");
         assertTrue(board.checkWin());
         // 1 general + another piece on board
-        board.putPiece("soldier [2,3]r");
+        board.createPiece("soldier [2,3]r");
         assertTrue(board.checkWin());
         // 2 generals on board + another piece on board
-        board.putPiece("general [3,9]b");
+        board.createPiece("general [3,9]b");
         assertFalse(board.checkWin());
         // 2 generals + 2 other pieces on board
-        board.putPiece("horse [2,2]b");
+        board.createPiece("horse [2,2]b");
         assertFalse(board.checkWin());
     }
 
     @Test
     public void testIsEmptyAt() {
         assertTrue(board.isEmptyAt(1, 1));
-        board.putPiece("horse [1,1]r");
+        board.createPiece("horse [1,1]r");
         assertFalse(board.isEmptyAt(1, 1));
     }
 
     @Test
     public void testPutPieceGeneral() {
-        Piece p = board.putPiece("general [4,0]r");
+        Piece p = board.createPiece("general [4,0]r");
         assertFalse(board.isEmptyAt(4, 0));
         assertEquals("General", p.getPieceClass());
         assertEquals(4, p.getPosX());
@@ -51,7 +51,7 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceAdvisor() {
-        Piece p = board.putPiece("advisor [3,0]r");
+        Piece p = board.createPiece("advisor [3,0]r");
         assertFalse(board.isEmptyAt(3, 0));
         assertEquals("Advisor", p.getPieceClass());
         assertEquals(3, p.getPosX());
@@ -61,7 +61,7 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceChariot() {
-        Piece p = board.putPiece("chariot [0,9]b");
+        Piece p = board.createPiece("chariot [0,9]b");
         assertFalse(board.isEmptyAt(0, 9));
         assertEquals("Chariot", p.getPieceClass());
         assertEquals(0, p.getPosX());
@@ -71,7 +71,7 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceElephant() {
-        Piece p = board.putPiece("elephant [2,9]b");
+        Piece p = board.createPiece("elephant [2,9]b");
         assertFalse(board.isEmptyAt(2, 9));
         assertEquals("Elephant", p.getPieceClass());
         assertEquals(2, p.getPosX());
@@ -81,7 +81,7 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceHorse() {
-        Piece p = board.putPiece("horse [5,5]r");
+        Piece p = board.createPiece("horse [5,5]r");
         assertFalse(board.isEmptyAt(5, 5));
         assertEquals("Horse", p.getPieceClass());
         assertEquals(5, p.getPosX());
@@ -91,7 +91,7 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceCannon() {
-        Piece p = board.putPiece("cannon [1,7]b");
+        Piece p = board.createPiece("cannon [1,7]b");
         assertFalse(board.isEmptyAt(1, 7));
         assertEquals("Cannon", p.getPieceClass());
         assertEquals(1, p.getPosX());
@@ -101,7 +101,7 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceSoldier() {
-        Piece p = board.putPiece("soldier [4,3]r");
+        Piece p = board.createPiece("soldier [4,3]r");
         assertFalse(board.isEmptyAt(4, 3));
         assertEquals("Soldier", p.getPieceClass());
         assertEquals(4, p.getPosX());
@@ -112,7 +112,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalInputFormat1() {
         try {
-            board.putPiece("ahsbdj");
+            board.createPiece("ahsbdj");
             fail();
         } catch (Exception ignored) {
 
@@ -122,7 +122,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalPieceClass() {
         try {
-            board.putPiece("brook [0,0]r");
+            board.createPiece("brook [0,0]r");
             fail();
         } catch (IllegalArgumentException ignored) {
 
@@ -134,7 +134,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalInputFormat2() {
         try {
-            board.putPiece("soldier [1, 4]r");
+            board.createPiece("soldier [1, 4]r");
             fail();
         } catch (Exception ignored) {
 
@@ -144,7 +144,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalInputFormat3() {
         try {
-            board.putPiece("soldier 14r");
+            board.createPiece("soldier 14r");
             fail();
         } catch (Exception ignored) {
 
@@ -154,7 +154,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalXTooLarge() {
         try {
-            board.putPiece("soldier [9,2]r");
+            board.createPiece("soldier [9,2]r");
             fail();
         } catch (IllegalArgumentException ignored) {
 
@@ -166,7 +166,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalXTooSmall() {
         try {
-            board.putPiece("soldier [-1,2]r");
+            board.createPiece("soldier [-1,2]r");
             fail();
         } catch (IllegalArgumentException ignored) {
 
@@ -178,7 +178,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalYTooLarge() {
         try {
-            board.putPiece("soldier [2,10]r");
+            board.createPiece("soldier [2,10]r");
             fail();
         } catch (IllegalArgumentException ignored) {
 
@@ -190,7 +190,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalYTooSmall() {
         try {
-            board.putPiece("soldier [2,-3]r");
+            board.createPiece("soldier [2,-3]r");
             fail();
         } catch (IllegalArgumentException ignored) {
 
@@ -202,7 +202,7 @@ class GameBoardTest {
     @Test
     public void testPutPieceIllegalXYPosition() {
         try {
-            board.putPiece("soldier [-3,10]r");
+            board.createPiece("soldier [-3,10]r");
             fail();
         } catch (IllegalArgumentException ignored) {
 
@@ -215,9 +215,9 @@ class GameBoardTest {
     public void testToString() {
         assertEquals("", board.toString());
 
-        board.putPiece("advisor [3,0]r");
+        board.createPiece("advisor [3,0]r");
         assertEquals("Advisor[3, 0]R", board.toString());
-        board.putPiece("general [4,9]b");
+        board.createPiece("general [4,9]b");
         assertEquals("Advisor[3, 0]R \nGeneral[4, 9]B", board.toString());
     }
 
@@ -258,7 +258,7 @@ class GameBoardTest {
 
     @Test
     public void testRedMoveSelectedBlackPiece() {
-        board.putPiece("soldier [3,4]b");
+        board.createPiece("soldier [3,4]b");
         try {
             board.redMove("34 35");
             fail();
@@ -271,7 +271,7 @@ class GameBoardTest {
 
     @Test
     public void testRedMoveToEmptySpot() {
-        board.putPiece("soldier [3,4]r");
+        board.createPiece("soldier [3,4]r");
         Piece p = board.getPAt(3, 4);
         board.redMove("34 35");
         assertTrue(board.isEmptyAt(3, 4));
@@ -283,7 +283,7 @@ class GameBoardTest {
 
     @Test
     public void testRedMoveToEmptySpotCannonMoveTo() {
-        board.putPiece("soldier [3,4]r");
+        board.createPiece("soldier [3,4]r");
         Piece p = board.getPAt(3, 4);
         try {
             board.redMove("34 37");
@@ -299,9 +299,9 @@ class GameBoardTest {
 
     @Test
     public void testRedMoveToSpotFilledByRedP() {
-        board.putPiece("soldier [3,4]r");
+        board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
-        board.putPiece("soldier [3,5]r");
+        board.createPiece("soldier [3,5]r");
         Piece p2 = board.getPAt(3, 5);
         try {
             board.redMove("34 35");
@@ -319,9 +319,9 @@ class GameBoardTest {
 
     @Test
     public void testRedMoveToSpotFilledByRedCannontCapture() {
-        board.putPiece("soldier [3,4]r");
+        board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
-        board.putPiece("soldier [3,7]r");
+        board.createPiece("soldier [3,7]r");
         Piece p2 = board.getPAt(3, 7);
         try {
             board.redMove("34 37");
@@ -339,9 +339,9 @@ class GameBoardTest {
 
     @Test
     public void testRedMoveToSpotFilledByBlackCannontCapture() {
-        board.putPiece("soldier [3,4]r");
+        board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
-        board.putPiece("soldier [3,7]b");
+        board.createPiece("soldier [3,7]b");
         Piece p2 = board.getPAt(3, 7);
         try {
             board.redMove("34 37");
@@ -359,9 +359,9 @@ class GameBoardTest {
 
     @Test
     public void testRedMoveSpotFilledByBlackCanCapture() {
-        board.putPiece("soldier [3,4]r");
+        board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
-        board.putPiece("soldier [3,5]b");
+        board.createPiece("soldier [3,5]b");
         Piece p2 = board.getPAt(3, 5);
         board.redMove("34 35");
         assertTrue(board.isEmptyAt(3, 4));
@@ -372,9 +372,9 @@ class GameBoardTest {
 
     @Test
     public void testBlackMoveSpotFilledByRedCanCapture() {
-        board.putPiece("soldier [3,4]r");
+        board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
-        board.putPiece("soldier [3,5]b");
+        board.createPiece("soldier [3,5]b");
         Piece p2 = board.getPAt(3, 5);
         board.blackMove("35 34");
         assertTrue(board.isEmptyAt(3, 5));
