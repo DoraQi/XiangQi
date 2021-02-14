@@ -59,6 +59,7 @@ public class SoldierTest extends PieceTest{
         assertFalse(redP.canMoveTo(3, 7));
         assertFalse(redP.canMoveTo(4,5));
         assertFalse(redP.canMoveTo(5,7));
+        assertFalse(redP.canMoveTo(4,6));
 
         // try to move two grids
         assertFalse(redP.canMoveTo(2,6));

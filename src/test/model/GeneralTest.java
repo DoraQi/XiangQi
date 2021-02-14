@@ -30,6 +30,7 @@ public class GeneralTest extends PieceTest{
         assertTrue(redP.canMoveTo(4, 0));
         assertTrue(redP.canMoveTo(3, 1));
         assertTrue(redP.canMoveTo(5, 1));
+        assertFalse(redP.canMoveTo(4, 1));
         assertFalse(redP.canMoveTo(3, 0));
         assertFalse(redP.canMoveTo(3, 2));
         assertFalse(redP.canMoveTo(5, 0));
