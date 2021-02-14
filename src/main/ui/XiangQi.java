@@ -8,8 +8,8 @@ import java.util.Scanner;
  * A game of XiangQi
  */
 public class XiangQi {
-    private String SEPARATOR = "======================================";
-    private Scanner console = new Scanner(System.in);
+    private final String separator = "======================================";
+    private final Scanner console = new Scanner(System.in);
     private GameBoard game;
 
     public XiangQi() {
@@ -26,7 +26,7 @@ public class XiangQi {
             } else {
                 System.exit(0);
             }
-            System.out.println(SEPARATOR);
+            System.out.println(separator);
         }
     }
 
@@ -49,7 +49,7 @@ public class XiangQi {
                 + "                       ex. Soldier [2,3]R\n"
                 + "Enter \"check\" to check the current status of the board\n"
                 + "Enter \"done\" when you're ready to play!");
-        System.out.println(SEPARATOR);
+        System.out.println(separator);
         while (true) {
             System.out.print("Add piece: ");
             String inpt = console.nextLine().trim().toLowerCase();
@@ -71,7 +71,7 @@ public class XiangQi {
     private void playGame() {
         boolean redMoving = true;
         while (true) {
-            System.out.println(SEPARATOR);
+            System.out.println(separator);
             try {
                 playerMove(redMoving);
                 System.out.println(game);
