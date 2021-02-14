@@ -62,8 +62,8 @@ public class GameBoard {
 
     // REQUIRES: input string is in all lower case
     // MODIFIES: this
-    // EFFECTS: add a piece according to the given instruction; if unsuccessful prints the reason for failure
-    public void putPiece(String inpt) {
+    // EFFECTS: add a piece according to the given instruction and returned added piece
+    public Piece putPiece(String inpt) {
         String[] inptSplit = inpt.split(" \\[|,|\\]");
         String pieceClass = inptSplit[0];
         int x = Integer.parseInt(inptSplit[1]);
@@ -78,7 +78,7 @@ public class GameBoard {
         } else {
             black.addPiece(p);
         }
-        System.out.println("Added " + p);
+        return p;
     }
 
 

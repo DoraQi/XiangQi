@@ -60,6 +60,13 @@ public class AdvisorTest extends PieceTest{
         assertFalse(redP.canMoveTo(4, 3));
         assertFalse(redP.canMoveTo(6, 3));
         assertFalse(redP.canMoveTo(6, 1));
+
+        assertFalse(redP.canMoveTo(2, 0));
+        assertFalse(redP.canMoveTo(2, 2));
+        assertFalse(redP.canMoveTo(6, 0));
+        assertFalse(redP.canMoveTo(6, 2));
+        assertFalse(redP.canMoveTo(3, 3));
+        assertFalse(redP.canMoveTo(5, 3));
     }
 
     @Test

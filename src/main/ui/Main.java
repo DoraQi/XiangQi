@@ -54,7 +54,7 @@ public class Main {
                 continue;
             }
             try {
-                game.putPiece(inpt);
+                System.out.println("Added " + game.putPiece(inpt));
             } catch (Exception e) {
                 System.out.println("<invalid input>");
             }

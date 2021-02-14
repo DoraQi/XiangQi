@@ -40,6 +40,7 @@ public class CannonTest extends PieceTest{
         assertFalse(redP.canMoveTo(0, 1));
         assertFalse(redP.canMoveTo(2, 1));
         assertFalse(redP.canMoveTo(0, 3));
+        assertFalse(redP.canMoveTo(1, 2));
     }
 
     @Test

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Represents a Player playing a game of XiangQi
  */
 public class Player {
-    private boolean isRed;
+    private final boolean isRed;
     private ArrayList<Piece> pieces;
     private ArrayList<Piece> captured;
 

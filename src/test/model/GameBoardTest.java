@@ -41,9 +41,8 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceGeneral() {
-        board.putPiece("general [4,0]r");
+        Piece p = board.putPiece("general [4,0]r");
         assertFalse(board.isEmptyAt(4, 0));
-        Piece p = board.getPAt(4, 0);
         assertEquals("General", p.getPieceClass());
         assertEquals(4, p.getPosX());
         assertEquals(0, p.getPosY());
@@ -52,9 +51,8 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceAdvisor() {
-        board.putPiece("advisor [3,0]r");
+        Piece p = board.putPiece("advisor [3,0]r");
         assertFalse(board.isEmptyAt(3, 0));
-        Piece p = board.getPAt(3, 0);
         assertEquals("Advisor", p.getPieceClass());
         assertEquals(3, p.getPosX());
         assertEquals(0, p.getPosY());
@@ -63,9 +61,8 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceChariot() {
-        board.putPiece("chariot [0,9]b");
+        Piece p = board.putPiece("chariot [0,9]b");
         assertFalse(board.isEmptyAt(0, 9));
-        Piece p = board.getPAt(0, 9);
         assertEquals("Chariot", p.getPieceClass());
         assertEquals(0, p.getPosX());
         assertEquals(9, p.getPosY());
@@ -74,9 +71,8 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceElephant() {
-        board.putPiece("elephant [2,9]b");
+        Piece p = board.putPiece("elephant [2,9]b");
         assertFalse(board.isEmptyAt(2, 9));
-        Piece p = board.getPAt(2, 9);
         assertEquals("Elephant", p.getPieceClass());
         assertEquals(2, p.getPosX());
         assertEquals(9, p.getPosY());
@@ -85,9 +81,8 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceHorse() {
-        board.putPiece("horse [5,5]r");
+        Piece p = board.putPiece("horse [5,5]r");
         assertFalse(board.isEmptyAt(5, 5));
-        Piece p = board.getPAt(5, 5);
         assertEquals("Horse", p.getPieceClass());
         assertEquals(5, p.getPosX());
         assertEquals(5, p.getPosY());
@@ -96,9 +91,8 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceCannon() {
-        board.putPiece("cannon [1,7]b");
+        Piece p = board.putPiece("cannon [1,7]b");
         assertFalse(board.isEmptyAt(1, 7));
-        Piece p = board.getPAt(1, 7);
         assertEquals("Cannon", p.getPieceClass());
         assertEquals(1, p.getPosX());
         assertEquals(7, p.getPosY());
@@ -107,9 +101,8 @@ class GameBoardTest {
 
     @Test
     public void testPutPieceSoldier() {
-        board.putPiece("soldier [4,3]r");
+        Piece p = board.putPiece("soldier [4,3]r");
         assertFalse(board.isEmptyAt(4, 3));
-        Piece p = board.getPAt(4, 3);
         assertEquals("Soldier", p.getPieceClass());
         assertEquals(4, p.getPosX());
         assertEquals(3, p.getPosY());
@@ -257,7 +250,7 @@ class GameBoardTest {
         try {
             board.redMove("00 03");
             fail();
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ignored) {
 
         }
         
