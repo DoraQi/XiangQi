@@ -40,7 +40,7 @@ public class GameBoard {
     }
 
     // REQUIRES: a game has been set up
-    // EFFECTS: return true if only 1 general's left on the board
+    // EFFECTS: return true if <= 1 general's left on the board
     public boolean checkWin() {
         int generalCount = 0;
         for (Piece p : board.values()) {

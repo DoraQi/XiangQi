@@ -18,6 +18,8 @@ class GameBoardTest {
 
     @Test
     public void testCheckWin() {
+        // no general on board
+        assertTrue(board.checkWin());
         // 1 general on board
         board.createPiece("general [4,0]r");
         assertTrue(board.checkWin());

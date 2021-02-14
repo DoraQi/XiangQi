@@ -12,9 +12,15 @@ public class XiangQi {
     private final Scanner console = new Scanner(System.in);
     private GameBoard game;
 
+    // EFFECTS: Starts a game of XiangQi
     public XiangQi() {
         while (true) {
-            int opt = greet();
+            System.out.println("--------- WELCOME TO XIANGQI ---------\n"
+                    + "Check out:       1 - rules\n"
+                    + "                 2 - Play classic game\n"
+                    + "                 3 - Play custom game\n"
+                    + "                 4 - Quit");
+            int opt = get1to4();
             if (opt == 1) {
                 System.out.println(GameBoard.RULES);
             } else if (opt == 2) {
@@ -30,13 +36,9 @@ public class XiangQi {
         }
     }
 
-    protected void playCustomGame() {
-        game = new GameBoard();
-        setupCustomGame();
-        playGame();
-    }
-
-    protected void playClassicGame() {
+    // MODIFIES: this
+    // EFFECTS: sets up and prompts to play a classic game
+    private void playClassicGame() {
         game = new GameBoard();
         System.out.println("Welcome to a classic game of XiangQi!");
         game.setUpClassicGame();
@@ -44,6 +46,16 @@ public class XiangQi {
         playGame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: prompts to set up and play a custom game
+    private void playCustomGame() {
+        game = new GameBoard();
+        setupCustomGame();
+        playGame();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: repeatedly prompts and gets user inputs to set up a custom game
     private void setupCustomGame() {
         System.out.println("Add pieces by entering \"<piece class> [x,y]<R/B>\"\n"
                 + "                       ex. Soldier [2,3]R\n"
@@ -68,17 +80,21 @@ public class XiangQi {
         }
     }
 
+    // REQUIRES: a game has been set up
+    // MODIFIES: this
+    // EFFECTS: repeatedly get user to make moves until <= 1 general is left on board, if any invalid input is
+    //          given, ask the user to re-enter
     private void playGame() {
         boolean redMoving = true;
         while (true) {
             System.out.println(separator);
             try {
-                playerMove(redMoving);
-                System.out.println(game);
                 if (game.checkWin()) {
-                    winMessage();
+                    endMessage();
                     return;
                 }
+                playerMove(redMoving);
+                System.out.println(game);
                 redMoving = !redMoving;
             } catch (Exception e) {
                 System.out.println("<invalid move>");
@@ -86,6 +102,9 @@ public class XiangQi {
         }
     }
 
+    // REQUIRES: a game has been set up
+    // MODIFIES: this
+    // EFFECTS: prompts to get user input for a move and make the move, throws Exception if the given input is invalid
     private void playerMove(boolean redMoving) throws IllegalArgumentException {
         String inpt = "";
         try {
@@ -108,19 +127,13 @@ public class XiangQi {
         }
     }
 
-    private void winMessage() {
-        System.out.println("Congratulations! You win!");
+    // REQUIRES: game has ended ( <= 1 general left on board )
+    // EFFECTS: prints out a message to end the game
+    private void endMessage() {
+        System.out.println("Game Over!");
     }
 
-    private int greet() {
-        System.out.println("--------- WELCOME TO XIANGQI ---------\n"
-                + "Check out:       1 - rules\n"
-                + "                 2 - Play classic game\n"
-                + "                 3 - Play custom game\n"
-                + "                 4 - Quit");
-        return get1to4();
-    }
-
+    // EFFECTS: repeatedly prompts for user input until they enter 1, 2, 3, or 4
     private int get1to4() {
         while (true) {
             String inpt = console.nextLine().trim();
