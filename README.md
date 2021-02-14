@@ -2,7 +2,9 @@
 
 ## A simple game of Chinese chess
 
-This is a novice programmer's attempt at creating a playable game of Chinese chess (XiangQi)
+This is a novice programmer's attempt at creating a playable game of Chinese chess (XiangQi). I find this project 
+interesting because I feel like it is a great way for me to explore how to design a program with multiple interacting 
+classes. 
 
 ## User Story
 - As a user, I want to play a custom game by adding multiple XiangQi pieces onto the board
