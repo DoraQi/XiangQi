@@ -134,7 +134,7 @@ public class GameBoard {
     }
 
     // REQUIRES: moving is the player moving, other is the other player
-    // MODIFIES: this
+    // MODIFIES: this, moving, other
     // EFFECTS: move the piece at given location to the specified location
     private void playerMove(String move, Player moving, Player other) {
         int fromX = Integer.parseInt(move.substring(0, 1));
@@ -163,7 +163,7 @@ public class GameBoard {
     }
 
     // REQUIRES: hunter is a piece owned by playing and prey is a piece owned by other
-    // MODIFIES: playing, other
+    // MODIFIES: this, hunter, playing, other
     // EFFECTS: playing captures p from other, removing p from the board and moving hunter to prey's position
     private void capture(Piece hunter, Piece prey, Player playing, Player other) {
         removePiece(prey.getPosX(), prey.getPosY());
