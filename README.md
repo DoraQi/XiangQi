@@ -7,8 +7,13 @@ interesting because I feel like it is a great way for me to explore how to desig
 classes. 
 
 ## User Story
+### Phase 1:
 - As a user, I want to play a custom game by adding multiple XiangQi pieces onto the board
 - As a user, I want to be able to move pieces
 - As a user, I want to be able to capture pieces
 - As a user, I want to be able to play and win a classic game against a friend
 - As a user, I want to try again when I made a typo and entered an invalid input
+
+### Phase 2:
+- As a user, I want to be able to save my current board 
+- As a user, I want to be able to retrieve previous unfinished game and continue playing

@@ -1,6 +1,13 @@
 package model.components;
 
+
+import exception.EmptyMoveException;
 import model.pieces.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.omg.CORBA_2_3.portable.OutputStream;
+import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +17,7 @@ import java.util.HashMap;
  * Coordinate (x, y) start with (0,0) on the bottom left, increasing to the right and up
  * The River is between row 4 and 5, certain pieces may not cross the river
  */
-public class GameBoard {
+public class GameBoard implements Writable {
     Player red;
     Player black;
     String gameLog;
@@ -22,21 +29,42 @@ public class GameBoard {
     private static final int MAX_Y_COORD = 9;
     private static final int MIN_Y_COORD = 0;
 
-    public static final String RULES =
-            "Rules: https://ancientchess.com/page/play-xiangqi.htm \n\n"
-                    + "input formats:\n"
-                    + "  - moves: <from x><from y><space><to x><to y>\n"
-                    + "           - ex. 01 11\n"
-                    + "  -  add a piece in custom game: <class of the piece><space>[<x>,<y>]<R/B>\n"
-                    + "           - ex. Soldier [1,0]R, Cannon [7,4]B\n"
-                    + "You can exit the program anytime by entering \"quit\"";
-
     // EFFECTS: instantiate a GameBoard
     public GameBoard() {
         red = new Player(true);
         black = new Player(false);
         board = new HashMap<>();
         gameLog = "";
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("players", playersToJson());
+        json.put("pieces", piecesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns players as a JSON array
+    public JSONArray playersToJson() {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(red.toJson());
+        jsonArray.put(black.toJson());
+        return jsonArray;
+    }
+
+    // EFFECTS: returns all pieces on board as a JSON array
+    private JSONArray piecesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Piece p : red.getPieces()) {
+            jsonArray.put(p.toJson());
+        }
+        for (Piece p : black.getPieces()) {
+            jsonArray.put(p.toJson());
+        }
+
+        return jsonArray;
     }
 
     // REQUIRES: a game has been set up
@@ -71,7 +99,7 @@ public class GameBoard {
         if (x > MAX_X_COORD || x < MIN_X_COORD || y > MAX_Y_COORD || y < MIN_Y_COORD) {
             throw new IllegalArgumentException();
         }
-        Piece p = makeNew(pieceClass, x, y, isRed);
+        Piece p = makeNew(pieceClass, x, y, isRed, this);
         if (isRed) {
             red.addPiece(p);
         } else {
@@ -121,28 +149,40 @@ public class GameBoard {
         makeAdvisors();
     }
 
+
+    // MODIFIES: this
+    // EFFECTS: add a captured pieces to player specified by isRed
+    public void addCapturedPiece(String pc, int x, int y, boolean capturedByRed) {
+        if (capturedByRed) {
+            red.capture(makeNew(pc.toLowerCase(), x, y, false, null));
+        } else {
+            black.capture(makeNew(pc.toLowerCase(), x, y, true, null));
+        }
+    }
+
     // MODIFIES: this
     // EFFECTS: move the piece at given location to the specified location
-    public void redMove(String inpt) {
+    public void redMove(String inpt) throws NumberFormatException, IndexOutOfBoundsException {
         playerMove(inpt, red, black);
     }
 
     // MODIFIES: this
     // EFFECTS: move the piece at given location to the specified location
-    public void blackMove(String inpt) {
+    public void blackMove(String inpt) throws NumberFormatException, IndexOutOfBoundsException {
         playerMove(inpt, black, red);
     }
 
     // REQUIRES: moving is the player moving, other is the other player
     // MODIFIES: this, moving, other
     // EFFECTS: move the piece at given location to the specified location
-    private void playerMove(String move, Player moving, Player other) {
+    private void playerMove(String move, Player moving, Player other)
+            throws NumberFormatException, IndexOutOfBoundsException {
         int fromX = Integer.parseInt(move.substring(0, 1));
         int fromY = Integer.parseInt(move.substring(1, 2));
         int toX = Integer.parseInt(move.substring(3,4));
         int toY = Integer.parseInt(move.substring(4,5));
         if (isEmptyAt(fromX, fromY)) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
         Piece p = getPAt(fromX, fromY);
         if (p.isRed() == moving.isRed()) {
@@ -166,6 +206,7 @@ public class GameBoard {
     // MODIFIES: this, hunter, playing, other
     // EFFECTS: playing captures p from other, removing p from the board and moving hunter to prey's position
     private void capture(Piece hunter, Piece prey, Player playing, Player other) {
+        prey.remove();
         removePiece(prey.getPosX(), prey.getPosY());
         playing.capture(prey);
         other.removePiece(prey);
@@ -187,22 +228,22 @@ public class GameBoard {
     // REQUIRES: given (x, y) position is empty on this board
     // MODIFIES: this
     // EFFECTS: place a piece of class pc and red if isRed, black if not, onto (x, y) of this board
-    private Piece makeNew(String pc, int x, int y, boolean isRed) {
+    private Piece makeNew(String pc, int x, int y, boolean isRed, GameBoard board) {
         switch (pc) {
             case "soldier":
-                return new Soldier(x, y, this, isRed);
+                return new Soldier(x, y, board, isRed);
             case "general":
-                return new General(x, y, this, isRed);
+                return new General(x, y, board, isRed);
             case "cannon":
-                return new Cannon(x, y, this, isRed);
+                return new Cannon(x, y, board, isRed);
             case "chariot":
-                return new Chariot(x, y, this, isRed);
+                return new Chariot(x, y, board, isRed);
             case "advisor":
-                return new Advisor(x, y, this, isRed);
+                return new Advisor(x, y, board, isRed);
             case "horse":
-                return new Horse(x, y, this, isRed);
+                return new Horse(x, y, board, isRed);
             case "elephant":
-                return new Elephant(x, y, this, isRed);
+                return new Elephant(x, y, board, isRed);
         }
         throw new IllegalArgumentException();
     }
@@ -338,4 +379,5 @@ public class GameBoard {
     private String toStrLoc(int x, int y) {
         return x + String.valueOf(y);
     }
+
 }

@@ -12,7 +12,7 @@ public class Soldier extends Piece {
     // EFFECTS: create an instance of a Soldier
     public Soldier(int x, int y, GameBoard b, boolean isRed) {
         super(x, y, isRed, b, "Soldier");
-        crossedRiver = false;
+        updateCrossRiver();
     }
 
     // REQUIRES: to is a valid position on the board
@@ -41,10 +41,12 @@ public class Soldier extends Piece {
     // EFFECTS: move to given position, check if crossed river
     public void move(int x, int y) {
         super.move(x, y);
-        if (this.isRed() && y >= 6) {
+        updateCrossRiver();
+    }
+
+    private void updateCrossRiver() {
+        if (this.isRed() && getPosY() >= 5) {
             crossedRiver = true;
-        } else if (!this.isRed() && y <= 5) {
-            crossedRiver = true;
-        }
+        } else crossedRiver = !this.isRed() && getPosY() <= 4;
     }
 }

@@ -1,7 +1,12 @@
 package ui;
 
+import exception.QuitGameException;
 import model.components.GameBoard;
+import persistence.JsonWriter;
+import persistence.JsonReader;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -12,46 +17,95 @@ public class XiangQi {
     private final Scanner console = new Scanner(System.in);
     private GameBoard game;
 
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
+    private static final String RULES =
+            "Rules: https://ancientchess.com/page/play-xiangqi.htm \n\n"
+                    + "input formats:\n"
+                    + "  - moves: <from x><from y><space><to x><to y>\n"
+                    + "           - ex. 01 11\n"
+                    + "  -  add a piece in custom game: <class of the piece><space>[<x>,<y>]<R/B>\n"
+                    + "           - ex. Soldier [1,0]R, Cannon [7,4]B\n"
+                    + "You can exit the program anytime by entering \"quit\", "
+                    + "follow the instructions to save the game.";
+
     // EFFECTS: Starts a game of XiangQi
-    public XiangQi() {
-        while (true) {
+    public XiangQi() throws FileNotFoundException {
+        jsonWriter = new JsonWriter();
+        jsonReader = new JsonReader();
+        try {
             System.out.println("--------- WELCOME TO XIANGQI ---------\n"
                     + "Check out:       1 - rules\n"
                     + "                 2 - Play classic game\n"
                     + "                 3 - Play custom game\n"
-                    + "                 4 - Quit");
-            int opt = get1to4();
-            if (opt == 1) {
-                System.out.println(GameBoard.RULES);
-            } else if (opt == 2) {
-                playClassicGame();
-                return;
-            } else if (opt == 3) {
-                playCustomGame();
-                return;
+                    + "                 4 - Load saved game\n"
+                    + "                 5 - quit");
+            play();
+        } catch (QuitGameException quitGameException) {
+            handleQuit(quitGameException.redGoesNext());
+        } catch (IOException ioException) {
+            System.out.println("Failed");
+        }
+    }
+
+    // EFFECTS: play classic game, custom game, or load game depending on user input
+    private void play() throws QuitGameException, IOException {
+        int opt = get1to4();
+        if (opt == 1) {
+            System.out.println(RULES);
+        } else if (opt == 2) {
+            playClassicGame();
+        } else if (opt == 3) {
+            playCustomGame();
+        } else if (opt == 4) {
+            playSavedGame();
+        }
+    }
+
+    // EFFECTS: reads saved file for a gameboard
+    private void playSavedGame() throws IOException, QuitGameException {
+        game = jsonReader.loadGame();
+        boolean redStart = jsonReader.getFirstStart();
+        System.out.println(game);
+        playGame(redStart);
+    }
+
+    // EFFECTS: save the game progress to file
+    private void handleQuit(boolean redGoesNext) throws FileNotFoundException {
+        System.out.println("Save? [Y/N]");
+        boolean saveGame = console.nextLine().trim().toUpperCase().equals("Y");
+        if (saveGame) {
+            System.out.println("Game saved!");
+            jsonWriter.saveGame(game, redGoesNext);
+        } else {
+            System.out.println("Are you sure you don't want to save? [Y/N]");
+            saveGame = console.nextLine().trim().toUpperCase().equals("Y");
+            if (saveGame) {
+                System.out.println("Game saved!");
+                jsonWriter.saveGame(game, redGoesNext);
             } else {
-                System.exit(0);
+                System.out.println("Thanks for playing!");
             }
-            System.out.println(separator);
         }
     }
 
     // MODIFIES: this
     // EFFECTS: sets up and prompts to play a classic game
-    private void playClassicGame() {
+    private void playClassicGame() throws QuitGameException {
         game = new GameBoard();
         System.out.println("Welcome to a classic game of XiangQi!");
         game.setUpClassicGame();
         System.out.println(game);
-        playGame();
+        playGame(true);
     }
 
     // MODIFIES: this
     // EFFECTS: prompts to set up and play a custom game
-    private void playCustomGame() {
+    private void playCustomGame() throws QuitGameException {
         game = new GameBoard();
         setupCustomGame();
-        playGame();
+        playGame(true);
     }
 
     // MODIFIES: this
@@ -84,8 +138,7 @@ public class XiangQi {
     // MODIFIES: this
     // EFFECTS: repeatedly get user to make moves until <= 1 general is left on board, if any invalid input is
     //          given, ask the user to re-enter
-    private void playGame() {
-        boolean redMoving = true;
+    private void playGame(boolean redMoving) throws QuitGameException {
         while (true) {
             System.out.println(separator);
             try {
@@ -96,7 +149,7 @@ public class XiangQi {
                 playerMove(redMoving);
                 System.out.println(game);
                 redMoving = !redMoving;
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println("<invalid move>");
             }
         }
@@ -105,7 +158,7 @@ public class XiangQi {
     // REQUIRES: a game has been set up
     // MODIFIES: this
     // EFFECTS: prompts to get user input for a move and make the move, throws Exception if the given input is invalid
-    private void playerMove(boolean redMoving) throws IllegalArgumentException {
+    private void playerMove(boolean redMoving) throws IllegalArgumentException, QuitGameException {
         String inpt = "";
         try {
             if (redMoving) {
@@ -119,10 +172,9 @@ public class XiangQi {
             }
         } catch (NumberFormatException e) {
             if (inpt.equalsIgnoreCase("quit")) {
-                System.out.println("Game over!");
-                System.exit(0);
+                throw new QuitGameException(redMoving);
             } else {
-                throw new IllegalArgumentException();
+                throw e;
             }
         }
     }

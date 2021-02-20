@@ -1,11 +1,14 @@
 package model.pieces;
 
+
 import model.components.GameBoard;
+import org.json.JSONObject;
+import persistence.Writable;
 
 /**
  * A generic Piece of XiangQi
  */
-public abstract class Piece {
+public abstract class Piece implements Writable {
     private int posX;
     private int posY;
     protected GameBoard board;
@@ -13,15 +16,27 @@ public abstract class Piece {
 
     private final String pieceClass;
 
-    // REQUIRES: given (x, y) is a valid empty position on board b
+    // REQUIRES: b is a valid board or null for a captured piece.
+    //           given (x, y) is a valid empty position on board b
     // EFFECTS: constructs elements common to all Piece
     public Piece(int x, int y, boolean redSide, GameBoard b, String c) {
         move(x, y);
         board = b;
-        b.placePiece(this);
+        if (b != null) {
+            b.placePiece(this);
+        }
         this.redSide = redSide;
         this.pieceClass = c;
     }
+//
+//    // REQUIRES: given (x, y) is a valid empty position on board b
+//    // EFFECTS: constructs elements common to all captured Piece
+//    public Piece(int x, int y, boolean redSide, String c) {
+//        move(x, y);
+//        board = null;
+//        this.redSide = redSide;
+//        this.pieceClass = c;
+//    }
 
     // REQUIRES: this piece can move to the given coordinate and that it's empty on board
     // MODIFIES: this
@@ -73,4 +88,26 @@ public abstract class Piece {
     public String getPieceClass() {
         return pieceClass;
     }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("piece class", pieceClass);
+        json.put("posX", posX);
+        json.put("posY", posY);
+        if (isRed()) {
+            json.put("isRed", "r");
+        } else {
+            json.put("isRed", "b");
+        }
+
+        return json;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: remove board from this piece
+    public void remove() {
+        board = null;
+    }
+
 }

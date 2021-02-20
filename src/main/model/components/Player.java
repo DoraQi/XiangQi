@@ -1,14 +1,16 @@
 package model.components;
 
 import model.pieces.Piece;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * Represents a Player playing a game of XiangQi
  */
-public class Player {
+public class Player implements Writable {
     private final boolean isRed;
     private ArrayList<Piece> pieces;
     private ArrayList<Piece> captured;
@@ -56,5 +58,24 @@ public class Player {
     // EFFECTS: returns true if this player has captured p
     public boolean hasCaptured(Piece p) {
         return captured.contains(p);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("isRed", isRed);
+        json.put("captured", capturedToJson());
+        return json;
+    }
+
+    // EFFECTS: return all captured pieces as a JSON array
+    private JSONArray capturedToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Piece p : captured) {
+            jsonArray.put(p.toJson());
+        }
+
+        return jsonArray;
     }
 }

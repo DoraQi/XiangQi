@@ -252,7 +252,7 @@ class GameBoardTest {
         try {
             board.redMove("00 03");
             fail();
-        } catch (NullPointerException ignored) {
+        } catch (IllegalArgumentException ignored) {
 
         }
         

@@ -1,0 +1,49 @@
+{
+    "pieces": [
+        {
+            "posX": 3,
+            "piece class": "General",
+            "posY": 1,
+            "isRed": "r"
+        },
+        {
+            "posX": 3,
+            "piece class": "Soldier",
+            "posY": 6,
+            "isRed": "r"
+        },
+        {
+            "posX": 3,
+            "piece class": "General",
+            "posY": 9,
+            "isRed": "b"
+        },
+        {
+            "posX": 3,
+            "piece class": "Cannon",
+            "posY": 8,
+            "isRed": "b"
+        }
+    ],
+    "red starts?": false,
+    "players": [
+        {
+            "captured": [{
+                "posX": 3,
+                "piece class": "Soldier",
+                "posY": 5,
+                "isRed": "b"
+            }],
+            "isRed": true
+        },
+        {
+            "captured": [{
+                "posX": 3,
+                "piece class": "Horse",
+                "posY": 3,
+                "isRed": "r"
+            }],
+            "isRed": false
+        }
+    ]
+}
