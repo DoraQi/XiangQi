@@ -1,48 +1,206 @@
 {
     "pieces": [
         {
-            "posX": 3,
+            "posX": 0,
+            "piece class": "Soldier",
+            "posY": 4,
+            "isRed": "r"
+        },
+        {
+            "posX": 2,
+            "piece class": "Soldier",
+            "posY": 3,
+            "isRed": "r"
+        },
+        {
+            "posX": 4,
+            "piece class": "Soldier",
+            "posY": 3,
+            "isRed": "r"
+        },
+        {
+            "posX": 6,
+            "piece class": "Soldier",
+            "posY": 3,
+            "isRed": "r"
+        },
+        {
+            "posX": 8,
+            "piece class": "Soldier",
+            "posY": 3,
+            "isRed": "r"
+        },
+        {
+            "posX": 0,
+            "piece class": "Chariot",
+            "posY": 0,
+            "isRed": "r"
+        },
+        {
+            "posX": 8,
+            "piece class": "Chariot",
+            "posY": 0,
+            "isRed": "r"
+        },
+        {
+            "posX": 1,
+            "piece class": "Cannon",
+            "posY": 2,
+            "isRed": "r"
+        },
+        {
+            "posX": 7,
+            "piece class": "Cannon",
+            "posY": 2,
+            "isRed": "r"
+        },
+        {
+            "posX": 2,
+            "piece class": "Elephant",
+            "posY": 0,
+            "isRed": "r"
+        },
+        {
+            "posX": 6,
+            "piece class": "Elephant",
+            "posY": 0,
+            "isRed": "r"
+        },
+        {
+            "posX": 1,
+            "piece class": "Horse",
+            "posY": 0,
+            "isRed": "r"
+        },
+        {
+            "posX": 7,
+            "piece class": "Horse",
+            "posY": 0,
+            "isRed": "r"
+        },
+        {
+            "posX": 4,
             "piece class": "General",
-            "posY": 1,
+            "posY": 0,
             "isRed": "r"
         },
         {
             "posX": 3,
+            "piece class": "Advisor",
+            "posY": 0,
+            "isRed": "r"
+        },
+        {
+            "posX": 5,
+            "piece class": "Advisor",
+            "posY": 0,
+            "isRed": "r"
+        },
+        {
+            "posX": 0,
             "piece class": "Soldier",
             "posY": 6,
-            "isRed": "r"
+            "isRed": "b"
         },
         {
-            "posX": 3,
+            "posX": 2,
+            "piece class": "Soldier",
+            "posY": 6,
+            "isRed": "b"
+        },
+        {
+            "posX": 4,
+            "piece class": "Soldier",
+            "posY": 6,
+            "isRed": "b"
+        },
+        {
+            "posX": 6,
+            "piece class": "Soldier",
+            "posY": 6,
+            "isRed": "b"
+        },
+        {
+            "posX": 8,
+            "piece class": "Soldier",
+            "posY": 6,
+            "isRed": "b"
+        },
+        {
+            "posX": 0,
+            "piece class": "Chariot",
+            "posY": 9,
+            "isRed": "b"
+        },
+        {
+            "posX": 8,
+            "piece class": "Chariot",
+            "posY": 9,
+            "isRed": "b"
+        },
+        {
+            "posX": 1,
+            "piece class": "Cannon",
+            "posY": 7,
+            "isRed": "b"
+        },
+        {
+            "posX": 7,
+            "piece class": "Cannon",
+            "posY": 7,
+            "isRed": "b"
+        },
+        {
+            "posX": 2,
+            "piece class": "Elephant",
+            "posY": 9,
+            "isRed": "b"
+        },
+        {
+            "posX": 6,
+            "piece class": "Elephant",
+            "posY": 9,
+            "isRed": "b"
+        },
+        {
+            "posX": 1,
+            "piece class": "Horse",
+            "posY": 9,
+            "isRed": "b"
+        },
+        {
+            "posX": 7,
+            "piece class": "Horse",
+            "posY": 9,
+            "isRed": "b"
+        },
+        {
+            "posX": 4,
             "piece class": "General",
             "posY": 9,
             "isRed": "b"
         },
         {
             "posX": 3,
-            "piece class": "Cannon",
-            "posY": 8,
+            "piece class": "Advisor",
+            "posY": 9,
+            "isRed": "b"
+        },
+        {
+            "posX": 5,
+            "piece class": "Advisor",
+            "posY": 9,
             "isRed": "b"
         }
     ],
     "red starts?": false,
     "players": [
         {
-            "captured": [{
-                "posX": 3,
-                "piece class": "Soldier",
-                "posY": 5,
-                "isRed": "b"
-            }],
+            "captured": [],
             "isRed": true
         },
         {
-            "captured": [{
-                "posX": 3,
-                "piece class": "Horse",
-                "posY": 3,
-                "isRed": "r"
-            }],
+            "captured": [],
             "isRed": false
         }
     ]

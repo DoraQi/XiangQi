@@ -31,10 +31,12 @@ public abstract class PieceTest {
 
     @Test
     public void testToString() {
-        assertEquals(redP.getPieceClass() + "[" + redP.getPosX() + ", " + redP.getPosY() + "]R",
-                redP.toString());
-        assertEquals(blackP.getPieceClass() + "[" + blackP.getPosX() + ", " + blackP.getPosY() + "]B",
-                blackP.toString());
+        assertEquals(redP.getPieceClass().name().charAt(0)
+                + redP.getPieceClass().name().substring(1).toLowerCase()
+                        + "[" + redP.getPosX() + ", " + redP.getPosY() + "]R", redP.toString());
+        assertEquals(blackP.getPieceClass().name().charAt(0)
+                        + blackP.getPieceClass().name().substring(1).toLowerCase() + "[" + blackP.getPosX() + ", "
+                + blackP.getPosY() + "]B", blackP.toString());
 
     }
 }

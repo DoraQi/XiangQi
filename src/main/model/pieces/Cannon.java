@@ -10,7 +10,7 @@ public class Cannon extends Piece {
     // REQUIRES: given (x, y) is a valid empty position on board b
     // EFFECTS: instantiates an instance of Cannon
     public Cannon(int x, int y, GameBoard b, boolean isRed) {
-        super(x, y, isRed, b, "Cannon");
+        super(x, y, isRed, b, PieceClass.CANNON);
     }
 
     // REQUIRES: given position (x,y) is a valid, empty position on board

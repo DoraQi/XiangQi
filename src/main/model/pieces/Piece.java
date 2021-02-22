@@ -14,12 +14,12 @@ public abstract class Piece implements Writable {
     protected GameBoard board;
     private final boolean redSide;
 
-    private final String pieceClass;
+    private final PieceClass pieceClass;
 
     // REQUIRES: b is a valid board or null for a captured piece.
     //           given (x, y) is a valid empty position on board b
     // EFFECTS: constructs elements common to all Piece
-    public Piece(int x, int y, boolean redSide, GameBoard b, String c) {
+    public Piece(int x, int y, boolean redSide, GameBoard b, PieceClass c) {
         move(x, y);
         board = b;
         if (b != null) {
@@ -28,15 +28,6 @@ public abstract class Piece implements Writable {
         this.redSide = redSide;
         this.pieceClass = c;
     }
-//
-//    // REQUIRES: given (x, y) is a valid empty position on board b
-//    // EFFECTS: constructs elements common to all captured Piece
-//    public Piece(int x, int y, boolean redSide, String c) {
-//        move(x, y);
-//        board = null;
-//        this.redSide = redSide;
-//        this.pieceClass = c;
-//    }
 
     // REQUIRES: this piece can move to the given coordinate and that it's empty on board
     // MODIFIES: this
@@ -75,7 +66,8 @@ public abstract class Piece implements Writable {
     //          "Class [x, y]R/B"
     //          ex. "Soldier [3, 4]R"
     public String toString() {
-        String str = pieceClass + "[" + posX + ", " + posY + "]";
+        String str = pieceClass.name().charAt(0) + pieceClass.name().substring(1).toLowerCase()
+                + "[" + posX + ", " + posY + "]";
         if (redSide) {
             str += "R";
         } else {
@@ -85,7 +77,7 @@ public abstract class Piece implements Writable {
     }
 
     // EFFECTS: return a string specifying the class of the piece
-    public String getPieceClass() {
+    public PieceClass getPieceClass() {
         return pieceClass;
     }
 

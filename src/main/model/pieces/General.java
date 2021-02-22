@@ -14,7 +14,7 @@ public class General extends Piece {
     // REQUIRES: the given position is in the palace
     // EFFECTS: creates a General on (x, y) of b, and red if isRed, black if not
     public General(int x, int y, GameBoard b, boolean isRed) {
-        super(x, y, isRed, b, "General");
+        super(x, y, isRed, b, PieceClass.GENERAL);
         minX = 3;
         maxX = 5;
         if (isRed) {
@@ -44,7 +44,7 @@ public class General extends Piece {
     public boolean canCapture(int x, int y) {
         if (canMoveTo(x, y)) {
             return true;
-        } else if (x == getPosX() && board.getPAt(x, y).getPieceClass().equals("General")) {
+        } else if (x == getPosX() && board.getPAt(x, y).getPieceClass().equals(PieceClass.GENERAL)) {
             int deltaY = y - getPosY();
             int step = deltaY / Math.abs(deltaY);
             for (int i = getPosY() + step; i != y; i += step) {

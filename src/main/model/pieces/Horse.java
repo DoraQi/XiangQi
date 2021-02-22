@@ -10,7 +10,7 @@ public class Horse extends Piece {
     // REQUIRES: given (x, y) is a valid empty position on board b
     // EFFECTS: creates an instance of a Horse
     public Horse(int x, int y, GameBoard b, boolean side) {
-        super(x, y, side, b, "Horse");
+        super(x, y, side, b, PieceClass.HORSE);
     }
 
     // REQUIRES: given position (x, y) is an open position on the board and is empty

@@ -1,7 +1,6 @@
 package model.components;
 
 
-import exception.EmptyMoveException;
 import model.pieces.*;
 
 import org.json.JSONArray;
@@ -11,6 +10,8 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static model.pieces.PieceClass.*;
 
 /**
  * Represents XiangQi game board with players on Black and Red sides
@@ -72,7 +73,7 @@ public class GameBoard implements Writable {
     public boolean checkWin() {
         int generalCount = 0;
         for (Piece p : board.values()) {
-            if (p.getPieceClass().equals("General")) {
+            if (p.getPieceClass().equals(GENERAL)) {
                 if (++generalCount == 2) {
                     return false;
                 }

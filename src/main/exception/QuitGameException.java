@@ -1,7 +1,7 @@
 package exception;
 
 public class QuitGameException extends Exception {
-    private boolean redGoesNext;
+    private final boolean redGoesNext;
 
     public QuitGameException(boolean redGoesNext) {
         this.redGoesNext = redGoesNext;

@@ -12,7 +12,7 @@ public class Elephant extends Piece {
     // REQUIRES: the given position is on the correct side of the river and a valid position on the board
     // EFFECTS: instantiates an instance of Elephant
     public Elephant(int x, int y, GameBoard b, boolean isRed) {
-        super(x, y, isRed, b, "Elephant");
+        super(x, y, isRed, b, PieceClass.ELEPHANT);
         if (isRed) {
             maxY = 4;
             minY = 0;

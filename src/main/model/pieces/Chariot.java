@@ -10,7 +10,7 @@ public class Chariot extends Piece {
     // REQUIRES: given (x, y) is a valid empty position on board b
     // EFFECTS: creates a Chariot
     public Chariot(int x, int y, GameBoard b, boolean side) {
-        super(x, y, side, b, "Chariot");
+        super(x, y, side, b, PieceClass.CHARIOT);
     }
 
     // REQUIRES: given (x, y) is a valid empty position on board b

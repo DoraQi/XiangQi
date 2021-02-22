@@ -6,6 +6,7 @@ import model.pieces.Piece;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static model.pieces.PieceClass.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameBoardTest {
@@ -45,7 +46,7 @@ class GameBoardTest {
     public void testPutPieceGeneral() {
         Piece p = board.createPiece("general [4,0]r");
         assertFalse(board.isEmptyAt(4, 0));
-        assertEquals("General", p.getPieceClass());
+        assertEquals(GENERAL, p.getPieceClass());
         assertEquals(4, p.getPosX());
         assertEquals(0, p.getPosY());
         assertTrue(p.isRed());
@@ -55,7 +56,7 @@ class GameBoardTest {
     public void testPutPieceAdvisor() {
         Piece p = board.createPiece("advisor [3,0]r");
         assertFalse(board.isEmptyAt(3, 0));
-        assertEquals("Advisor", p.getPieceClass());
+        assertEquals(ADVISOR, p.getPieceClass());
         assertEquals(3, p.getPosX());
         assertEquals(0, p.getPosY());
         assertTrue(p.isRed());
@@ -65,7 +66,7 @@ class GameBoardTest {
     public void testPutPieceChariot() {
         Piece p = board.createPiece("chariot [0,9]b");
         assertFalse(board.isEmptyAt(0, 9));
-        assertEquals("Chariot", p.getPieceClass());
+        assertEquals(CHARIOT, p.getPieceClass());
         assertEquals(0, p.getPosX());
         assertEquals(9, p.getPosY());
         assertFalse(p.isRed());
@@ -75,7 +76,7 @@ class GameBoardTest {
     public void testPutPieceElephant() {
         Piece p = board.createPiece("elephant [2,9]b");
         assertFalse(board.isEmptyAt(2, 9));
-        assertEquals("Elephant", p.getPieceClass());
+        assertEquals(ELEPHANT, p.getPieceClass());
         assertEquals(2, p.getPosX());
         assertEquals(9, p.getPosY());
         assertFalse(p.isRed());
@@ -85,7 +86,7 @@ class GameBoardTest {
     public void testPutPieceHorse() {
         Piece p = board.createPiece("horse [5,5]r");
         assertFalse(board.isEmptyAt(5, 5));
-        assertEquals("Horse", p.getPieceClass());
+        assertEquals(HORSE, p.getPieceClass());
         assertEquals(5, p.getPosX());
         assertEquals(5, p.getPosY());
         assertTrue(p.isRed());
@@ -95,7 +96,7 @@ class GameBoardTest {
     public void testPutPieceCannon() {
         Piece p = board.createPiece("cannon [1,7]b");
         assertFalse(board.isEmptyAt(1, 7));
-        assertEquals("Cannon", p.getPieceClass());
+        assertEquals(CANNON, p.getPieceClass());
         assertEquals(1, p.getPosX());
         assertEquals(7, p.getPosY());
         assertFalse(p.isRed());
@@ -105,7 +106,7 @@ class GameBoardTest {
     public void testPutPieceSoldier() {
         Piece p = board.createPiece("soldier [4,3]r");
         assertFalse(board.isEmptyAt(4, 3));
-        assertEquals("Soldier", p.getPieceClass());
+        assertEquals(SOLDIER, p.getPieceClass());
         assertEquals(4, p.getPosX());
         assertEquals(3, p.getPosY());
         assertTrue(p.isRed());

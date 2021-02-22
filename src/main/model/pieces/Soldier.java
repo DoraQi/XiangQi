@@ -11,7 +11,7 @@ public class Soldier extends Piece {
     // REQUIRES: given (x, y) is a valid empty position on board b
     // EFFECTS: create an instance of a Soldier
     public Soldier(int x, int y, GameBoard b, boolean isRed) {
-        super(x, y, isRed, b, "Soldier");
+        super(x, y, isRed, b, PieceClass.SOLDIER);
         updateCrossRiver();
     }
 
@@ -47,6 +47,8 @@ public class Soldier extends Piece {
     private void updateCrossRiver() {
         if (this.isRed() && getPosY() >= 5) {
             crossedRiver = true;
-        } else crossedRiver = !this.isRed() && getPosY() <= 4;
+        } else {
+            crossedRiver = !this.isRed() && getPosY() <= 4;
+        }
     }
 }

@@ -14,7 +14,7 @@ public class Advisor extends Piece {
     // REQUIRES: given coordinates are a valid position on the diagonal of the palace
     // EFFECTS: instantiate an Advisor with given positions and side
     public Advisor(int x, int y, GameBoard b, boolean isRed) {
-        super(x, y, isRed, b, "Advisor");
+        super(x, y, isRed, b, PieceClass.ADVISOR);
         minX = 3;
         maxX = 5;
         if (isRed) {
