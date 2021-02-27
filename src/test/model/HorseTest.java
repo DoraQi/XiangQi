@@ -1,5 +1,6 @@
 package model;
 
+import exception.IllegalInputException;
 import model.components.GameBoard;
 import model.pieces.Horse;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ public class HorseTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToBlockedHorizontalR() {
+    public void testCanMoveToBlockedHorizontalR() throws IllegalInputException {
         board.createPiece("soldier [4,4]b");
 
         assertTrue(redP.canMoveTo(2, 6));
@@ -53,7 +54,7 @@ public class HorseTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToBlockedHorizontalL() {
+    public void testCanMoveToBlockedHorizontalL() throws IllegalInputException {
         board.createPiece("soldier [2,4]b");
 
         assertTrue(redP.canMoveTo(2, 6));
@@ -68,7 +69,7 @@ public class HorseTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToBlockedVerticalBelow() {
+    public void testCanMoveToBlockedVerticalBelow() throws IllegalInputException {
         board.createPiece("soldier [3,3]b");
 
         assertTrue(redP.canMoveTo(2, 6));
@@ -83,7 +84,7 @@ public class HorseTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToBlockedVerticalAbove() {
+    public void testCanMoveToBlockedVerticalAbove() throws IllegalInputException {
         board.createPiece("soldier [3,5]b");
 
         assertTrue(redP.canMoveTo(1,5));

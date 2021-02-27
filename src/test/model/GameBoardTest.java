@@ -1,5 +1,6 @@
 package model;
 
+import exception.IllegalInputException;
 import model.components.GameBoard;
 import model.pieces.Advisor;
 import model.pieces.Piece;
@@ -18,7 +19,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testCheckWin() {
+    public void testCheckWin() throws IllegalInputException {
         // no general on board
         assertTrue(board.checkWin());
         // 1 general on board
@@ -36,14 +37,14 @@ class GameBoardTest {
     }
 
     @Test
-    public void testIsEmptyAt() {
+    public void testIsEmptyAt() throws IllegalInputException {
         assertTrue(board.isEmptyAt(1, 1));
         board.createPiece("horse [1,1]r");
         assertFalse(board.isEmptyAt(1, 1));
     }
 
     @Test
-    public void testPutPieceGeneral() {
+    public void testPutPieceGeneral() throws IllegalInputException {
         Piece p = board.createPiece("general [4,0]r");
         assertFalse(board.isEmptyAt(4, 0));
         assertEquals(GENERAL, p.getPieceClass());
@@ -53,7 +54,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testPutPieceAdvisor() {
+    public void testPutPieceAdvisor() throws IllegalInputException {
         Piece p = board.createPiece("advisor [3,0]r");
         assertFalse(board.isEmptyAt(3, 0));
         assertEquals(ADVISOR, p.getPieceClass());
@@ -63,7 +64,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testPutPieceChariot() {
+    public void testPutPieceChariot() throws IllegalInputException {
         Piece p = board.createPiece("chariot [0,9]b");
         assertFalse(board.isEmptyAt(0, 9));
         assertEquals(CHARIOT, p.getPieceClass());
@@ -73,7 +74,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testPutPieceElephant() {
+    public void testPutPieceElephant() throws IllegalInputException {
         Piece p = board.createPiece("elephant [2,9]b");
         assertFalse(board.isEmptyAt(2, 9));
         assertEquals(ELEPHANT, p.getPieceClass());
@@ -83,7 +84,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testPutPieceHorse() {
+    public void testPutPieceHorse() throws IllegalInputException {
         Piece p = board.createPiece("horse [5,5]r");
         assertFalse(board.isEmptyAt(5, 5));
         assertEquals(HORSE, p.getPieceClass());
@@ -93,7 +94,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testPutPieceCannon() {
+    public void testPutPieceCannon() throws IllegalInputException {
         Piece p = board.createPiece("cannon [1,7]b");
         assertFalse(board.isEmptyAt(1, 7));
         assertEquals(CANNON, p.getPieceClass());
@@ -103,7 +104,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testPutPieceSoldier() {
+    public void testPutPieceSoldier() throws IllegalInputException {
         Piece p = board.createPiece("soldier [4,3]r");
         assertFalse(board.isEmptyAt(4, 3));
         assertEquals(SOLDIER, p.getPieceClass());
@@ -117,7 +118,7 @@ class GameBoardTest {
         try {
             board.createPiece("ahsbdj");
             fail();
-        } catch (Exception ignored) {
+        } catch (RuntimeException | IllegalInputException ignored) {
 
         }
     }
@@ -127,10 +128,8 @@ class GameBoardTest {
         try {
             board.createPiece("brook [0,0]r");
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
 
-        } catch (Exception e) {
-            fail();
         }
     }
 
@@ -139,7 +138,7 @@ class GameBoardTest {
         try {
             board.createPiece("soldier [1, 4]r");
             fail();
-        } catch (Exception ignored) {
+        } catch (IllegalInputException ignored) {
 
         }
     }
@@ -149,7 +148,7 @@ class GameBoardTest {
         try {
             board.createPiece("soldier 14r");
             fail();
-        } catch (Exception ignored) {
+        } catch (IllegalInputException ignored) {
 
         }
     }
@@ -159,10 +158,8 @@ class GameBoardTest {
         try {
             board.createPiece("soldier [9,2]r");
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
 
-        } catch (Exception e) {
-            fail();
         }
     }
 
@@ -171,7 +168,7 @@ class GameBoardTest {
         try {
             board.createPiece("soldier [-1,2]r");
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
 
         } catch (Exception e) {
             fail();
@@ -183,7 +180,7 @@ class GameBoardTest {
         try {
             board.createPiece("soldier [2,10]r");
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
 
         } catch (Exception e) {
             fail();
@@ -195,7 +192,7 @@ class GameBoardTest {
         try {
             board.createPiece("soldier [2,-3]r");
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
 
         } catch (Exception e) {
             fail();
@@ -207,7 +204,7 @@ class GameBoardTest {
         try {
             board.createPiece("soldier [-3,10]r");
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
 
         } catch (Exception e) {
             fail();
@@ -215,7 +212,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToString() throws IllegalInputException {
         assertEquals("", board.toString());
 
         board.createPiece("advisor [3,0]r");
@@ -253,19 +250,19 @@ class GameBoardTest {
         try {
             board.redMove("00 03");
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
 
         }
         
     }
 
     @Test
-    public void testRedMoveSelectedBlackPiece() {
+    public void testRedMoveSelectedBlackPiece() throws IllegalInputException {
         board.createPiece("soldier [3,4]b");
         try {
             board.redMove("34 35");
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
 
         } catch (Exception e) {
             fail();
@@ -273,7 +270,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testRedMoveToEmptySpot() {
+    public void testRedMoveToEmptySpot() throws IllegalInputException {
         board.createPiece("soldier [3,4]r");
         Piece p = board.getPAt(3, 4);
         board.redMove("34 35");
@@ -285,12 +282,12 @@ class GameBoardTest {
     }
 
     @Test
-    public void testRedMoveToEmptySpotCannonMoveTo() {
+    public void testRedMoveToEmptySpotCannonMoveTo() throws IllegalInputException {
         board.createPiece("soldier [3,4]r");
         Piece p = board.getPAt(3, 4);
         try {
             board.redMove("34 37");
-        } catch (IllegalArgumentException iae) {
+        } catch (IllegalInputException iae) {
             assertEquals(p, board.getPAt(3, 4));
             assertTrue(board.isEmptyAt(3, 7));
             assertEquals(3, p.getPosX());
@@ -301,14 +298,14 @@ class GameBoardTest {
     }
 
     @Test
-    public void testRedMoveToSpotFilledByRedP() {
+    public void testRedMoveToSpotFilledByRedP() throws IllegalInputException {
         board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
         board.createPiece("soldier [3,5]r");
         Piece p2 = board.getPAt(3, 5);
         try {
             board.redMove("34 35");
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ic) {
             assertEquals(p1, board.getPAt(3, 4));
             assertEquals(p2, board.getPAt(3, 5));
             assertEquals(3, p1.getPosX());
@@ -321,14 +318,14 @@ class GameBoardTest {
     }
 
     @Test
-    public void testRedMoveToSpotFilledByRedCannontCapture() {
+    public void testRedMoveToSpotFilledByRedCannontCapture() throws IllegalInputException {
         board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
         board.createPiece("soldier [3,7]r");
         Piece p2 = board.getPAt(3, 7);
         try {
             board.redMove("34 37");
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ignored) {
             assertEquals(p1, board.getPAt(3, 4));
             assertEquals(p2, board.getPAt(3, 7));
             assertEquals(3, p1.getPosX());
@@ -341,14 +338,14 @@ class GameBoardTest {
     }
 
     @Test
-    public void testRedMoveToSpotFilledByBlackCannontCapture() {
+    public void testRedMoveToSpotFilledByBlackCannontCapture() throws IllegalInputException {
         board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
         board.createPiece("soldier [3,7]b");
         Piece p2 = board.getPAt(3, 7);
         try {
             board.redMove("34 37");
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalInputException ie) {
             assertEquals(p1, board.getPAt(3, 4));
             assertEquals(p2, board.getPAt(3, 7));
             assertEquals(3, p1.getPosX());
@@ -361,7 +358,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testRedMoveSpotFilledByBlackCanCapture() {
+    public void testRedMoveSpotFilledByBlackCanCapture() throws IllegalInputException {
         board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
         board.createPiece("soldier [3,5]b");
@@ -374,7 +371,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testBlackMoveSpotFilledByRedCanCapture() {
+    public void testBlackMoveSpotFilledByRedCanCapture() throws IllegalInputException {
         board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
         board.createPiece("soldier [3,5]b");

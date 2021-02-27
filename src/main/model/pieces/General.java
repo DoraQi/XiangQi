@@ -1,5 +1,6 @@
 package model.pieces;
 
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 
 /**
@@ -13,7 +14,7 @@ public class General extends Piece {
 
     // REQUIRES: the given position is in the palace
     // EFFECTS: creates a General on (x, y) of b, and red if isRed, black if not
-    public General(int x, int y, GameBoard b, boolean isRed) {
+    public General(int x, int y, GameBoard b, boolean isRed) throws OutOfBoundPositionException {
         super(x, y, isRed, b, PieceClass.GENERAL);
         minX = 3;
         maxX = 5;
@@ -23,6 +24,9 @@ public class General extends Piece {
         } else {
             minY = 7;
             maxY = 9;
+        }
+        if (x > maxX || x < minX || y > maxY || y < minY) {
+            throw new OutOfBoundPositionException();
         }
     }
 

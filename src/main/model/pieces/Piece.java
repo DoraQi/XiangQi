@@ -66,14 +66,16 @@ public abstract class Piece implements Writable {
     //          "Class [x, y]R/B"
     //          ex. "Soldier [3, 4]R"
     public String toString() {
-        String str = pieceClass.name().charAt(0) + pieceClass.name().substring(1).toLowerCase()
-                + "[" + posX + ", " + posY + "]";
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(pieceClass.name().charAt(0));
+        strBuilder.append(pieceClass.name().substring(1).toLowerCase());
+        strBuilder.append("[").append(posX).append(", ").append(posY).append("]");
         if (redSide) {
-            str += "R";
+            strBuilder.append("R");
         } else {
-            str += "B";
+            strBuilder.append("B");
         }
-        return str;
+        return strBuilder.toString();
     }
 
     // EFFECTS: return a string specifying the class of the piece
@@ -84,7 +86,7 @@ public abstract class Piece implements Writable {
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-        json.put("piece class", pieceClass);
+        json.put("pieceClass", pieceClass);
         json.put("posX", posX);
         json.put("posY", posY);
         if (isRed()) {

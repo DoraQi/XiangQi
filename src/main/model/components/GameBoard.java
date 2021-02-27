@@ -1,11 +1,13 @@
 package model.components;
 
 
+import exception.IllegalInputException;
+import exception.OutOfBoundPositionException;
 import model.pieces.*;
+import static model.components.PieceFactory.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.omg.CORBA_2_3.portable.OutputStream;
 import persistence.Writable;
 
 import java.util.ArrayList;
@@ -91,16 +93,24 @@ public class GameBoard implements Writable {
     // REQUIRES: input string is in all lower case
     // MODIFIES: this
     // EFFECTS: add a piece according to the given instruction and returned added piece
-    public Piece createPiece(String inpt) {
-        String[] inptSplit = inpt.split(" \\[|,|\\]");
-        String pieceClass = inptSplit[0];
-        int x = Integer.parseInt(inptSplit[1]);
-        int y = Integer.parseInt(inptSplit[2]);
-        boolean isRed = inptSplit[3].equals("r");
-        if (x > MAX_X_COORD || x < MIN_X_COORD || y > MAX_Y_COORD || y < MIN_Y_COORD) {
-            throw new IllegalArgumentException();
+    public Piece createPiece(String inpt) throws IllegalInputException {
+        int x;
+        int y;
+        String pieceClass;
+        boolean isRed;
+        try {
+            String[] inptSplit = inpt.split(" \\[|,|\\]");
+            pieceClass = inptSplit[0];
+            x = Integer.parseInt(inptSplit[1]);
+            y = Integer.parseInt(inptSplit[2]);
+            isRed = inptSplit[3].equals("r");
+        } catch (RuntimeException e) {
+            throw new IllegalInputException();
         }
-        Piece p = makeNew(pieceClass, x, y, isRed, this);
+        if (x > MAX_X_COORD || x < MIN_X_COORD || y > MAX_Y_COORD || y < MIN_Y_COORD) {
+            throw new IllegalInputException();
+        }
+        Piece p = makeNewPiece(pieceClass, x, y, isRed, this);
         if (isRed) {
             red.addPiece(p);
         } else {
@@ -113,15 +123,17 @@ public class GameBoard implements Writable {
     // EFFECTS: returns a string representation of the status of this board that includes
     //          positions of all pieces on board
     public String toString() {
-        String str = "";
+        StringBuilder strBuilder = new StringBuilder();
         for (Piece p : red.getPieces()) {
-            str += p.toString() + " ";
+            strBuilder.append(p.toString());
+            strBuilder.append(" ");
         }
-        str += "\n";
+        strBuilder.append("\n");
         for (Piece p : black.getPieces()) {
-            str += p.toString() + " ";
+            strBuilder.append(p.toString());
+            strBuilder.append(" ");
         }
-        return str.trim();
+        return strBuilder.toString().trim();
     }
 
     // REQUIRES: position of p is currently empty on this board
@@ -153,23 +165,23 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: add a captured pieces to player specified by isRed
-    public void addCapturedPiece(String pc, int x, int y, boolean capturedByRed) {
+    public void addCapturedPiece(String pc, int x, int y, boolean capturedByRed) throws IllegalInputException {
         if (capturedByRed) {
-            red.capture(makeNew(pc.toLowerCase(), x, y, false, null));
+            red.capture(makeNewPiece(pc.toLowerCase(), x, y, false, null));
         } else {
-            black.capture(makeNew(pc.toLowerCase(), x, y, true, null));
+            black.capture(makeNewPiece(pc.toLowerCase(), x, y, true, null));
         }
     }
 
     // MODIFIES: this
     // EFFECTS: move the piece at given location to the specified location
-    public void redMove(String inpt) throws NumberFormatException, IndexOutOfBoundsException {
+    public void redMove(String inpt) throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException {
         playerMove(inpt, red, black);
     }
 
     // MODIFIES: this
     // EFFECTS: move the piece at given location to the specified location
-    public void blackMove(String inpt) throws NumberFormatException, IndexOutOfBoundsException {
+    public void blackMove(String inpt) throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException {
         playerMove(inpt, black, red);
     }
 
@@ -177,13 +189,13 @@ public class GameBoard implements Writable {
     // MODIFIES: this, moving, other
     // EFFECTS: move the piece at given location to the specified location
     private void playerMove(String move, Player moving, Player other)
-            throws NumberFormatException, IndexOutOfBoundsException {
+            throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException {
         int fromX = Integer.parseInt(move.substring(0, 1));
         int fromY = Integer.parseInt(move.substring(1, 2));
         int toX = Integer.parseInt(move.substring(3,4));
         int toY = Integer.parseInt(move.substring(4,5));
         if (isEmptyAt(fromX, fromY)) {
-            throw new IllegalArgumentException();
+            throw new IllegalInputException();
         }
         Piece p = getPAt(fromX, fromY);
         if (p.isRed() == moving.isRed()) {
@@ -200,7 +212,7 @@ public class GameBoard implements Writable {
                 }
             }
         }
-        throw new IllegalArgumentException();
+        throw new IllegalInputException();
     }
 
     // REQUIRES: hunter is a piece owned by playing and prey is a piece owned by other
@@ -226,38 +238,19 @@ public class GameBoard implements Writable {
         placePiece(p);
     }
 
-    // REQUIRES: given (x, y) position is empty on this board
-    // MODIFIES: this
-    // EFFECTS: place a piece of class pc and red if isRed, black if not, onto (x, y) of this board
-    private Piece makeNew(String pc, int x, int y, boolean isRed, GameBoard board) {
-        switch (pc) {
-            case "soldier":
-                return new Soldier(x, y, board, isRed);
-            case "general":
-                return new General(x, y, board, isRed);
-            case "cannon":
-                return new Cannon(x, y, board, isRed);
-            case "chariot":
-                return new Chariot(x, y, board, isRed);
-            case "advisor":
-                return new Advisor(x, y, board, isRed);
-            case "horse":
-                return new Horse(x, y, board, isRed);
-            case "elephant":
-                return new Elephant(x, y, board, isRed);
-        }
-        throw new IllegalArgumentException();
-    }
-
     // MODIFIES: this
     // EFFECTS: makes all generals for both red and black sides
     private void makeGenerals() {
-        General redG = new General(4, 0, this, true);
-        General blackG = new General(4, 9, this, false);
-        placePiece(redG);
-        placePiece(blackG);
-        red.addPiece(redG);
-        black.addPiece(blackG);
+        try {
+            General redG = new General(4, 0, this, true);
+            General blackG = new General(4, 9, this, false);
+            placePiece(redG);
+            placePiece(blackG);
+            red.addPiece(redG);
+            black.addPiece(blackG);
+        } catch (OutOfBoundPositionException willNeverHappen) {
+            throw new RuntimeException();
+        }
     }
 
     // MODIFIES: this

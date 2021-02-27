@@ -17,7 +17,7 @@ public class JsonWriter {
     public void saveGame(GameBoard board, boolean redGoesNext) throws FileNotFoundException {
         writer = new PrintWriter(new File(fileLocation));
         JSONObject json = board.toJson();
-        json.put("red starts?", redGoesNext);
+        json.put("redStarts", redGoesNext);
         writer.print(json.toString(TAB));
         writer.close();
     }

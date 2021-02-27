@@ -1,5 +1,6 @@
 package persistence;
 
+import exception.IllegalInputException;
 import model.components.GameBoard;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,7 +18,7 @@ public class JsonReader {
 
     // EFFECTS: reads gameboard from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public GameBoard loadGame() throws IOException {
+    public GameBoard loadGame() throws IOException, IllegalInputException {
         String jsonData = readFile(fileLocation);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseBoard(jsonObject);
@@ -35,7 +36,7 @@ public class JsonReader {
     }
 
     // EFFECTS: parses workroom from JSON object and returns it
-    private GameBoard parseBoard(JSONObject jsonObject) {
+    private GameBoard parseBoard(JSONObject jsonObject) throws IllegalInputException {
         GameBoard board = new GameBoard();
         addPieces(board, jsonObject);
         addCapturedPiecesToPlayers(board, jsonObject);
@@ -44,7 +45,7 @@ public class JsonReader {
 
     // MODIFIES: board
     // EFFECTS: parses player information from JSON object and update them in board
-    private void addCapturedPiecesToPlayers(GameBoard board, JSONObject jsonObject) {
+    private void addCapturedPiecesToPlayers(GameBoard board, JSONObject jsonObject) throws IllegalInputException {
         JSONArray jsonArray = jsonObject.getJSONArray("players");
         // Add captured pieces for red player
         JSONObject redPlayerDetails = (JSONObject) jsonArray.get(0);
@@ -64,8 +65,9 @@ public class JsonReader {
 
     // MODIFIES: board
     // EFFECTS: parses player information from JSON object and update them in board
-    private void addCapturedPiece(GameBoard board, JSONObject nextPiece, boolean capturedByRed) {
-        String pieceClass = nextPiece.getString("piece class");
+    private void addCapturedPiece(GameBoard board, JSONObject nextPiece, boolean capturedByRed)
+            throws IllegalInputException {
+        String pieceClass = nextPiece.getString("pieceClass");
         int x = nextPiece.getInt("posX");
         int y = nextPiece.getInt("posY");
         board.addCapturedPiece(pieceClass, x, y, capturedByRed);
@@ -73,7 +75,7 @@ public class JsonReader {
 
     // MODIFIES: board
     // EFFECTS: parses pieces from JSON array and adds them to workroom
-    private void addPieces(GameBoard board, JSONObject jsonObject) {
+    private void addPieces(GameBoard board, JSONObject jsonObject) throws IllegalInputException {
         JSONArray jsonArray = jsonObject.getJSONArray("pieces");
         for (Object json : jsonArray) {
             JSONObject nextThingy = (JSONObject) json;
@@ -83,8 +85,8 @@ public class JsonReader {
 
     // MODIFIES: board
     // EFFECTS: parses piece from JSON object and adds it to workroom
-    private void addPiece(GameBoard board, JSONObject jsonObject) {
-        String pieceClass = jsonObject.getString("piece class").toLowerCase();
+    private void addPiece(GameBoard board, JSONObject jsonObject) throws IllegalInputException {
+        String pieceClass = jsonObject.getString("pieceClass").toLowerCase();
         int posX = jsonObject.getInt("posX");
         int posY = jsonObject.getInt("posY");
         String isRed = jsonObject.getString("isRed");
@@ -95,6 +97,6 @@ public class JsonReader {
     public boolean getFirstStart() throws IOException {
         String jsonData = readFile(fileLocation);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return jsonObject.getBoolean("red starts?");
+        return jsonObject.getBoolean("redStarts");
     }
 }

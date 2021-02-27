@@ -1,5 +1,6 @@
 package ui;
 
+import exception.IllegalInputException;
 import exception.QuitGameException;
 import model.components.GameBoard;
 import persistence.JsonWriter;
@@ -31,6 +32,7 @@ public class XiangQi {
                     + "follow the instructions to save the game.";
 
     // EFFECTS: Starts a game of XiangQi
+    //          if user chooses to load saved game yet no games were ever saved, throw FileNotFoundException
     public XiangQi() throws FileNotFoundException {
         jsonWriter = new JsonWriter();
         jsonReader = new JsonReader();
@@ -49,7 +51,13 @@ public class XiangQi {
         }
     }
 
-    // EFFECTS: play classic game, custom game, or load game depending on user input
+    // EFFECTS: prompts for user input, if input =
+    //          1 - display rules
+    //          2 - play classic game,
+    //          3 - custom game,
+    //          4 - load game
+    //          throws QuitGameException if user chooses to quit
+    //          throws IOException if thrown by playSavedGame()
     private void play() throws QuitGameException, IOException {
         int opt = get1to4();
         if (opt == 1) {
@@ -64,14 +72,21 @@ public class XiangQi {
     }
 
     // EFFECTS: reads saved file for a gameboard
+    //          throws QuitGameException if user chooses to quit
+    //          throws IOException if thrown by playSavedGame()
     private void playSavedGame() throws IOException, QuitGameException {
-        game = jsonReader.loadGame();
-        boolean redStart = jsonReader.getFirstStart();
-        System.out.println(game);
-        playGame(redStart);
+        try {
+            game = jsonReader.loadGame();
+            boolean redStart = jsonReader.getFirstStart();
+            System.out.println(game);
+            playGame(redStart);
+        } catch (IllegalInputException e) {
+            System.out.println("Broken save file :(");
+        }
     }
 
     // EFFECTS: save the game progress to file
+    //          throws FileNotFoundException thrown by saveGame()
     private void handleQuit(boolean redGoesNext) throws FileNotFoundException {
         System.out.println("Save? [Y/N]");
         boolean saveGame = console.nextLine().trim().toUpperCase().equals("Y");
@@ -92,6 +107,7 @@ public class XiangQi {
 
     // MODIFIES: this
     // EFFECTS: sets up and prompts to play a classic game
+    //          throws QuitGameException if user chooses to quit
     private void playClassicGame() throws QuitGameException {
         game = new GameBoard();
         System.out.println("Welcome to a classic game of XiangQi!");
@@ -102,6 +118,7 @@ public class XiangQi {
 
     // MODIFIES: this
     // EFFECTS: prompts to set up and play a custom game
+    //          throws QuitGameException if user chooses to quit
     private void playCustomGame() throws QuitGameException {
         game = new GameBoard();
         setupCustomGame();
@@ -138,6 +155,7 @@ public class XiangQi {
     // MODIFIES: this
     // EFFECTS: repeatedly get user to make moves until <= 1 general is left on board, if any invalid input is
     //          given, ask the user to re-enter
+    //          throws QuitGameException if user chooses to quit
     private void playGame(boolean redMoving) throws QuitGameException {
         while (true) {
             System.out.println(separator);
@@ -149,7 +167,7 @@ public class XiangQi {
                 playerMove(redMoving);
                 System.out.println(game);
                 redMoving = !redMoving;
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalInputException e) {
                 System.out.println("<invalid move>");
             }
         }
@@ -158,7 +176,8 @@ public class XiangQi {
     // REQUIRES: a game has been set up
     // MODIFIES: this
     // EFFECTS: prompts to get user input for a move and make the move, throws Exception if the given input is invalid
-    private void playerMove(boolean redMoving) throws IllegalArgumentException, QuitGameException {
+    //          throws QuitGameException if user chooses to quit
+    private void playerMove(boolean redMoving) throws IllegalInputException, QuitGameException {
         String inpt = "";
         try {
             if (redMoving) {
@@ -186,7 +205,7 @@ public class XiangQi {
     }
 
     // EFFECTS: repeatedly prompts for user input until they enter 1, 2, 3, or 4
-    private int get1to4() {
+    private int get1to4() throws QuitGameException {
         while (true) {
             String inpt = console.nextLine().trim();
             switch (inpt) {
@@ -198,6 +217,8 @@ public class XiangQi {
                     return 3;
                 case "4":
                     return 4;
+                case "5":
+                    throw new QuitGameException(true);
             }
             System.out.println("<please enter a number 1 - 4>");
         }

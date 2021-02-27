@@ -1,5 +1,6 @@
 package model;
 
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Advisor;
 import model.pieces.General;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GeneralTest extends PieceTest{
     @BeforeEach
-    public void setup() {
+    public void setup() throws OutOfBoundPositionException {
         board = new GameBoard();
         redP = new General(4, 1, board, true);
         blackP = new General(4, 9, board, false);
@@ -38,7 +39,7 @@ public class GeneralTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToInPalaceMultipleGrids() {
+    public void testCanMoveToInPalaceMultipleGrids() throws OutOfBoundPositionException {
         redP = new General(3, 0, board, true);
         assertFalse(redP.canMoveTo(5, 0));
         assertFalse(redP.canMoveTo(3, 2));
@@ -51,7 +52,7 @@ public class GeneralTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToOutOfPalace() {
+    public void testCanMoveToOutOfPalace() throws OutOfBoundPositionException {
         redP = new General(3, 2, board, true);
         assertFalse(redP.canMoveTo(2, 2));
         assertFalse(redP.canMoveTo(2, 3));
@@ -60,11 +61,11 @@ public class GeneralTest extends PieceTest{
         assertFalse(redP.canMoveTo(5, 3));
         assertFalse(redP.canMoveTo(6, 2));
 
-        blackP = new General(3, 7, board, true);
+        blackP = new General(3, 7, board, false);
         assertFalse(blackP.canMoveTo(2, 7));
         assertFalse(blackP.canMoveTo(3, 6));
 
-        blackP = new General(5, 1, board, true);
+        blackP = new General(5, 7, board, false);
         assertFalse(blackP.canMoveTo(6, 7));
         assertFalse(blackP.canMoveTo(5, 6));
     }
