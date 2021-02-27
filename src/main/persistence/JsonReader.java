@@ -11,7 +11,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-
+/**
+ * Code adapted from JsonSerializationDemo by Paul Carter
+ *
+ * Represents a reader that reads Gameboard from JSON data stored in file
+ */
 public class JsonReader {
     private static final int TAB = 4;
     private String fileLocation = "./data/savedGame.json";

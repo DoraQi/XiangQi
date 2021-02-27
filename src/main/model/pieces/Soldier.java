@@ -44,6 +44,8 @@ public class Soldier extends Piece {
         updateCrossRiver();
     }
 
+    // MODIFIES: this
+    // EFFECTS: change crossedRiver status to true if crossed river, false otherwise
     private void updateCrossRiver() {
         if (this.isRed() && getPosY() >= 5) {
             crossedRiver = true;

@@ -1,5 +1,6 @@
 package model.pieces;
 
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 
 /**
@@ -11,9 +12,9 @@ public class Advisor extends Piece {
     private final int minY;
     private final int maxY;
 
-    // REQUIRES: given coordinates are a valid position on the diagonal of the palace
     // EFFECTS: instantiate an Advisor with given positions and side
-    public Advisor(int x, int y, GameBoard b, boolean isRed) {
+    //          throws OutOfBoundPositionException if position is outside of designated palace
+    public Advisor(int x, int y, GameBoard b, boolean isRed) throws OutOfBoundPositionException {
         super(x, y, isRed, b, PieceClass.ADVISOR);
         minX = 3;
         maxX = 5;
@@ -24,6 +25,10 @@ public class Advisor extends Piece {
             minY = 7;
             maxY = 9;
         }
+        if (x > maxX || x < minX || y > maxY || y < minY) {
+            throw new OutOfBoundPositionException();
+        }
+
     }
 
     // REQUIRES: given coordinate (x, y) are valid coordinates on the board

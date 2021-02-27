@@ -1,5 +1,6 @@
 package model.pieces;
 
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 
 /**
@@ -9,9 +10,9 @@ public class Elephant extends Piece {
     private final int maxY;
     private final int minY;
 
-    // REQUIRES: the given position is on the correct side of the river and a valid position on the board
     // EFFECTS: instantiates an instance of Elephant
-    public Elephant(int x, int y, GameBoard b, boolean isRed) {
+    //          throws OutOfBoundPositionException if position is on the other side of the river
+    public Elephant(int x, int y, GameBoard b, boolean isRed) throws OutOfBoundPositionException {
         super(x, y, isRed, b, PieceClass.ELEPHANT);
         if (isRed) {
             maxY = 4;
@@ -19,6 +20,9 @@ public class Elephant extends Piece {
         } else {
             maxY = 9;
             minY = 5;
+        }
+        if (y > maxY || y < minY) {
+            throw new OutOfBoundPositionException();
         }
     }
 

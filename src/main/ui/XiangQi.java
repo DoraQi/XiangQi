@@ -1,6 +1,8 @@
 package ui;
 
 import exception.IllegalInputException;
+import exception.IllegalNumGeneralException;
+import exception.OutOfBoundPositionException;
 import exception.QuitGameException;
 import model.components.GameBoard;
 import persistence.JsonWriter;
@@ -38,16 +40,18 @@ public class XiangQi {
         jsonReader = new JsonReader();
         try {
             System.out.println("--------- WELCOME TO XIANGQI ---------\n"
-                    + "Check out:       1 - rules\n"
-                    + "                 2 - Play classic game\n"
-                    + "                 3 - Play custom game\n"
-                    + "                 4 - Load saved game\n"
-                    + "                 5 - quit");
+                    + "Check out:     1 - rules\n"
+                    + "               2 - Play classic game\n"
+                    + "               3 - Play custom game\n"
+                    + "               4 - Load saved game\n"
+                    + "               5 - quit");
             play();
         } catch (QuitGameException quitGameException) {
             handleQuit(quitGameException.redGoesNext());
         } catch (IOException ioException) {
             System.out.println("Failed");
+        } catch (IllegalNumGeneralException ie) {
+            System.out.println("You have more than one general on each side!?");
         }
     }
 
@@ -58,7 +62,7 @@ public class XiangQi {
     //          4 - load game
     //          throws QuitGameException if user chooses to quit
     //          throws IOException if thrown by playSavedGame()
-    private void play() throws QuitGameException, IOException {
+    private void play() throws QuitGameException, IOException, IllegalNumGeneralException {
         int opt = get1to4();
         if (opt == 1) {
             System.out.println(RULES);
@@ -80,7 +84,7 @@ public class XiangQi {
             boolean redStart = jsonReader.getFirstStart();
             System.out.println(game);
             playGame(redStart);
-        } catch (IllegalInputException e) {
+        } catch (IllegalInputException | IllegalNumGeneralException e) {
             System.out.println("Broken save file :(");
         }
     }
@@ -108,7 +112,7 @@ public class XiangQi {
     // MODIFIES: this
     // EFFECTS: sets up and prompts to play a classic game
     //          throws QuitGameException if user chooses to quit
-    private void playClassicGame() throws QuitGameException {
+    private void playClassicGame() throws QuitGameException, IllegalNumGeneralException {
         game = new GameBoard();
         System.out.println("Welcome to a classic game of XiangQi!");
         game.setUpClassicGame();
@@ -119,7 +123,7 @@ public class XiangQi {
     // MODIFIES: this
     // EFFECTS: prompts to set up and play a custom game
     //          throws QuitGameException if user chooses to quit
-    private void playCustomGame() throws QuitGameException {
+    private void playCustomGame() throws QuitGameException, IllegalNumGeneralException {
         game = new GameBoard();
         setupCustomGame();
         playGame(true);
@@ -145,8 +149,8 @@ public class XiangQi {
             }
             try {
                 System.out.println("Added " + game.createPiece(inpt));
-            } catch (Exception e) {
-                System.out.println("<invalid input>");
+            } catch (IllegalInputException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -156,7 +160,7 @@ public class XiangQi {
     // EFFECTS: repeatedly get user to make moves until <= 1 general is left on board, if any invalid input is
     //          given, ask the user to re-enter
     //          throws QuitGameException if user chooses to quit
-    private void playGame(boolean redMoving) throws QuitGameException {
+    private void playGame(boolean redMoving) throws QuitGameException, IllegalNumGeneralException {
         while (true) {
             System.out.println(separator);
             try {
@@ -168,7 +172,7 @@ public class XiangQi {
                 System.out.println(game);
                 redMoving = !redMoving;
             } catch (IllegalInputException e) {
-                System.out.println("<invalid move>");
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -193,7 +197,7 @@ public class XiangQi {
             if (inpt.equalsIgnoreCase("quit")) {
                 throw new QuitGameException(redMoving);
             } else {
-                throw e;
+                throw new IllegalInputException();
             }
         }
     }

@@ -12,8 +12,8 @@ public class General extends Piece {
     private final int minY;
     private final int maxY;
 
-    // REQUIRES: the given position is in the palace
     // EFFECTS: creates a General on (x, y) of b, and red if isRed, black if not
+    //          throws OutOfBoundPositionException if position is outside of designated palace
     public General(int x, int y, GameBoard b, boolean isRed) throws OutOfBoundPositionException {
         super(x, y, isRed, b, PieceClass.GENERAL);
         minX = 3;

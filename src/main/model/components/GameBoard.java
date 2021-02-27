@@ -2,8 +2,10 @@ package model.components;
 
 
 import exception.IllegalInputException;
+import exception.IllegalNumGeneralException;
 import exception.OutOfBoundPositionException;
 import model.pieces.*;
+
 import static model.components.PieceFactory.*;
 
 import org.json.JSONArray;
@@ -72,16 +74,17 @@ public class GameBoard implements Writable {
 
     // REQUIRES: a game has been set up
     // EFFECTS: return true if <= 1 general's left on the board
-    public boolean checkWin() {
+    public boolean checkWin() throws IllegalNumGeneralException {
         int generalCount = 0;
         for (Piece p : board.values()) {
             if (p.getPieceClass().equals(GENERAL)) {
-                if (++generalCount == 2) {
-                    return false;
-                }
+                generalCount++;
             }
         }
-        return true;
+        if (generalCount > 2) {
+            throw new IllegalNumGeneralException();
+        }
+        return generalCount < 2;
     }
 
     // REQUIRES: pos is a valid position within range ([MIN_X_COORD, MAX_X_COORD], [MIN_Y_COORD, MAX_Y_COORD])
@@ -110,7 +113,7 @@ public class GameBoard implements Writable {
         if (x > MAX_X_COORD || x < MIN_X_COORD || y > MAX_Y_COORD || y < MIN_Y_COORD) {
             throw new IllegalInputException();
         }
-        Piece p = makeNewPiece(pieceClass, x, y, isRed, this);
+        Piece p = makeNewPiece(pieceClass, x, y, this, isRed);
         if (isRed) {
             red.addPiece(p);
         } else {
@@ -152,14 +155,19 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: sets up the board and players to play the game
+    //          if caught any IllegalInputException, which can never happen, throw new RunTimeException
     public void setUpClassicGame() {
-        makeSoldiers();
-        makeChariots();
-        makeCannons();
-        makeElephants();
-        makeHorses();
-        makeGenerals();
-        makeAdvisors();
+        try {
+            makeSoldiers();
+            makeChariots();
+            makeCannons();
+            makeElephants();
+            makeHorses();
+            makeGenerals();
+            makeAdvisors();
+        } catch (IllegalInputException canNeverHappen) {
+            throw new RuntimeException();
+        }
     }
 
 
@@ -167,9 +175,9 @@ public class GameBoard implements Writable {
     // EFFECTS: add a captured pieces to player specified by isRed
     public void addCapturedPiece(String pc, int x, int y, boolean capturedByRed) throws IllegalInputException {
         if (capturedByRed) {
-            red.capture(makeNewPiece(pc.toLowerCase(), x, y, false, null));
+            red.capture(makeNewPiece(pc.toLowerCase(), x, y, null, true));
         } else {
-            black.capture(makeNewPiece(pc.toLowerCase(), x, y, true, null));
+            black.capture(makeNewPiece(pc.toLowerCase(), x, y, null, false));
         }
     }
 
@@ -192,8 +200,8 @@ public class GameBoard implements Writable {
             throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException {
         int fromX = Integer.parseInt(move.substring(0, 1));
         int fromY = Integer.parseInt(move.substring(1, 2));
-        int toX = Integer.parseInt(move.substring(3,4));
-        int toY = Integer.parseInt(move.substring(4,5));
+        int toX = Integer.parseInt(move.substring(3, 4));
+        int toY = Integer.parseInt(move.substring(4, 5));
         if (isEmptyAt(fromX, fromY)) {
             throw new IllegalInputException();
         }
@@ -240,29 +248,23 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: makes all generals for both red and black sides
-    private void makeGenerals() {
-        try {
-            General redG = new General(4, 0, this, true);
-            General blackG = new General(4, 9, this, false);
-            placePiece(redG);
-            placePiece(blackG);
-            red.addPiece(redG);
-            black.addPiece(blackG);
-        } catch (OutOfBoundPositionException willNeverHappen) {
-            throw new RuntimeException();
-        }
+    private void makeGenerals() throws OutOfBoundPositionException {
+        General redG = new General(4, 0, this, true);
+        General blackG = new General(4, 9, this, false);
+        red.addPiece(redG);
+        black.addPiece(blackG);
     }
 
     // MODIFIES: this
     // EFFECTS: makes all advisors for both red and black sides
-    private void makeAdvisors() {
+    //          never actually throws the exception...
+    private void makeAdvisors() throws IllegalInputException {
         ArrayList<Piece> pieces = new ArrayList<>();
-        pieces.add(new Advisor(3, 9, this, false));
-        pieces.add(new Advisor(5, 9, this, false));
-        pieces.add(new Advisor(3, 0, this, true));
-        pieces.add(new Advisor(5, 0, this, true));
+        pieces.add(makeNewPiece("advisor", 3, 9, this, false));
+        pieces.add(makeNewPiece("advisor", 5, 9, this, false));
+        pieces.add(makeNewPiece("advisor", 3, 0, this, true));
+        pieces.add(makeNewPiece("advisor", 5, 0, this, true));
         for (Piece p : pieces) {
-            this.placePiece(p);
             if (p.isRed()) {
                 red.addPiece(p);
             } else {
@@ -274,14 +276,13 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: makes all horses for both red and black sides
-    private void makeHorses() {
-        ArrayList<Horse> horses = new ArrayList<>();
-        horses.add(new Horse(1, 9, this, false));
-        horses.add(new Horse(7, 9, this, false));
-        horses.add(new Horse(1, 0, this, true));
-        horses.add(new Horse(7, 0, this, true));
+    private void makeHorses() throws IllegalInputException {
+        ArrayList<Piece> horses = new ArrayList<>();
+        horses.add(makeNewPiece("horse", 1, 9, this, false));
+        horses.add(makeNewPiece("horse", 7, 9, this, false));
+        horses.add(makeNewPiece("horse", 1, 0, this, true));
+        horses.add(makeNewPiece("horse", 7, 0, this, true));
         for (Piece h : horses) {
-            this.placePiece(h);
             if (h.isRed()) {
                 red.addPiece(h);
             } else {
@@ -292,14 +293,13 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: makes all elephants for both red and black sides
-    private void makeElephants() {
-        ArrayList<Elephant> elephants = new ArrayList<>();
-        elephants.add(new Elephant(2, 9, this, false));
-        elephants.add(new Elephant(6, 9, this, false));
-        elephants.add(new Elephant(2, 0, this, true));
-        elephants.add(new Elephant(6, 0, this, true));
+    private void makeElephants() throws IllegalInputException {
+        ArrayList<Piece> elephants = new ArrayList<>();
+        elephants.add(makeNewPiece("elephant", 2, 9, this, false));
+        elephants.add(makeNewPiece("elephant", 6, 9, this, false));
+        elephants.add(makeNewPiece("elephant", 2, 0, this, true));
+        elephants.add(makeNewPiece("elephant", 6, 0, this, true));
         for (Piece p : elephants) {
-            this.placePiece(p);
             if (p.isRed()) {
                 red.addPiece(p);
             } else {
@@ -310,12 +310,12 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: makes all cannons for both red and black sides
-    private void makeCannons() {
+    private void makeCannons() throws IllegalInputException {
         ArrayList<Piece> pieces = new ArrayList<>();
-        pieces.add(new Cannon(1, 7, this, false));
-        pieces.add(new Cannon(7, 7, this, false));
-        pieces.add(new Cannon(1, 2, this, true));
-        pieces.add(new Cannon(7, 2, this, true));
+        pieces.add(makeNewPiece("cannon", 1, 7, this, false));
+        pieces.add(makeNewPiece("cannon",7, 7, this, false));
+        pieces.add(makeNewPiece("cannon",1, 2, this, true));
+        pieces.add(makeNewPiece("cannon",7, 2, this, true));
         for (Piece p : pieces) {
             this.placePiece(p);
             if (p.isRed()) {
@@ -328,14 +328,13 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: makes all soldiers for both red and black sides
-    private void makeChariots() {
+    private void makeChariots() throws IllegalInputException {
         ArrayList<Piece> pieces = new ArrayList<>();
-        pieces.add(new Chariot(0, 9, this, false));
-        pieces.add(new Chariot(8, 9, this, false));
-        pieces.add(new Chariot(0, 0, this, true));
-        pieces.add(new Chariot(8, 0, this, true));
+        pieces.add(makeNewPiece("chariot", 0, 9, this, false));
+        pieces.add(makeNewPiece("chariot", 8, 9, this, false));
+        pieces.add(makeNewPiece("chariot", 0, 0, this, true));
+        pieces.add(makeNewPiece("chariot", 8, 0, this, true));
         for (Piece p : pieces) {
-            this.placePiece(p);
             if (p.isRed()) {
                 red.addPiece(p);
             } else {
@@ -346,14 +345,13 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: makes all soldiers for both red and black sides
-    private void makeSoldiers() {
+    private void makeSoldiers() throws IllegalInputException {
         ArrayList<Piece> pieces = new ArrayList<>();
         for (int i = 0; i <= 8; i += 2) {
-            pieces.add(new Soldier(i, 3, this, true));
-            pieces.add(new Soldier(i, 6, this, false));
+            pieces.add(makeNewPiece("soldier", i, 3, this, true));
+            pieces.add(makeNewPiece("soldier", i, 6, this, false));
         }
         for (Piece p : pieces) {
-            this.placePiece(p);
             if (p.isRed()) {
                 red.addPiece(p);
             } else {
@@ -365,7 +363,7 @@ public class GameBoard implements Writable {
     // REQUIRES: position (x, y) is a valid position on the board and occupied by a piece
     // MODIFIES: this
     // EFFECTS: vacant the given spot
-    private void removePiece(int x, int y) {
+    void removePiece(int x, int y) {
         board.remove(toStrLoc(x, y));
     }
 

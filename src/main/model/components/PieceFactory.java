@@ -1,13 +1,14 @@
 package model.components;
 
 import exception.IllegalInputException;
+import exception.OutOfBoundPositionException;
 import model.pieces.*;
 
 public class PieceFactory {
     // REQUIRES: given (x, y) position is empty on this board
     // MODIFIES: this
     // EFFECTS: place a piece of class pc and red if isRed, black if not, onto (x, y) of this board
-    public static Piece makeNewPiece(String pc, int x, int y, boolean isRed, GameBoard board)
+    public static Piece makeNewPiece(String pc, int x, int y, GameBoard board, boolean isRed)
             throws IllegalInputException {
         switch (pc) {
             case "soldier":

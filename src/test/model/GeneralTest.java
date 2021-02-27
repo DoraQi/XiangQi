@@ -26,6 +26,16 @@ public class GeneralTest extends PieceTest{
     }
 
     @Test
+    public void testConstructorOutOfPalace() {
+        try {
+            new General(5, 5, board, true);
+            fail();
+        } catch(OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
     public void testCanMoveToInPalaceOneGrid() {
         assertTrue(redP.canMoveTo(4, 2));
         assertTrue(redP.canMoveTo(4, 0));
@@ -81,7 +91,7 @@ public class GeneralTest extends PieceTest{
     }
 
     @Test
-    public void testCanCaptureOppGeneral() {
+    public void testCanCaptureOppGeneral() throws OutOfBoundPositionException {
         assertTrue(redP.canCapture(4, 9));
 
         new Advisor(4, 8, board, false);

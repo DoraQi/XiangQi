@@ -1,6 +1,8 @@
 package model;
 
 import exception.IllegalInputException;
+import exception.IllegalNumGeneralException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Advisor;
 import model.pieces.Piece;
@@ -19,7 +21,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testCheckWin() throws IllegalInputException {
+    public void testCheckWinOneGeneral() throws IllegalInputException, IllegalNumGeneralException {
         // no general on board
         assertTrue(board.checkWin());
         // 1 general on board
@@ -28,12 +30,28 @@ class GameBoardTest {
         // 1 general + another piece on board
         board.createPiece("soldier [2,3]r");
         assertTrue(board.checkWin());
-        // 2 generals on board + another piece on board
+    }
+
+    @Test
+    public void testCheckWin2Generals() throws IllegalInputException, IllegalNumGeneralException {
+        board.createPiece("general [4,0]r");
         board.createPiece("general [3,9]b");
         assertFalse(board.checkWin());
-        // 2 generals + 2 other pieces on board
         board.createPiece("horse [2,2]b");
         assertFalse(board.checkWin());
+    }
+
+    @Test
+    public void testCheckWinMoreThan2Generals() throws IllegalInputException {
+        try {
+            board.createPiece("general [4,0]r");
+            board.createPiece("general [3,9]b");
+            board.createPiece("general [3,0]r");
+            board.checkWin();
+            fail();
+        } catch (IllegalNumGeneralException ignored) {
+
+        }
     }
 
     @Test
@@ -134,6 +152,36 @@ class GameBoardTest {
     }
 
     @Test
+    public void testPutPieceGeneralOutOfBound() {
+        try {
+            board.createPiece("general [0,0]r");
+            fail();
+        } catch (IllegalInputException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testPutPieceAdvisorOutOfBound() {
+        try {
+            board.createPiece("advisor [0,0]r");
+            fail();
+        } catch (IllegalInputException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testPutPieceElephantOutOfBound() {
+        try {
+            board.createPiece("elephant [0,0]b");
+            fail();
+        } catch (IllegalInputException ignored) {
+
+        }
+    }
+
+    @Test
     public void testPutPieceIllegalInputFormat2() {
         try {
             board.createPiece("soldier [1, 4]r");
@@ -222,7 +270,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testPlacePiece() {
+    public void testPlacePiece() throws OutOfBoundPositionException {
         Piece p = new Advisor(3, 0, new GameBoard(), true);
         board.placePiece(p);
         assertFalse(board.isEmptyAt(3, 0));

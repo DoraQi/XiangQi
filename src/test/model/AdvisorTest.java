@@ -1,5 +1,6 @@
 package model;
 
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Advisor;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdvisorTest extends PieceTest{
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws OutOfBoundPositionException {
         board = new GameBoard();
         redP = new Advisor(4, 1, board, true);
         blackP = new Advisor(4, 8, board, false);
