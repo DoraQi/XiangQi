@@ -1,11 +1,13 @@
 package model;
 
+import exception.IllegalInputException;
 import model.components.GameBoard;
 import model.pieces.Cannon;
 import model.pieces.Chariot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static model.components.PieceFactory.makeNewPiece;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChariotTest extends PieceTest{
@@ -54,4 +56,49 @@ public class ChariotTest extends PieceTest{
         assertFalse(redP.canMoveTo(6, 2));
         assertFalse(redP.canMoveTo(7, 2));
     }
+
+
+    @Test
+    public void testEqualsNoFieldsSame() throws IllegalInputException {
+        assertFalse(redP.equals(makeNewPiece("horse", 2, 4, board, false)));
+    }
+
+    @Test
+    public void testEqualsSamePieceClassOnly() {
+        assertFalse(redP.equals(blackP));
+    }
+
+    @Test
+    public void testEqualsSameXPosOnly() throws IllegalInputException {
+        assertFalse(redP.equals(makeNewPiece("horse", 1, 3, board, false)));
+    }
+
+    @Test
+    public void testEqualsSameYPosOnly() throws IllegalInputException {
+        assertFalse(redP.equals(makeNewPiece("horse", 6, 2, board, false)));
+    }
+
+    @Test
+    public void testEqualsSameSideOnly() throws IllegalInputException {
+        assertFalse(redP.equals(makeNewPiece("horse", 6, 3, board, true)));
+    }
+
+    @Test
+    public void testEqualsMultipleFieldsSame() throws IllegalInputException {
+        assertFalse(redP.equals(makeNewPiece("chariot", 3, 0, board, true)));
+        assertFalse(redP.equals(makeNewPiece("chariot", 1, 2, board, false)));
+    }
+
+    @Test
+    public void testEqualsSameFieldsDiffObj() throws IllegalInputException {
+        assertTrue(redP.equals(makeNewPiece("chariot", 1, 2, board, true)));
+        assertTrue(blackP.equals(makeNewPiece("chariot", 4, 7, board, false)));
+    }
+
+    @Test
+    public void testEqualsSameObj() {
+        assertEquals(redP, redP);
+        assertEquals(blackP, blackP);
+    }
+
 }

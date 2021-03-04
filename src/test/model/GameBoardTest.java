@@ -472,10 +472,25 @@ class GameBoardTest {
     }
 
     @Test
-    public void testEqualsDiffObjDiffFields() throws IllegalInputException {
+    public void testEqualsDiffObjDiffNumPieces() throws IllegalInputException {
         GameBoard b2 = new GameBoard();
         makeNewPiece("horse", 3, 3, board, true);
-        makeNewPiece("advisor", 4, 1, b2, true);
+        assertFalse(board.equals(b2));
+    }
+
+    @Test
+    public void testEqualsDiffObjSamePosDiffPieces() throws IllegalInputException {
+        GameBoard b2 = new GameBoard();
+        makeNewPiece("horse", 3, 3, board, true);
+        makeNewPiece("cannon", 3, 3, b2, true);
+        assertFalse(board.equals(b2));
+    }
+
+    @Test
+    public void testEqualsDiffObjDiffPos() throws IllegalInputException {
+        GameBoard b2 = new GameBoard();
+        makeNewPiece("horse", 3, 3, board, true);
+        makeNewPiece("cannon", 4, 3, b2, true);
         assertFalse(board.equals(b2));
     }
 }

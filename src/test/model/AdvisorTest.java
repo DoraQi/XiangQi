@@ -119,48 +119,4 @@ public class AdvisorTest extends PieceTest{
         assertFalse(redP.canMoveTo(6, 8));
     }
 
-    @Test
-    public void testEqualsNoFieldsSame() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("horse", 2, 4, board, false)));
-    }
-
-    @Test
-    public void testEqualsSamePieceClassOnly() {
-        assertFalse(redP.equals(blackP));
-    }
-
-    @Test
-    public void testEqualsSameXPosOnly() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("horse", 4, 2, board, false)));
-    }
-
-    @Test
-    public void testEqualsSameYPosOnly() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("horse", 6, 1, board, false)));
-    }
-
-    @Test
-    public void testEqualsSameSideOnly() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("horse", 6, 3, board, true)));
-    }
-
-    @Test
-    public void testEqualsMultipleFieldsSame() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("advisor", 3, 0, board, true)));
-        assertFalse(redP.equals(makeNewPiece("horse", 4, 1, board, true)));
-    }
-
-    @Test
-    public void testEqualsSameFieldsDiffObj() throws IllegalInputException {
-        assertTrue(redP.equals(makeNewPiece("advisor", 4, 1, board, true)));
-        assertTrue(blackP.equals(makeNewPiece("advisor", 4, 8, board, false)));
-    }
-
-    @Test
-    public void testEqualsSameObj() {
-        assertEquals(redP, redP);
-        assertEquals(blackP, blackP);
-    }
-
-
 }
