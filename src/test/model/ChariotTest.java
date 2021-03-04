@@ -86,6 +86,7 @@ public class ChariotTest extends PieceTest{
     @Test
     public void testEqualsMultipleFieldsSame() throws IllegalInputException {
         assertFalse(redP.equals(makeNewPiece("chariot", 3, 0, board, true)));
+        assertFalse(redP.equals(makeNewPiece("chariot", 1, 0, board, true)));
         assertFalse(redP.equals(makeNewPiece("chariot", 1, 2, board, false)));
     }
 
