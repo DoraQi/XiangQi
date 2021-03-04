@@ -25,12 +25,43 @@ public class GeneralTest extends PieceTest{
         assertEquals(redP, board.getPAt(4, 1));
     }
 
+
     @Test
     public void testConstructorOutOfPalace() {
         try {
-            new General(5, 5, board, true);
+            General a1 = new General(0, 0, board, true);
             fail();
-        } catch(OutOfBoundPositionException ignored) {
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testConstructorOutOfPalace2() {
+        try {
+            General a1 = new General(4, 7, board, true);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testConstructorOutOfPalace3() {
+        try {
+            General a1 = new General(4, 0, board, false);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testConstructorOutOfPalace4() {
+        try {
+            General a1 = new General(7, 0, board, true);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
 
         }
     }

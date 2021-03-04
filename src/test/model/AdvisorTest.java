@@ -27,6 +27,46 @@ public class AdvisorTest extends PieceTest{
     }
 
     @Test
+    public void testConstructorOutOfPalace() {
+        try {
+            Advisor a1 = new Advisor(0, 0, board, true);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testConstructorOutOfPalace2() {
+        try {
+            Advisor a1 = new Advisor(4, 7, board, true);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testConstructorOutOfPalace3() {
+        try {
+            Advisor a1 = new Advisor(4, 0, board, false);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testConstructorOutOfPalace4() {
+        try {
+            Advisor a1 = new Advisor(7, 0, board, true);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
     public void testCanMoveToInPalaceRed() {
         assertTrue(redP.canMoveTo(3, 2));
         assertTrue(redP.canMoveTo(3, 0));

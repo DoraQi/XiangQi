@@ -30,6 +30,26 @@ public class ElephantTest extends PieceTest{
     }
 
     @Test
+    public void testConstructorOutOfBound() {
+        try {
+            new Elephant(2, 7, board, true);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
+    public void testConstructorOutOfBound2() {
+        try {
+            new Elephant(2, 2, board, false);
+            fail();
+        } catch (OutOfBoundPositionException ignored) {
+
+        }
+    }
+
+    @Test
     public void testCanMoveToRedEBfRiverNotBlocked() throws OutOfBoundPositionException {
         redP = new Elephant(4, 2, board, true);
         assertTrue(redP.canMoveTo(2, 4));
@@ -92,21 +112,4 @@ public class ElephantTest extends PieceTest{
         new Horse(5, 1, board, true);
         assertFalse(redP.canMoveTo(6, 0));
     }
-//
-//    @Test
-//    public void testCanMoveToBlockedBlack() throws OutOfBoundPositionException {
-//        blackP = new Elephant(4, 2, board, false);
-//        new Horse(3, 3, board, false);
-//        assertFalse(blackP.canMoveTo(2, 4));
-//
-//        new Horse(5, 3, board, false);
-//        assertFalse(blackP.canMoveTo(6, 4));
-//
-//        new Horse(3, 1, board, false);
-//        assertFalse(blackP.canMoveTo(2, 0));
-//
-//        new Horse(5, 1, board, true);
-//        assertFalse(blackP.canMoveTo(6, 0));
-//    }
-
 }

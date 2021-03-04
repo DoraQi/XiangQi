@@ -9,8 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static model.components.PieceFactory.makeNewPiece;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PersistenceTest {
     JsonReader jReader;
@@ -38,6 +37,20 @@ public class PersistenceTest {
         makeNewPiece("general", 4, 9, board, false);
         jWriter.saveGame(board, false);
         GameBoard b2 = jReader.loadGame();
+        assertFalse(jReader.getFirstStart());
+        assertTrue(board.equals(b2));
+    }
+
+    @Test
+    public void testSaveGameNonEmptyBoardWithCapturedPieces() throws IllegalInputException, IOException {
+        makeNewPiece("general", 4, 0, board, true);
+        makeNewPiece("advisor", 4, 1, board, true);
+        makeNewPiece("general", 4, 9, board, false);
+        board.addCapturedPiece("soldier", 3, 5, false);
+        board.addCapturedPiece("horse", 3, 3, true);
+        jWriter.saveGame(board, false);
+        GameBoard b2 = jReader.loadGame();
+        assertFalse(jReader.getFirstStart());
         assertTrue(board.equals(b2));
     }
 

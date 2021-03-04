@@ -22,11 +22,21 @@
     "redStarts": false,
     "players": [
         {
-            "captured": [],
+            "captured": [{
+                "posX": 3,
+                "posY": 3,
+                "pieceClass": "HORSE",
+                "isRed": "r"
+            }],
             "isRed": true
         },
         {
-            "captured": [],
+            "captured": [{
+                "posX": 3,
+                "posY": 5,
+                "pieceClass": "SOLDIER",
+                "isRed": "b"
+            }],
             "isRed": false
         }
     ]
