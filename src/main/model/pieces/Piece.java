@@ -12,20 +12,20 @@ public abstract class Piece implements Writable {
     private int posX;
     private int posY;
     protected GameBoard board;
-    private final boolean redSide;
+    private final boolean isRed;
 
     private final PieceClass pieceClass;
 
     // REQUIRES: b is a valid board or null for a captured piece.
     //           given (x, y) is a valid empty position on board b
     // EFFECTS: constructs elements common to all Piece
-    public Piece(int x, int y, boolean redSide, GameBoard b, PieceClass c) {
+    public Piece(int x, int y, boolean isRed, GameBoard b, PieceClass c) {
         move(x, y);
         board = b;
+        this.isRed = isRed;
         if (b != null) {
             b.placePiece(this);
         }
-        this.redSide = redSide;
         this.pieceClass = c;
     }
 
@@ -59,7 +59,7 @@ public abstract class Piece implements Writable {
 
     // EFFECTS: returns true if this piece is on the red side, false otherwise
     public boolean isRed() {
-        return redSide;
+        return isRed;
     }
 
     // EFFECTS: return a string representation of this piece in the format:
@@ -70,7 +70,7 @@ public abstract class Piece implements Writable {
         strBuilder.append(pieceClass.name().charAt(0));
         strBuilder.append(pieceClass.name().substring(1).toLowerCase());
         strBuilder.append("[").append(posX).append(", ").append(posY).append("]");
-        if (redSide) {
+        if (isRed) {
             strBuilder.append("R");
         } else {
             strBuilder.append("B");
@@ -102,6 +102,12 @@ public abstract class Piece implements Writable {
     // EFFECTS: remove board from this piece
     public void remove() {
         board = null;
+    }
+
+    // EFFECTS: return true if every field of this piece is the same as the other piece, else return false
+    public boolean equals(Piece other) {
+        return this.pieceClass.equals(other.pieceClass) && this.posX == other.posX && this.posY == other.posY
+                && this.isRed() == other.isRed();
     }
 
 }

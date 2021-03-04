@@ -27,7 +27,7 @@ public class GameBoard implements Writable {
     Player black;
     String gameLog;
 
-    HashMap<String, Piece> board; // Change to Map
+    HashMap<String, Piece> board;
 
     private static final int MAX_X_COORD = 8;
     private static final int MIN_X_COORD = 0;
@@ -113,13 +113,7 @@ public class GameBoard implements Writable {
         if (x > MAX_X_COORD || x < MIN_X_COORD || y > MAX_Y_COORD || y < MIN_Y_COORD) {
             throw new IllegalInputException();
         }
-        Piece p = makeNewPiece(pieceClass, x, y, this, isRed);
-        if (isRed) {
-            red.addPiece(p);
-        } else {
-            black.addPiece(p);
-        }
-        return p;
+        return makeNewPiece(pieceClass, x, y, this, isRed);
     }
 
 
@@ -141,9 +135,14 @@ public class GameBoard implements Writable {
 
     // REQUIRES: position of p is currently empty on this board
     // MODIFIES: this
-    // EFFECT: place given piece onto the correct position on board
+    // EFFECT: place given piece onto the correct position on board and add to player
     public void placePiece(Piece p) {
         board.put(toStrLoc(p.getPosX(), p.getPosY()), p);
+        if (p.isRed()) {
+            red.addPiece(p);
+        } else {
+            black.addPiece(p);
+        }
     }
 
     // REQUIRES: given coordinate (x, y) is a valid position on board,
@@ -179,6 +178,25 @@ public class GameBoard implements Writable {
         } else {
             black.capture(makeNewPiece(pc.toLowerCase(), x, y, null, false));
         }
+    }
+
+    // EFFECTS: returns true if this board equals the given board
+    //          - have the exact same pieces at the same locations on board
+    public boolean equals(GameBoard other) {
+        if (this.board.size() == other.board.size()) {
+            if (!this.board.keySet().equals(other.board.keySet())) {
+                return false;
+            }
+            for (String key: board.keySet()) {
+                Piece thisP = board.get(key);
+                Piece otherP = other.board.get(key);
+                if (! thisP.equals(otherP)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     // MODIFIES: this
@@ -248,115 +266,64 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: makes all generals for both red and black sides
-    private void makeGenerals() throws OutOfBoundPositionException {
-        General redG = new General(4, 0, this, true);
-        General blackG = new General(4, 9, this, false);
-        red.addPiece(redG);
-        black.addPiece(blackG);
+    private void makeGenerals() throws IllegalInputException {
+        makeNewPiece("general", 4, 9, this, false);
+        makeNewPiece("general", 4, 0, this, true);
     }
 
     // MODIFIES: this
     // EFFECTS: makes all advisors for both red and black sides
     //          never actually throws the exception...
     private void makeAdvisors() throws IllegalInputException {
-        ArrayList<Piece> pieces = new ArrayList<>();
-        pieces.add(makeNewPiece("advisor", 3, 9, this, false));
-        pieces.add(makeNewPiece("advisor", 5, 9, this, false));
-        pieces.add(makeNewPiece("advisor", 3, 0, this, true));
-        pieces.add(makeNewPiece("advisor", 5, 0, this, true));
-        for (Piece p : pieces) {
-            if (p.isRed()) {
-                red.addPiece(p);
-            } else {
-                black.addPiece(p);
-            }
-        }
+        makeNewPiece("advisor", 3, 9, this, false);
+        makeNewPiece("advisor", 5, 9, this, false);
+        makeNewPiece("advisor", 3, 0, this, true);
+        makeNewPiece("advisor", 5, 0, this, true);
     }
 
 
     // MODIFIES: this
     // EFFECTS: makes all horses for both red and black sides
     private void makeHorses() throws IllegalInputException {
-        ArrayList<Piece> horses = new ArrayList<>();
-        horses.add(makeNewPiece("horse", 1, 9, this, false));
-        horses.add(makeNewPiece("horse", 7, 9, this, false));
-        horses.add(makeNewPiece("horse", 1, 0, this, true));
-        horses.add(makeNewPiece("horse", 7, 0, this, true));
-        for (Piece h : horses) {
-            if (h.isRed()) {
-                red.addPiece(h);
-            } else {
-                black.addPiece(h);
-            }
-        }
+        makeNewPiece("horse", 1, 9, this, false);
+        makeNewPiece("horse", 7, 9, this, false);
+        makeNewPiece("horse", 1, 0, this, true);
+        makeNewPiece("horse", 7, 0, this, true);
     }
 
     // MODIFIES: this
     // EFFECTS: makes all elephants for both red and black sides
     private void makeElephants() throws IllegalInputException {
-        ArrayList<Piece> elephants = new ArrayList<>();
-        elephants.add(makeNewPiece("elephant", 2, 9, this, false));
-        elephants.add(makeNewPiece("elephant", 6, 9, this, false));
-        elephants.add(makeNewPiece("elephant", 2, 0, this, true));
-        elephants.add(makeNewPiece("elephant", 6, 0, this, true));
-        for (Piece p : elephants) {
-            if (p.isRed()) {
-                red.addPiece(p);
-            } else {
-                black.addPiece(p);
-            }
-        }
+        makeNewPiece("elephant", 2, 9, this, false);
+        makeNewPiece("elephant", 6, 9, this, false);
+        makeNewPiece("elephant", 2, 0, this, true);
+        makeNewPiece("elephant", 6, 0, this, true);
     }
 
     // MODIFIES: this
     // EFFECTS: makes all cannons for both red and black sides
     private void makeCannons() throws IllegalInputException {
-        ArrayList<Piece> pieces = new ArrayList<>();
-        pieces.add(makeNewPiece("cannon", 1, 7, this, false));
-        pieces.add(makeNewPiece("cannon",7, 7, this, false));
-        pieces.add(makeNewPiece("cannon",1, 2, this, true));
-        pieces.add(makeNewPiece("cannon",7, 2, this, true));
-        for (Piece p : pieces) {
-            this.placePiece(p);
-            if (p.isRed()) {
-                red.addPiece(p);
-            } else {
-                black.addPiece(p);
-            }
-        }
+        makeNewPiece("cannon", 1, 7, this, false);
+        makeNewPiece("cannon",7, 7, this, false);
+        makeNewPiece("cannon",1, 2, this, true);
+        makeNewPiece("cannon",7, 2, this, true);
     }
 
     // MODIFIES: this
     // EFFECTS: makes all soldiers for both red and black sides
     private void makeChariots() throws IllegalInputException {
-        ArrayList<Piece> pieces = new ArrayList<>();
-        pieces.add(makeNewPiece("chariot", 0, 9, this, false));
-        pieces.add(makeNewPiece("chariot", 8, 9, this, false));
-        pieces.add(makeNewPiece("chariot", 0, 0, this, true));
-        pieces.add(makeNewPiece("chariot", 8, 0, this, true));
-        for (Piece p : pieces) {
-            if (p.isRed()) {
-                red.addPiece(p);
-            } else {
-                black.addPiece(p);
-            }
-        }
+        makeNewPiece("chariot", 0, 9, this, false);
+        makeNewPiece("chariot", 8, 9, this, false);
+        makeNewPiece("chariot", 0, 0, this, true);
+        makeNewPiece("chariot", 8, 0, this, true);
     }
 
     // MODIFIES: this
     // EFFECTS: makes all soldiers for both red and black sides
     private void makeSoldiers() throws IllegalInputException {
-        ArrayList<Piece> pieces = new ArrayList<>();
         for (int i = 0; i <= 8; i += 2) {
-            pieces.add(makeNewPiece("soldier", i, 3, this, true));
-            pieces.add(makeNewPiece("soldier", i, 6, this, false));
-        }
-        for (Piece p : pieces) {
-            if (p.isRed()) {
-                red.addPiece(p);
-            } else {
-                black.addPiece(p);
-            }
+            makeNewPiece("soldier", i, 3, this, true);
+            makeNewPiece("soldier", i, 6, this, false);
         }
     }
 

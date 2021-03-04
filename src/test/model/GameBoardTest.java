@@ -9,6 +9,7 @@ import model.pieces.Piece;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static model.components.PieceFactory.makeNewPiece;
 import static model.pieces.PieceClass.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -429,5 +430,31 @@ class GameBoardTest {
         assertEquals(p2, board.getPAt(3, 4));
         assertEquals(3, p2.getPosX());
         assertEquals(4, p2.getPosY());
+    }
+
+    @Test
+    public void testEqualsSameObj() {
+        assertTrue(board.equals(board));
+    }
+
+    @Test
+    public void testEqualsDiffObjSameEmptyFields() {
+        assertTrue(board.equals(new GameBoard()));
+    }
+
+    @Test
+    public void testEqualsDiffObjSameFields() throws IllegalInputException {
+        GameBoard b2 = new GameBoard();
+        makeNewPiece("horse", 3, 3, board, true);
+        makeNewPiece("horse", 3, 3, b2, true);
+        assertTrue(board.equals(b2));
+    }
+
+    @Test
+    public void testEqualsDiffObjDiffFields() throws IllegalInputException {
+        GameBoard b2 = new GameBoard();
+        makeNewPiece("horse", 3, 3, board, true);
+        makeNewPiece("advisor", 4, 1, b2, true);
+        assertFalse(board.equals(b2));
     }
 }
