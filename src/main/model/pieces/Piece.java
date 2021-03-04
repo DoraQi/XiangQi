@@ -24,7 +24,7 @@ public abstract class Piece implements Writable {
         board = b;
         this.isRed = isRed;
         if (b != null) {
-            b.placePiece(this);
+            b.placeNewPiece(this);
         }
         this.pieceClass = c;
     }

@@ -3,7 +3,7 @@ package model.components;
 
 import exception.IllegalInputException;
 import exception.IllegalNumGeneralException;
-import exception.OutOfBoundPositionException;
+import exception.QuitGameException;
 import model.pieces.*;
 
 import static model.components.PieceFactory.*;
@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static model.pieces.PieceClass.*;
@@ -136,13 +135,20 @@ public class GameBoard implements Writable {
     // REQUIRES: position of p is currently empty on this board
     // MODIFIES: this
     // EFFECT: place given piece onto the correct position on board and add to player
-    public void placePiece(Piece p) {
-        board.put(toStrLoc(p.getPosX(), p.getPosY()), p);
+    public void placeNewPiece(Piece p) {
+        placePiece(p);
         if (p.isRed()) {
             red.addPiece(p);
         } else {
             black.addPiece(p);
         }
+    }
+
+    // REQUIRES: position of p is currently empty on this board
+    // MODIFIES: this
+    // EFFECT: place given piece onto the correct position on board
+    public void placePiece(Piece p) {
+        board.put(toStrLoc(p.getPosX(), p.getPosY()), p);
     }
 
     // REQUIRES: given coordinate (x, y) is a valid position on board,
@@ -201,13 +207,21 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: move the piece at given location to the specified location
-    public void redMove(String inpt) throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException {
+    public void redMove(String inpt) throws NumberFormatException,
+            IndexOutOfBoundsException, IllegalInputException, QuitGameException {
+        if (inpt.equalsIgnoreCase("quit")) {
+            throw new QuitGameException(true);
+        }
         playerMove(inpt, red, black);
     }
 
     // MODIFIES: this
     // EFFECTS: move the piece at given location to the specified location
-    public void blackMove(String inpt) throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException {
+    public void blackMove(String inpt)
+            throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException, QuitGameException {
+        if (inpt.equalsIgnoreCase("quit")) {
+            throw new QuitGameException(false);
+        }
         playerMove(inpt, black, red);
     }
 

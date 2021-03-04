@@ -2,7 +2,6 @@ package ui;
 
 import exception.IllegalInputException;
 import exception.IllegalNumGeneralException;
-import exception.OutOfBoundPositionException;
 import exception.QuitGameException;
 import model.components.GameBoard;
 import persistence.JsonWriter;
@@ -182,23 +181,18 @@ public class XiangQi {
     // EFFECTS: prompts to get user input for a move and make the move, throws Exception if the given input is invalid
     //          throws QuitGameException if user chooses to quit
     private void playerMove(boolean redMoving) throws IllegalInputException, QuitGameException {
-        String inpt = "";
         try {
             if (redMoving) {
                 System.out.print("RED move: ");
-                inpt = console.nextLine().trim().toLowerCase();
+                String inpt = console.nextLine().trim().toLowerCase();
                 game.redMove(inpt);
             } else {
                 System.out.print("BLACK move: ");
-                inpt = console.nextLine().trim().toLowerCase();
+                String inpt = console.nextLine().trim().toLowerCase();
                 game.blackMove(inpt);
             }
         } catch (NumberFormatException e) {
-            if (inpt.equalsIgnoreCase("quit")) {
-                throw new QuitGameException(redMoving);
-            } else {
-                throw new IllegalInputException();
-            }
+            throw new IllegalInputException();
         }
     }
 

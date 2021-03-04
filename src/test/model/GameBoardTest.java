@@ -3,6 +3,7 @@ package model;
 import exception.IllegalInputException;
 import exception.IllegalNumGeneralException;
 import exception.OutOfBoundPositionException;
+import exception.QuitGameException;
 import model.components.GameBoard;
 import model.pieces.Advisor;
 import model.pieces.Piece;
@@ -273,7 +274,7 @@ class GameBoardTest {
     @Test
     public void testPlacePiece() throws OutOfBoundPositionException {
         Piece p = new Advisor(3, 0, new GameBoard(), true);
-        board.placePiece(p);
+        board.placeNewPiece(p);
         assertFalse(board.isEmptyAt(3, 0));
         assertEquals(p, board.getPAt(3, 0));
     }
@@ -299,10 +300,30 @@ class GameBoardTest {
         try {
             board.redMove("00 03");
             fail();
-        } catch (IllegalInputException ignored) {
+        } catch (IllegalInputException | QuitGameException ignored) {
 
         }
         
+    }
+
+    @Test
+    public void testRedMoveQuit() throws IllegalInputException {
+        try {
+            board.redMove("quit");
+            fail();
+        } catch (QuitGameException e) {
+            assertTrue(e.redGoesNext());
+        }
+    }
+
+    @Test
+    public void testBlackMoveQuit() throws IllegalInputException {
+        try {
+            board.blackMove("quit");
+            fail();
+        } catch (QuitGameException e) {
+            assertFalse(e.redGoesNext());
+        }
     }
 
     @Test
@@ -319,7 +340,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testRedMoveToEmptySpot() throws IllegalInputException {
+    public void testRedMoveToEmptySpot() throws IllegalInputException, QuitGameException {
         board.createPiece("soldier [3,4]r");
         Piece p = board.getPAt(3, 4);
         board.redMove("34 35");
@@ -407,7 +428,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testRedMoveSpotFilledByBlackCanCapture() throws IllegalInputException {
+    public void testRedMoveSpotFilledByBlackCanCapture() throws IllegalInputException, QuitGameException {
         board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
         board.createPiece("soldier [3,5]b");
@@ -420,7 +441,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testBlackMoveSpotFilledByRedCanCapture() throws IllegalInputException {
+    public void testBlackMoveSpotFilledByRedCanCapture() throws IllegalInputException, QuitGameException {
         board.createPiece("soldier [3,4]r");
         Piece p1 = board.getPAt(3, 4);
         board.createPiece("soldier [3,5]b");
