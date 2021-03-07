@@ -32,7 +32,8 @@ public class Advisor extends Piece {
     }
 
     // REQUIRES: given coordinate (x, y) are valid coordinates on the board
-    // EFFECTS: produce true if this can move to the given coordinate
+    // EFFECTS: produce true if the given coordinate is diagonal to and one away from current spot
+    //          and is inside the palace
     @Override
     public boolean canMoveTo(int x, int y) {
         if (x >= minX && x <= maxX && y <= maxY && y >= minY) {

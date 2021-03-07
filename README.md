@@ -15,5 +15,5 @@ classes.
 - As a user, I want to try again when I made a typo and entered an invalid input
 
 ### Phase 2:
-- As a user, I want to be able to save my current board 
+- As a user, I want to be able to save my current board if I wish
 - As a user, I want to be able to retrieve previous unfinished game and continue playing

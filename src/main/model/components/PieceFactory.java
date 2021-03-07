@@ -1,9 +1,11 @@
 package model.components;
 
 import exception.IllegalInputException;
-import exception.OutOfBoundPositionException;
 import model.pieces.*;
 
+/**
+ * Represents a factory for creating pieces
+ */
 public class PieceFactory {
     // REQUIRES: given (x, y) position is empty on this board
     // MODIFIES: this

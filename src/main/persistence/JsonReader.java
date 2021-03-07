@@ -12,9 +12,8 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 /**
- * Code adapted from JsonSerializationDemo by Paul Carter
- *
  * Represents a reader that reads Gameboard from JSON data stored in file
+ * Code adapted from JsonSerializationDemo by Paul Carter
  */
 public class JsonReader {
     private static final int TAB = 4;

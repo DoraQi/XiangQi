@@ -8,9 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 /**
- * Code adapted from JsonSerializationDemo by Paul Carter
- *
  * Represents a writer that writes Gameboard into JSON data stored in file
+ * Code adapted from JsonSerializationDemo by Paul Carter
  */
 public class JsonWriter {
     private static final int TAB = 4;

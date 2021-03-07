@@ -3,9 +3,8 @@ package persistence;
 import org.json.JSONObject;
 
 /**
- * Code adapted from JsonSerializationDemo by Paul Carter
- *
  * Represents a writable object
+ * Code adapted from JsonSerializationDemo by Paul Carter
  */
 public interface Writable {
 

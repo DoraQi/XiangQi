@@ -95,6 +95,8 @@ public class GameBoard implements Writable {
     // REQUIRES: input string is in all lower case
     // MODIFIES: this
     // EFFECTS: add a piece according to the given instruction and returned added piece
+    //          throws IllegalInputException if given coordinate is not a valid position on the board or if the given
+    //          specification for the piece is illegal
     public Piece createPiece(String inpt) throws IllegalInputException {
         int x;
         int y;
@@ -117,7 +119,7 @@ public class GameBoard implements Writable {
 
 
     // EFFECTS: returns a string representation of the status of this board that includes
-    //          positions of all pieces on board
+    //          positions of all pieces on board with red pieces first
     public String toString() {
         StringBuilder strBuilder = new StringBuilder();
         for (Piece p : red.getPieces()) {
@@ -142,13 +144,6 @@ public class GameBoard implements Writable {
         } else {
             black.addPiece(p);
         }
-    }
-
-    // REQUIRES: position of p is currently empty on this board
-    // MODIFIES: this
-    // EFFECT: place given piece onto the correct position on board
-    public void placePiece(Piece p) {
-        board.put(toStrLoc(p.getPosX(), p.getPosY()), p);
     }
 
     // REQUIRES: given coordinate (x, y) is a valid position on board,
@@ -205,35 +200,32 @@ public class GameBoard implements Writable {
         return false;
     }
 
-    // MODIFIES: this
-    // EFFECTS: move the piece at given location to the specified location
-    public void redMove(String inpt) throws NumberFormatException,
-            IndexOutOfBoundsException, IllegalInputException, QuitGameException {
-        if (inpt.equalsIgnoreCase("quit")) {
-            throw new QuitGameException(true);
-        }
-        playerMove(inpt, red, black);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: move the piece at given location to the specified location
-    public void blackMove(String inpt)
-            throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException, QuitGameException {
-        if (inpt.equalsIgnoreCase("quit")) {
-            throw new QuitGameException(false);
-        }
-        playerMove(inpt, black, red);
-    }
-
-    // REQUIRES: moving is the player moving, other is the other player
     // MODIFIES: this, moving, other
     // EFFECTS: move the piece at given location to the specified location
-    private void playerMove(String move, Player moving, Player other)
-            throws NumberFormatException, IndexOutOfBoundsException, IllegalInputException {
+    //          throws IllegalInputException if given move cannot be performed
+    //          throws QuitGameException if given move is "quit"
+    public void playerMove(String move, boolean redMoving)
+            throws IllegalInputException, QuitGameException {
+        if (move.equalsIgnoreCase("quit")) {
+            throw new QuitGameException(redMoving);
+        }
         int fromX = Integer.parseInt(move.substring(0, 1));
         int fromY = Integer.parseInt(move.substring(1, 2));
         int toX = Integer.parseInt(move.substring(3, 4));
         int toY = Integer.parseInt(move.substring(4, 5));
+
+        if (redMoving) {
+            makeMove(red, black, fromX, toX, toY, fromY);
+        } else {
+            makeMove(black, red, fromX, toX, toY, fromY);
+        }
+    }
+
+    // MODIFIES: this, moving, other
+    // EFFECTS: moves piece at (fromX, fromY) to (toX, toY) and captures any opponent piece if possible
+    //          throws IllegalInputException if given move cannot be performed
+    private void makeMove(Player moving, Player other, int fromX, int toX, int toY, int fromY)
+            throws IllegalInputException {
         if (isEmptyAt(fromX, fromY)) {
             throw new IllegalInputException();
         }
@@ -264,6 +256,14 @@ public class GameBoard implements Writable {
         playing.capture(prey);
         other.removePiece(prey);
         movePiece(hunter, prey.getPosX(), prey.getPosY());
+    }
+
+
+    // REQUIRES: position of p is currently empty on this board
+    // MODIFIES: this
+    // EFFECT: place given piece onto the correct position on board
+    private void placePiece(Piece p) {
+        board.put(toStrLoc(p.getPosX(), p.getPosY()), p);
     }
 
     // REQUIRES: given piece can be moved to given coordinate (x, y)

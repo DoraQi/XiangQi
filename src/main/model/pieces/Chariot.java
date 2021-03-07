@@ -14,7 +14,7 @@ public class Chariot extends Piece {
     }
 
     // REQUIRES: given (x, y) is a valid empty position on board b
-    // EFFECTS: produce true iff this piece is orthogonal to the current position and there are no other pieces
+    // EFFECTS: produce true iff this piece is orthogonal to the given position and there are no other pieces
     //          in between
     @Override
     public boolean canMoveTo(int x, int y) {

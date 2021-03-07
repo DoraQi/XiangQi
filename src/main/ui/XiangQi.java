@@ -164,7 +164,7 @@ public class XiangQi {
             System.out.println(separator);
             try {
                 if (game.checkWin()) {
-                    endMessage();
+                    System.out.println("Game Over!");
                     return;
                 }
                 playerMove(redMoving);
@@ -180,26 +180,19 @@ public class XiangQi {
     // MODIFIES: this
     // EFFECTS: prompts to get user input for a move and make the move, throws Exception if the given input is invalid
     //          throws QuitGameException if user chooses to quit
+    //          throws IllegalInputException if given move is invalid in format or cannot be performed
     private void playerMove(boolean redMoving) throws IllegalInputException, QuitGameException {
         try {
             if (redMoving) {
                 System.out.print("RED move: ");
-                String inpt = console.nextLine().trim().toLowerCase();
-                game.redMove(inpt);
             } else {
                 System.out.print("BLACK move: ");
-                String inpt = console.nextLine().trim().toLowerCase();
-                game.blackMove(inpt);
             }
-        } catch (NumberFormatException e) {
+            String inpt = console.nextLine().trim().toLowerCase();
+            game.playerMove(inpt, redMoving);
+        } catch (RuntimeException e) {
             throw new IllegalInputException();
         }
-    }
-
-    // REQUIRES: game has ended ( <= 1 general left on board )
-    // EFFECTS: prints out a message to end the game
-    private void endMessage() {
-        System.out.println("Game Over!");
     }
 
     // EFFECTS: repeatedly prompts for user input until they enter 1, 2, 3, or 4
