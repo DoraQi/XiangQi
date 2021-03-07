@@ -114,7 +114,11 @@ public class XiangQi {
     private void playClassicGame() throws QuitGameException, IllegalNumGeneralException {
         game = new GameBoard();
         System.out.println("Welcome to a classic game of XiangQi!");
-        game.setUpClassicGame();
+        try {
+            game.setUpClassicGame();
+        } catch (IllegalInputException e) {
+            throw new RuntimeException("can never happen");
+        }
         System.out.println(game);
         playGame(true);
     }

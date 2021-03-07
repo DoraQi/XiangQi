@@ -155,19 +155,15 @@ public class GameBoard implements Writable {
 
     // MODIFIES: this
     // EFFECTS: sets up the board and players to play the game
-    //          if caught any IllegalInputException, which can never happen, throw new RunTimeException
-    public void setUpClassicGame() {
-        try {
-            makeSoldiers();
-            makeChariots();
-            makeCannons();
-            makeElephants();
-            makeHorses();
-            makeGenerals();
-            makeAdvisors();
-        } catch (IllegalInputException canNeverHappen) {
-            throw new RuntimeException();
-        }
+    //          throw any IllegalInputException thrown, which can never happen
+    public void setUpClassicGame() throws IllegalInputException {
+        makeSoldiers();
+        makeChariots();
+        makeCannons();
+        makeElephants();
+        makeHorses();
+        makeGenerals();
+        makeAdvisors();
     }
 
 

@@ -5,6 +5,7 @@ import exception.IllegalNumGeneralException;
 import exception.OutOfBoundPositionException;
 import exception.QuitGameException;
 import model.components.GameBoard;
+import model.components.PieceFactory;
 import model.pieces.Advisor;
 import model.pieces.Piece;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameBoardTest {
     GameBoard board;
+    PieceFactory pf = new PieceFactory();
 
     @BeforeEach
     public void setUp() {
@@ -280,7 +282,7 @@ class GameBoardTest {
     }
 
     @Test
-    public void testSetUpClassicGame() {
+    public void testSetUpClassicGame() throws IllegalInputException {
         board.setUpClassicGame();
         for (int i = 0; i <= 8; i++) {
             assertFalse(board.isEmptyAt(i, 0));
