@@ -5,6 +5,8 @@ import model.components.GameBoard;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Objects;
+
 /**
  * A generic Piece of XiangQi
  */
@@ -104,10 +106,23 @@ public abstract class Piece implements Writable {
         board = null;
     }
 
-    // EFFECTS: return true if every field of this piece is the same as the other piece, else return false
-    public boolean equals(Piece other) {
-        return this.pieceClass.equals(other.pieceClass) && this.posX == other.posX && this.posY == other.posY
-                && this.isRed() == other.isRed();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Piece piece = (Piece) o;
+        return posX == piece.posX
+                && posY == piece.posY
+                && isRed == piece.isRed
+                && pieceClass == piece.pieceClass;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(posX, posY, isRed, pieceClass);
+    }
 }

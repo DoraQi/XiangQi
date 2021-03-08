@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import static model.pieces.PieceClass.*;
 
@@ -177,23 +178,24 @@ public class GameBoard implements Writable {
         }
     }
 
-    // EFFECTS: returns true if this board equals the given board
-    //          - have the exact same pieces at the same locations on board
-    public boolean equals(GameBoard other) {
-        if (this.board.size() == other.board.size()) {
-            if (!this.board.keySet().equals(other.board.keySet())) {
-                return false;
-            }
-            for (String key: board.keySet()) {
-                Piece thisP = board.get(key);
-                Piece otherP = other.board.get(key);
-                if (! thisP.equals(otherP)) {
-                    return false;
-                }
-            }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        GameBoard gameBoard = (GameBoard) o;
+        return red.equals(gameBoard.red)
+                && black.equals(gameBoard.black)
+                && gameLog.equals(gameBoard.gameLog)
+                && board.equals(gameBoard.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(red, black, gameLog, board);
     }
 
     // MODIFIES: this, moving, other

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Represents a Player playing a game of XiangQi
@@ -77,5 +78,24 @@ public class Player implements Writable {
         }
 
         return jsonArray;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Player player = (Player) o;
+        return isRed == player.isRed
+                && pieces.equals(player.pieces)
+                && captured.equals(player.captured);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isRed, pieces, captured);
     }
 }
