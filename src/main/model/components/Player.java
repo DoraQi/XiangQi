@@ -98,4 +98,8 @@ public class Player implements Writable {
     public int hashCode() {
         return Objects.hash(isRed, pieces, captured);
     }
+
+    public ArrayList<Piece> getCapturedPieces() {
+        return captured;
+    }
 }

@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -118,6 +120,9 @@ public class GameBoard implements Writable {
         return makeNewPiece(pieceClass, x, y, this, isRed);
     }
 
+    public Collection<Piece> getAllPieces() {
+        return board.values();
+    }
 
     // EFFECTS: returns a string representation of the status of this board that includes
     //          positions of all pieces on board with red pieces first
@@ -154,6 +159,14 @@ public class GameBoard implements Writable {
         return board.get(toStrLoc(x, y));
     }
 
+    public Player getRed() {
+        return red;
+    }
+
+    public Player getBlack() {
+        return black;
+    }
+
     // MODIFIES: this
     // EFFECTS: sets up the board and players to play the game
     //          throw any IllegalInputException thrown, which can never happen
@@ -175,6 +188,14 @@ public class GameBoard implements Writable {
             red.capture(makeNewPiece(pc.toLowerCase(), x, y, null, true));
         } else {
             black.capture(makeNewPiece(pc.toLowerCase(), x, y, null, false));
+        }
+    }
+
+    public ArrayList<Piece> getCapturedPieces(boolean redSide) {
+        if (redSide) {
+            return red.getCapturedPieces();
+        } else {
+            return black.getCapturedPieces();
         }
     }
 
