@@ -185,9 +185,9 @@ public class GameBoard implements Writable {
     // EFFECTS: add a captured pieces to player specified by isRed
     public void addCapturedPiece(String pc, int x, int y, boolean capturedByRed) throws IllegalInputException {
         if (capturedByRed) {
-            red.capture(makeNewPiece(pc.toLowerCase(), x, y, null, true));
+            red.capture(makeNewPiece(pc.toLowerCase(), x, y, null, false));
         } else {
-            black.capture(makeNewPiece(pc.toLowerCase(), x, y, null, false));
+            black.capture(makeNewPiece(pc.toLowerCase(), x, y, null, true));
         }
     }
 

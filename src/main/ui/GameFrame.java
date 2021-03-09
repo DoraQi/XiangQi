@@ -2,13 +2,20 @@ package ui;
 
 import exception.IllegalInputException;
 import model.components.GameBoard;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class GameFrame extends JFrame implements ActionListener {
+
+    private boolean redPlaying;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
     private GameBoard gb;
     private XiangQiPanel panel;
     private JMenuBar menu;
@@ -18,10 +25,12 @@ public class GameFrame extends JFrame implements ActionListener {
     public static final String DEFAULT_FONT = "Ariel";
 
     public GameFrame() {
-        gb = new GameBoard();
+        jsonReader = new JsonReader();
+        jsonWriter = new JsonWriter();
         try {
-            gb.setUpClassicGame();
-        } catch (IllegalInputException e) {
+            gb = jsonReader.loadGame();
+            boolean redStart = jsonReader.getFirstStart();
+        } catch (IllegalInputException | IOException e) {
             throw new RuntimeException();
         }
 
@@ -32,8 +41,8 @@ public class GameFrame extends JFrame implements ActionListener {
     }
 
     private void setUpPlayerPanels() {
-        this.add(new PlayerPanel(gb.getRed()), BorderLayout.NORTH);
-        this.add(new PlayerPanel(gb.getBlack()), BorderLayout.SOUTH);
+        this.add(new PlayerPanel(gb.getRed(), this), BorderLayout.NORTH);
+        this.add(new PlayerPanel(gb.getBlack(), this), BorderLayout.SOUTH);
     }
 
     private void setUpMenu() {
@@ -64,8 +73,21 @@ public class GameFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public boolean isRedPlaying() {
+        return redPlaying;
+    }
+
+    public void handleSurrender(JPanel surrenderPanel) {
 
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Hi");
+    }
+
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        System.out.println(e.getSource());
+//    }
 }

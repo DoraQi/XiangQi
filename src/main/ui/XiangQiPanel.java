@@ -6,12 +6,13 @@ import java.awt.*;
 public class XiangQiPanel extends JPanel {
     private JLabel background = new JLabel(new ImageIcon(".\\data\\gameboard-resized.png"));
 
-    public static final Color COLOUR = new Color(0x807263);
+    public static final Color COLOUR = Color.black;
 
     public XiangQiPanel() {
         background.setVisible(true);
         setBackground(COLOUR);
-        add(background);
+        this.setOpaque(true);
+        add(background, JLayeredPane.DEFAULT_LAYER);
         setVisible(true);
     }
 }
