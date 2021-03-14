@@ -39,6 +39,10 @@ public class PlayerPanel extends JPanel {
         setVisible(true);
     }
 
+    public void update() {
+        displayCapturedPieces();
+    }
+
     private void addUnselectButton() {
         unselectButton = new GameButton("unselect");
         unselectButton.setBackground(colour);
@@ -69,7 +73,7 @@ public class PlayerPanel extends JPanel {
         ArrayList<Piece> pieces = player.getCapturedPieces();
         for (Piece p : pieces) {
             JLabel pieceLabel = new JLabel(p.getPieceClass().toString());
-            pieceLabel.setPreferredSize(new Dimension(100, 100));
+            pieceLabel.setPreferredSize(new Dimension(150, 100));
             pieceLabel.setFont(new Font(GameFrame.DEFAULT_FONT, Font.PLAIN, 12));
             pieceLabel.setForeground(colour);
             capturedPieces.add(pieceLabel);

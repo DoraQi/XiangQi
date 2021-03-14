@@ -14,12 +14,13 @@ import java.io.IOException;
 
 public class GameFrame extends JFrame {
     private ActionListener actionListener;
-    private boolean redPlaying;
     private GameBoard gb;
     private XiangQiPanel panel;
     private JMenuBar menu;
     private JMenuItem loadButton;
     private JMenuItem saveButton;
+    private PlayerPanel redP;
+    private PlayerPanel blackP;
 
     public static final String DEFAULT_FONT = "Ariel";
 
@@ -34,6 +35,8 @@ public class GameFrame extends JFrame {
 
     public void updateAll() {
         panel.updateDisplay();
+        redP.update();
+        blackP.update();
     }
 
     public ActionListener getActionListener() {
@@ -41,8 +44,10 @@ public class GameFrame extends JFrame {
     }
 
     private void setUpPlayerPanels() {
-        this.add(new PlayerPanel(gb.getRed(), this), BorderLayout.SOUTH);
-        this.add(new PlayerPanel(gb.getBlack(), this), BorderLayout.NORTH);
+        redP = new PlayerPanel(gb.getRed(), this);
+        blackP = new PlayerPanel(gb.getBlack(), this);
+        this.add(redP, BorderLayout.SOUTH);
+        this.add(blackP, BorderLayout.NORTH);
     }
 
     private void setUpMenu() {
@@ -66,7 +71,17 @@ public class GameFrame extends JFrame {
     }
 
     private void setUpFrame() {
-        this.setPreferredSize(new Dimension(1000, 1200));
+        JLayeredPane layeredPane = new JLayeredPane();
+        JPanel bgPanel = new JPanel();
+        ImageIcon bgIcon = new ImageIcon(".\\data\\boardbg.png");
+        JLabel bgLabel = new JLabel(bgIcon);
+        bgPanel.add(bgLabel);
+        bgPanel.setBounds(0, 0, bgIcon.getIconWidth(), bgIcon.getIconHeight());
+        layeredPane.setBackground(Color.BLACK);
+        layeredPane.add(bgPanel);
+        layeredPane.setVisible(true);
+        layeredPane.setOpaque(true);
+        this.setPreferredSize(new Dimension(980, 1320));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
@@ -74,7 +89,8 @@ public class GameFrame extends JFrame {
         // image source: <a target="_blank" href="https://icons8.com/icons/set/katana-sword">Katana Sword icon</a> icon
         // by <a target="_blank" href="https://icons8.com">Icons8</a>
         this.panel = new XiangQiPanel(this, gb);
-        this.add(panel, BorderLayout.CENTER);
+        layeredPane.add(panel, JLayeredPane.POPUP_LAYER);
+        this.add(layeredPane, BorderLayout.CENTER);
         setVisible(true);
     }
 }

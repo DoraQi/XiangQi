@@ -21,9 +21,10 @@ public class XiangQiPanel extends JPanel {
 
     public XiangQiPanel(GameFrame gameFrame, GameBoard gb) {
         board = gb;
-        this.setBackground(Color.lightGray);
-        this.setOpaque(true);
-        this.setBounds(0, 0, 96 * 9, 96 * 10);
+        this.setBackground(new Color(184, 175, 162));
+        this.setOpaque(false);
+        this.setBounds(50, 50, 96 * 9, 96 * 10);
+        this.setPreferredSize(new Dimension(96 * 9, 96 * 10));
         this.setVisible(true);
         frame = gameFrame;
         locButton = new HashMap<>();

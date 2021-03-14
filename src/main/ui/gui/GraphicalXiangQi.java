@@ -66,7 +66,6 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
                 throw new IllegalInputException();
             } else {
                 previousSelectedButton = button;
-                previousSelectedButton.selectButton();
             }
         } else {
             gameBoard.playerMove(String.valueOf(previousSelectedButton.getPosX())
@@ -77,7 +76,6 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
     }
 
     private void unselect() {
-        previousSelectedButton.unselectButton();
         previousSelectedButton = null;
     }
 

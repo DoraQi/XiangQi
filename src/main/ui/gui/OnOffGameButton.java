@@ -25,63 +25,60 @@ public class OnOffGameButton extends JButton {
         setFocusable(false);
         setBackground(DEFAULT_ICON_COLOUR);
         setOpaque(false);
+        setBorder(null);
     }
 
-    public void selectButton() {
-        Color currentC = this.getBackground();
-        setBackground(new Color((float) (currentC.getRed() / 255.0), (float) (currentC.getGreen() / 255.0),
-                (float) (currentC.getBlue() / 255.0), .5f));
-        setOpaque(false);
-    }
-
-    public void unselectButton() {
-        Color currentC = this.getBackground();
-        setBackground(new Color((float) (currentC.getRed() / 255.0), (float) (currentC.getGreen() / 255.0),
-                (float) (currentC.getBlue() / 255.0), 0));
-        setOpaque(true);
-    }
+//    public void selectButton() {
+//        Color currentC = this.getBackground();
+//        setBackground(new Color((float) (currentC.getRed() / 255.0), (float) (currentC.getGreen() / 255.0),
+//                (float) (currentC.getBlue() / 255.0), .5f));
+//        setOpaque(false);
+//    }
+//
+//    public void unselectButton() {
+//        Color currentC = this.getBackground();
+//        setBackground(new Color((float) (currentC.getRed() / 255.0), (float) (currentC.getGreen() / 255.0),
+//                (float) (currentC.getBlue() / 255.0), 0));
+//        setOpaque(true);
+//    }
 
     public void displayPiece(Piece p) {
+        StringBuilder fileName = new StringBuilder(".\\data\\");
         switch (p.getPieceClass()) {
             case CANNON:
-                setIcon(new ImageIcon(".\\data\\cannon.png"));
+                fileName.append("cannon");
                 break;
             case HORSE:
-                setIcon(new ImageIcon(".\\data\\horse.png"));
+                fileName.append("horse");
                 break;
             case ADVISOR:
-                setIcon(new ImageIcon(".\\data\\advisor.png"));
+                fileName.append("advisor");
                 break;
             case CHARIOT:
-                setIcon(new ImageIcon(".\\data\\chariot.png"));
+                fileName.append("chariot");
                 break;
             default:
-                displayPiece2(p);
+                displayPiece2(fileName, p);
         }
-        setColour(p);
+        if (p.isRed()) {
+            fileName.append("red.png");
+        } else {
+            fileName.append("blk.png");
+        }
+        setIcon(new ImageIcon(fileName.toString()));
     }
 
-    private void displayPiece2(Piece p) {
+    private void displayPiece2(StringBuilder fileName, Piece p) {
         switch (p.getPieceClass()) {
             case GENERAL:
-                setIcon(new ImageIcon(".\\data\\generalred.png"));
+                fileName.append("general");
                 break;
             case SOLDIER:
-                setIcon(new ImageIcon(".\\data\\soldierblk.png"));
+                fileName.append("soldier");
                 break;
             case ELEPHANT:
-                setIcon(new ImageIcon(".\\data\\elephantred.png"));
+                fileName.append("elephant");
                 break;
-        }
-    }
-
-    private void setColour(Piece p) {
-        if (p.isRed()) {
-            setBackground(RED);
-            setOpaque(true);
-        } else {
-            setBackground(BLACK);
-            setOpaque(true);
         }
     }
 
