@@ -1,17 +1,18 @@
 package ui;
 
+import exception.IllegalInputException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
+import model.pieces.*;
+import ui.gui.GameFrame;
+import ui.gui.GraphicalXiangQi;
+import ui.gui.OnOffGameButton;
+import ui.gui.XiangQiPanel;
 
-import java.io.FileNotFoundException;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-//        try {
-//            new XiangQi();
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Error");
-//        }
-        new GameFrame();
-
+        new GraphicalXiangQi();
     }
 }

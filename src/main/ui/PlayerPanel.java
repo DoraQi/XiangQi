@@ -2,12 +2,11 @@ package ui;
 
 import model.components.Player;
 import model.pieces.Piece;
-import sun.util.resources.pt.CalendarData_pt;
+import ui.gui.GameButton;
+import ui.gui.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class PlayerPanel extends JPanel {
@@ -15,7 +14,7 @@ public class PlayerPanel extends JPanel {
     private Player player;
     private final Color colour;
     private JLabel playerLabel;
-    private JButton surrenderButton;
+    private JButton unselectButton;
     JPanel capturedPieces;
 
     private static final int HEIGHT = 100;
@@ -36,19 +35,19 @@ public class PlayerPanel extends JPanel {
         }
         displayPlayerIcon();
         displayCapturedPieces();
-        addSurrenderButton();
+        addUnselectButton();
         setVisible(true);
     }
 
-    private void addSurrenderButton() {
-        surrenderButton = new GameButton("surrender");
-        surrenderButton.setBackground(colour);
-        surrenderButton.setForeground(Color.WHITE);
-        surrenderButton.setFocusable(false);
-        surrenderButton.setBorder(BorderFactory.createSoftBevelBorder(1, colour, Color.lightGray));
-        surrenderButton.setBounds(250 + CAPTURED_DISPLAY_WIDTH, (HEIGHT - 50) / 2, 100, 50);
-        this.add(surrenderButton);
-        surrenderButton.addActionListener(frame);
+    private void addUnselectButton() {
+        unselectButton = new GameButton("unselect");
+        unselectButton.setBackground(colour);
+        unselectButton.setForeground(Color.WHITE);
+        unselectButton.setFocusable(false);
+        unselectButton.setBorder(BorderFactory.createSoftBevelBorder(1, colour, Color.lightGray));
+        unselectButton.setBounds(250 + CAPTURED_DISPLAY_WIDTH, (HEIGHT - 50) / 2, 100, 50);
+        this.add(unselectButton);
+        unselectButton.addActionListener(frame.getActionListener());
     }
 
     private void displayPlayerIcon() {
@@ -77,18 +76,4 @@ public class PlayerPanel extends JPanel {
         }
         this.add(capturedPieces);
     }
-//
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == surrenderButton) {
-//            JPanel surrenderPanel = new JPanel();
-//            JLabel message = new JLabel("CONGRATULATIONS\nYOU WIN!");
-//            message.setFont(new Font("Comic Sans", Font.BOLD, 20));
-//            message.setForeground(colour);
-//            surrenderPanel.add(message);
-//            this.add(surrenderPanel, CENTER_ALIGNMENT);
-//            surrenderButton.setEnabled(false);
-//            frame.handleSurrender(surrenderPanel);
-//        }
-//    }
 }
