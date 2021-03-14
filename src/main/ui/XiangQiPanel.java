@@ -10,7 +10,8 @@ public class XiangQiPanel extends JPanel {
 
     public XiangQiPanel() {
         background.setVisible(true);
-        setBackground(COLOUR);
+        this.add(background);
+        this.setBounds(background.getBounds());
         this.setOpaque(true);
         add(background, JLayeredPane.DEFAULT_LAYER);
         setVisible(true);

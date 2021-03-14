@@ -19,9 +19,7 @@ public class GameFrame extends JFrame implements ActionListener {
     private GameBoard gb;
     private XiangQiPanel panel;
     private JMenuBar menu;
-//
-//    private static final int WIDTH = 1000;
-//    private static final int HEIGHT = 1200;
+
     public static final String DEFAULT_FONT = "Ariel";
 
     public GameFrame() {
@@ -77,13 +75,12 @@ public class GameFrame extends JFrame implements ActionListener {
         return redPlaying;
     }
 
-    public void handleSurrender(JPanel surrenderPanel) {
-
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Hi");
+        System.out.println(e.getSource());
+        if (e.getSource().toString().equalsIgnoreCase("surrender")) {
+            System.out.println("surrendered");
+        }
     }
 
 //    @Override

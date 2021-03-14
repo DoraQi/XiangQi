@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class PlayerPanel extends JPanel implements ActionListener {
+public class PlayerPanel extends JPanel {
     private GameFrame frame;
     private Player player;
     private final Color colour;
@@ -41,14 +41,14 @@ public class PlayerPanel extends JPanel implements ActionListener {
     }
 
     private void addSurrenderButton() {
-        surrenderButton = new JButton("surrender");
+        surrenderButton = new GameButton("surrender");
         surrenderButton.setBackground(colour);
         surrenderButton.setForeground(Color.WHITE);
         surrenderButton.setFocusable(false);
         surrenderButton.setBorder(BorderFactory.createSoftBevelBorder(1, colour, Color.lightGray));
         surrenderButton.setBounds(250 + CAPTURED_DISPLAY_WIDTH, (HEIGHT - 50) / 2, 100, 50);
         this.add(surrenderButton);
-        surrenderButton.addActionListener(this);
+        surrenderButton.addActionListener(frame);
     }
 
     private void displayPlayerIcon() {
@@ -77,18 +77,18 @@ public class PlayerPanel extends JPanel implements ActionListener {
         }
         this.add(capturedPieces);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == surrenderButton) {
-            JPanel surrenderPanel = new JPanel();
-            JLabel message = new JLabel("CONGRATULATIONS\nYOU WIN!");
-            message.setFont(new Font("Comic Sans", Font.BOLD, 20));
-            message.setForeground(colour);
-            surrenderPanel.add(message);
-            this.add(surrenderPanel, CENTER_ALIGNMENT);
-            surrenderButton.setEnabled(false);
-            frame.handleSurrender(surrenderPanel);
-        }
-    }
+//
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        if (e.getSource() == surrenderButton) {
+//            JPanel surrenderPanel = new JPanel();
+//            JLabel message = new JLabel("CONGRATULATIONS\nYOU WIN!");
+//            message.setFont(new Font("Comic Sans", Font.BOLD, 20));
+//            message.setForeground(colour);
+//            surrenderPanel.add(message);
+//            this.add(surrenderPanel, CENTER_ALIGNMENT);
+//            surrenderButton.setEnabled(false);
+//            frame.handleSurrender(surrenderPanel);
+//        }
+//    }
 }
