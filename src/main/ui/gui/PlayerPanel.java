@@ -8,6 +8,7 @@ import ui.gui.GameFrame;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerPanel extends JPanel {
     private GameFrame frame;
@@ -72,7 +73,7 @@ public class PlayerPanel extends JPanel {
         capturedPieces.setBounds(200, 100 / 2 - CAPTURED_DISPLAY_HEIGHT / 2,
                 CAPTURED_DISPLAY_WIDTH, CAPTURED_DISPLAY_HEIGHT);
         capturedPieces.setBackground(Color.lightGray);
-        ArrayList<Piece> pieces = player.getCapturedPieces();
+        List<Piece> pieces = player.getCapturedPieces();
         for (Piece p : pieces) {
             JLabel pieceLabel = new JLabel(p.getPieceClass().toString());
             pieceLabel.setPreferredSize(new Dimension(150, 100));

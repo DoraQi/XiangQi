@@ -6,6 +6,7 @@ import model.pieces.Horse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static model.components.PieceFactory.createPiece;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HorseTest extends PieceTest{
@@ -40,7 +41,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedHorizontalR() throws IllegalInputException {
-        board.createPiece("soldier [4,4]b");
+        createPiece("soldier [4,4]b", board);
 
         assertTrue(redP.canMoveTo(2, 6));
         assertTrue(redP.canMoveTo(2,2));
@@ -55,7 +56,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedHorizontalL() throws IllegalInputException {
-        board.createPiece("soldier [2,4]b");
+        createPiece("soldier [2,4]b", board);
 
         assertTrue(redP.canMoveTo(2, 6));
         assertTrue(redP.canMoveTo(2,2));
@@ -70,7 +71,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedVerticalBelow() throws IllegalInputException {
-        board.createPiece("soldier [3,3]b");
+        createPiece("soldier [3,3]b", board);
 
         assertTrue(redP.canMoveTo(2, 6));
         assertTrue(redP.canMoveTo(4,6));
@@ -85,7 +86,7 @@ public class HorseTest extends PieceTest{
 
     @Test
     public void testCanMoveToBlockedVerticalAbove() throws IllegalInputException {
-        board.createPiece("soldier [3,5]b");
+        createPiece("soldier [3,5]b", board);
 
         assertTrue(redP.canMoveTo(1,5));
         assertTrue(redP.canMoveTo(5,5));

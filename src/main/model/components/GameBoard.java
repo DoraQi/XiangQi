@@ -12,10 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 import static model.pieces.PieceClass.*;
 
@@ -28,13 +25,12 @@ public class GameBoard implements Writable {
     Player red;
     Player black;
     String gameLog;
-
     HashMap<String, Piece> board;
 
-    private static final int MAX_X_COORD = 8;
-    private static final int MIN_X_COORD = 0;
-    private static final int MAX_Y_COORD = 9;
-    private static final int MIN_Y_COORD = 0;
+    public static final int MAX_X_COORD = 8;
+    public static final int MIN_X_COORD = 0;
+    public static final int MAX_Y_COORD = 9;
+    public static final int MIN_Y_COORD = 0;
 
     // EFFECTS: instantiate a GameBoard
     public GameBoard() {
@@ -95,31 +91,6 @@ public class GameBoard implements Writable {
         return !board.containsKey(toStrLoc(x, y));
     }
 
-    // REQUIRES: input string is in all lower case
-    // MODIFIES: this
-    // EFFECTS: add a piece according to the given instruction and returned added piece
-    //          throws IllegalInputException if given coordinate is not a valid position on the board or if the given
-    //          specification for the piece is illegal
-    public Piece createPiece(String inpt) throws IllegalInputException {
-        int x;
-        int y;
-        String pieceClass;
-        boolean isRed;
-        try {
-            String[] inptSplit = inpt.split(" \\[|,|\\]");
-            pieceClass = inptSplit[0];
-            x = Integer.parseInt(inptSplit[1]);
-            y = Integer.parseInt(inptSplit[2]);
-            isRed = inptSplit[3].equals("r");
-        } catch (RuntimeException e) {
-            throw new IllegalInputException();
-        }
-        if (x > MAX_X_COORD || x < MIN_X_COORD || y > MAX_Y_COORD || y < MIN_Y_COORD) {
-            throw new IllegalInputException();
-        }
-        return makeNewPiece(pieceClass, x, y, this, isRed);
-    }
-
     public void clearBoard() {
         board = new HashMap<>();
         red.clear();
@@ -173,17 +144,13 @@ public class GameBoard implements Writable {
         return black;
     }
 
-    // MODIFIES: this
-    // EFFECTS: sets up the board and players to play the game
-    //          throw any IllegalInputException thrown, which can never happen
-    public void setUpClassicGame() throws IllegalInputException {
-        makeSoldiers();
-        makeChariots();
-        makeCannons();
-        makeElephants();
-        makeHorses();
-        makeGenerals();
-        makeAdvisors();
+    // EFFECTS: returns the array of captured pieces
+    public List<Piece> getCapturedPieces(boolean redSide) {
+        if (redSide) {
+            return red.getCapturedPieces();
+        } else {
+            return black.getCapturedPieces();
+        }
     }
 
 
@@ -194,14 +161,6 @@ public class GameBoard implements Writable {
             red.capture(makeNewPiece(pc.toLowerCase(), x, y, null, false));
         } else {
             black.capture(makeNewPiece(pc.toLowerCase(), x, y, null, true));
-        }
-    }
-
-    public ArrayList<Piece> getCapturedPieces(boolean redSide) {
-        if (redSide) {
-            return red.getCapturedPieces();
-        } else {
-            return black.getCapturedPieces();
         }
     }
 
@@ -301,69 +260,6 @@ public class GameBoard implements Writable {
         p.move(x, y);
         // update position on board
         placePiece(p);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: makes all generals for both red and black sides
-    private void makeGenerals() throws IllegalInputException {
-        makeNewPiece("general", 4, 9, this, false);
-        makeNewPiece("general", 4, 0, this, true);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: makes all advisors for both red and black sides
-    //          never actually throws the exception...
-    private void makeAdvisors() throws IllegalInputException {
-        makeNewPiece("advisor", 3, 9, this, false);
-        makeNewPiece("advisor", 5, 9, this, false);
-        makeNewPiece("advisor", 3, 0, this, true);
-        makeNewPiece("advisor", 5, 0, this, true);
-    }
-
-
-    // MODIFIES: this
-    // EFFECTS: makes all horses for both red and black sides
-    private void makeHorses() throws IllegalInputException {
-        makeNewPiece("horse", 1, 9, this, false);
-        makeNewPiece("horse", 7, 9, this, false);
-        makeNewPiece("horse", 1, 0, this, true);
-        makeNewPiece("horse", 7, 0, this, true);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: makes all elephants for both red and black sides
-    private void makeElephants() throws IllegalInputException {
-        makeNewPiece("elephant", 2, 9, this, false);
-        makeNewPiece("elephant", 6, 9, this, false);
-        makeNewPiece("elephant", 2, 0, this, true);
-        makeNewPiece("elephant", 6, 0, this, true);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: makes all cannons for both red and black sides
-    private void makeCannons() throws IllegalInputException {
-        makeNewPiece("cannon", 1, 7, this, false);
-        makeNewPiece("cannon",7, 7, this, false);
-        makeNewPiece("cannon",1, 2, this, true);
-        makeNewPiece("cannon",7, 2, this, true);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: makes all soldiers for both red and black sides
-    private void makeChariots() throws IllegalInputException {
-        makeNewPiece("chariot", 0, 9, this, false);
-        makeNewPiece("chariot", 8, 9, this, false);
-        makeNewPiece("chariot", 0, 0, this, true);
-        makeNewPiece("chariot", 8, 0, this, true);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: makes all soldiers for both red and black sides
-    private void makeSoldiers() throws IllegalInputException {
-        for (int i = 0; i <= 8; i += 2) {
-            makeNewPiece("soldier", i, 3, this, true);
-            makeNewPiece("soldier", i, 6, this, false);
-        }
     }
 
     // REQUIRES: position (x, y) is a valid position on the board and occupied by a piece

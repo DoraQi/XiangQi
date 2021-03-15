@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import static model.components.PieceFactory.createPiece;
+
 /**
  * Represents a reader that reads Gameboard from JSON data stored in file
  * Code adapted from JsonSerializationDemo by Paul Carter
@@ -93,7 +95,7 @@ public class JsonReader {
         int posX = jsonObject.getInt("posX");
         int posY = jsonObject.getInt("posY");
         String isRed = jsonObject.getString("isRed");
-        board.createPiece(pieceClass + " [" + posX + "," + posY + "]" + isRed);
+        createPiece(pieceClass + " [" + posX + "," + posY + "]" + isRed, board);
     }
 
     // EFFECTS: returns true if file indicates red should go first, false otherwise

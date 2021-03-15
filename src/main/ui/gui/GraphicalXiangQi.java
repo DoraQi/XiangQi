@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import static model.components.PieceFactory.createPiece;
+import static model.components.PieceFactory.setUpClassicGame;
+
 public class GraphicalXiangQi extends JFrame implements ActionListener {
     private boolean redMoving;
     private GameBoard gameBoard;
@@ -25,12 +28,8 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
         jsonWriter = new JsonWriter();
         jsonReader = new JsonReader();
         gameFrame = new GameFrame(gameBoard, this);
-        try {
-            gameBoard.setUpClassicGame();
-            redMoving = true;
-        } catch (IllegalInputException e) {
-            throw new RuntimeException("can never happen");
-        }
+        setUpClassicGame(gameBoard);
+        redMoving = true;
         gameFrame.updateAll();
         gameFrame.setVisible(true);
     }
@@ -70,7 +69,7 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
                 gameBoard.clearBoard();
                 gameFrame.updateAll();
             }
-            gameBoard.createPiece(entry);
+            createPiece(entry, gameBoard);
             gameFrame.updateAll();
         }
     }

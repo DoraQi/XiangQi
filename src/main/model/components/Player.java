@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,8 +14,8 @@ import java.util.Objects;
  */
 public class Player implements Writable {
     private final boolean isRed;
-    private ArrayList<Piece> pieces;
-    private ArrayList<Piece> captured;
+    private List<Piece> pieces;
+    private List<Piece> captured;
 
     public Player(boolean isRed) {
         this.isRed = isRed;
@@ -42,7 +43,7 @@ public class Player implements Writable {
     }
 
     // EFFECTS: returns a list of all the pieces this player has
-    public ArrayList<Piece> getPieces() {
+    public List<Piece> getPieces() {
         return pieces;
     }
 
@@ -61,9 +62,10 @@ public class Player implements Writable {
         return captured.contains(p);
     }
 
+    // EFFECTS: clear all pieces and captured pieces from this player
     public void clear() {
-        pieces = new ArrayList<>();
-        captured = new ArrayList<>();
+        pieces.clear();
+        captured.clear();
     }
 
     @Override
@@ -104,7 +106,7 @@ public class Player implements Writable {
         return Objects.hash(isRed, pieces, captured);
     }
 
-    public ArrayList<Piece> getCapturedPieces() {
+    public List<Piece> getCapturedPieces() {
         return captured;
     }
 }

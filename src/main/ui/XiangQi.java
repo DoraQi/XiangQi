@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static model.components.PieceFactory.*;
+
 /**
  * A game of XiangQi
  */
@@ -114,11 +116,7 @@ public class XiangQi {
     private void playClassicGame() throws QuitGameException, IllegalNumGeneralException {
         game = new GameBoard();
         System.out.println("Welcome to a classic game of XiangQi!");
-        try {
-            game.setUpClassicGame();
-        } catch (IllegalInputException e) {
-            throw new RuntimeException("can never happen");
-        }
+        setUpClassicGame(game);
         System.out.println(game);
         playGame(true);
     }
@@ -151,7 +149,7 @@ public class XiangQi {
                 continue;
             }
             try {
-                System.out.println("Added " + game.createPiece(inpt));
+                System.out.println("Added " + createPiece(inpt, game));
             } catch (IllegalInputException e) {
                 System.out.println(e.getMessage());
             }
