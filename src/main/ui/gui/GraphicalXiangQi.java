@@ -3,7 +3,6 @@ package ui.gui;
 import exception.IllegalInputException;
 import exception.QuitGameException;
 import model.components.GameBoard;
-import model.pieces.Piece;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -16,7 +15,7 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
     private boolean redMoving;
     private GameBoard gameBoard;
     private GameFrame gameFrame;
-    private OnOffGameButton previousSelectedButton;
+    private BoardButton previousSelectedButton;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
@@ -39,9 +38,9 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        if (source instanceof OnOffGameButton) {
+        if (source instanceof BoardButton) {
             try {
-                handleGameButtonResponse((OnOffGameButton) e.getSource());
+                handleGameButtonResponse((BoardButton) e.getSource());
                 gameFrame.updateAll();
             } catch (IllegalInputException | QuitGameException ignored) {
                 System.out.println("Don't rlly care");
@@ -53,12 +52,30 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
             } catch (IOException | IllegalInputException fileNotFoundException) {
                 throw new RuntimeException("Error loading / saving game");
             }
-        } else if (source instanceof JButton) {
-            unselect();
+        } else if (source instanceof GameButton) {
+            try {
+                handleFuntionalButtonResponse((GameButton) source);
+            } catch (IllegalInputException illegalInputException) {
+                System.out.println("Don't rlly care");
+            }
         }
     }
 
-    private void handleGameButtonResponse(OnOffGameButton button) throws IllegalInputException, QuitGameException {
+    private void handleFuntionalButtonResponse(GameButton button) throws IllegalInputException {
+        if (button.getText().equalsIgnoreCase("unselect")) {
+            unselect();
+        } else {
+            String entry = gameFrame.getTextEntry();
+            if (entry.equals("clear")) {
+                gameBoard.clearBoard();
+                gameFrame.updateAll();
+            }
+            gameBoard.createPiece(entry);
+            gameFrame.updateAll();
+        }
+    }
+
+    private void handleGameButtonResponse(BoardButton button) throws IllegalInputException, QuitGameException {
         int x = button.getPosX();
         int y = button.getPosY();
         if (previousSelectedButton == null) {

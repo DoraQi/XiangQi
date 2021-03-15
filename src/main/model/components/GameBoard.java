@@ -120,6 +120,12 @@ public class GameBoard implements Writable {
         return makeNewPiece(pieceClass, x, y, this, isRed);
     }
 
+    public void clearBoard() {
+        board = new HashMap<>();
+        red.clear();
+        black.clear();
+    }
+
     public Collection<Piece> getAllPieces() {
         return board.values();
     }

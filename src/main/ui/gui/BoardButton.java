@@ -6,7 +6,7 @@ import model.pieces.PieceClass;
 import javax.swing.*;
 import java.awt.*;
 
-public class OnOffGameButton extends JButton {
+public class BoardButton extends JButton {
     private int posX;
     private int posY;
 
@@ -18,7 +18,7 @@ public class OnOffGameButton extends JButton {
     private static final Color BLACK = new Color(6, 13, 38);
 
 
-    public OnOffGameButton(int x, int y) {
+    public BoardButton(int x, int y) {
         super(DEFAULT_ICON);
         posX = x;
         posY = y;

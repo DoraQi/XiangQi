@@ -1,16 +1,10 @@
 package ui.gui;
 
-import exception.IllegalInputException;
 import model.components.GameBoard;
-import persistence.JsonReader;
-import persistence.JsonWriter;
-import ui.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class GameFrame extends JFrame {
     private ActionListener actionListener;
@@ -21,6 +15,7 @@ public class GameFrame extends JFrame {
     private JMenuItem saveButton;
     private PlayerPanel redP;
     private PlayerPanel blackP;
+    private AddPiecePanel apPanel;
 
     public static final String DEFAULT_FONT = "Ariel";
 
@@ -30,6 +25,7 @@ public class GameFrame extends JFrame {
         setUpFrame();
         setUpMenu();
         setUpPlayerPanels();
+        setUpApPanel();
         pack();
     }
 
@@ -41,6 +37,15 @@ public class GameFrame extends JFrame {
 
     public ActionListener getActionListener() {
         return actionListener;
+    }
+
+    public String getTextEntry() {
+        return apPanel.getInpt();
+    }
+
+    private void setUpApPanel() {
+        apPanel = new AddPiecePanel(actionListener);
+        this.add(apPanel, BorderLayout.EAST);
     }
 
     private void setUpPlayerPanels() {
@@ -77,11 +82,13 @@ public class GameFrame extends JFrame {
         JLabel bgLabel = new JLabel(bgIcon);
         bgPanel.add(bgLabel);
         bgPanel.setBounds(0, 0, bgIcon.getIconWidth(), bgIcon.getIconHeight());
-        layeredPane.setBackground(Color.BLACK);
+        layeredPane.setLayout(null);
+        layeredPane.setBackground(Color.WHITE);
         layeredPane.add(bgPanel);
         layeredPane.setVisible(true);
         layeredPane.setOpaque(true);
-        this.setPreferredSize(new Dimension(980, 1320));
+        layeredPane.setPreferredSize(new Dimension(bgIcon.getIconWidth(), bgIcon.getIconHeight()));
+        this.setPreferredSize(new Dimension(bgIcon.getIconWidth() + 300, 1043 + 288));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLayout(new BorderLayout());

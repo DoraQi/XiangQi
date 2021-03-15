@@ -61,6 +61,11 @@ public class Player implements Writable {
         return captured.contains(p);
     }
 
+    public void clear() {
+        pieces = new ArrayList<>();
+        captured = new ArrayList<>();
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

@@ -12,6 +12,7 @@ public class GameButton extends JButton {
         this.buttonName = buttonName;
         this.setVisible(true);
         this.setBorder(BorderFactory.createBevelBorder(0));
+        setFocusable(false);
     }
 
     @Override

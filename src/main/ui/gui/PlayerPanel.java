@@ -1,4 +1,4 @@
-package ui;
+package ui.gui;
 
 import model.components.Player;
 import model.pieces.Piece;
@@ -33,6 +33,8 @@ public class PlayerPanel extends JPanel {
         } else {
             colour = new Color(6, 13, 38);
         }
+        capturedPieces = new JPanel();
+        this.add(capturedPieces);
         displayPlayerIcon();
         displayCapturedPieces();
         addUnselectButton();
@@ -65,7 +67,7 @@ public class PlayerPanel extends JPanel {
     }
 
     private void displayCapturedPieces() {
-        capturedPieces = new JPanel();
+        capturedPieces.removeAll();
         capturedPieces.setLayout(new FlowLayout());
         capturedPieces.setBounds(200, 100 / 2 - CAPTURED_DISPLAY_HEIGHT / 2,
                 CAPTURED_DISPLAY_WIDTH, CAPTURED_DISPLAY_HEIGHT);
@@ -78,6 +80,5 @@ public class PlayerPanel extends JPanel {
             pieceLabel.setForeground(colour);
             capturedPieces.add(pieceLabel);
         }
-        this.add(capturedPieces);
     }
 }
