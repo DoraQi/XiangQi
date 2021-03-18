@@ -40,7 +40,7 @@ public class GameFrame extends JFrame {
     }
 
     public String getTextEntry() {
-        return apPanel.getInpt();
+        return apPanel.getInput();
     }
 
     private void setUpApPanel() {

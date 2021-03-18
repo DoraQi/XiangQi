@@ -4,11 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Represents a panel for adding new pieces to the board
+ */
 public class AddPiecePanel extends JPanel {
     public static final int WIDTH = 300;
     private JTextPane textPane;
     private GameButton submitButton;
 
+    // EFFECTS: instantiate an AddPiecePanel and set up its fields and settings
     public AddPiecePanel(ActionListener listener) {
         setLayout(null);
         setPreferredSize(new Dimension(WIDTH, 100));
@@ -34,7 +38,8 @@ public class AddPiecePanel extends JPanel {
         this.add(submitButton);
     }
 
-    public String getInpt() {
+    // EFFECTS: return the text in the text box and clear the text box
+    public String getInput() {
         String text = textPane.getText().trim().toLowerCase();
         textPane.setText("");
         return text;

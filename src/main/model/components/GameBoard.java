@@ -91,14 +91,12 @@ public class GameBoard implements Writable {
         return !board.containsKey(toStrLoc(x, y));
     }
 
+    // MODIFIES: this
+    // EFFECTS: clear all pieces on the board and from the players
     public void clearBoard() {
         board = new HashMap<>();
         red.clear();
         black.clear();
-    }
-
-    public Collection<Piece> getAllPieces() {
-        return board.values();
     }
 
     // EFFECTS: returns a string representation of the status of this board that includes
@@ -143,16 +141,6 @@ public class GameBoard implements Writable {
     public Player getBlack() {
         return black;
     }
-
-    // EFFECTS: returns the array of captured pieces
-    public List<Piece> getCapturedPieces(boolean redSide) {
-        if (redSide) {
-            return red.getCapturedPieces();
-        } else {
-            return black.getCapturedPieces();
-        }
-    }
-
 
     // MODIFIES: this
     // EFFECTS: add a captured pieces to player specified by isRed

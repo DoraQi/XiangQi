@@ -2,10 +2,9 @@ package model.components;
 
 import exception.IllegalInputException;
 import model.pieces.*;
-import ui.gui.GameButton;
 
 /**
- * Represents a factory for creating pieces
+ * Represents a factory for adding specified pieces to the given board
  */
 public class PieceFactory {
     // REQUIRES: given (x, y) position is empty on this board

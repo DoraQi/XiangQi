@@ -2,14 +2,14 @@ package ui.gui;
 
 import model.components.Player;
 import model.pieces.Piece;
-import ui.gui.GameButton;
-import ui.gui.GameFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Represents a panel that displays an icon of the player, the pieces this player has captured, and an unselect button
+ */
 public class PlayerPanel extends JPanel {
     private GameFrame frame;
     private Player player;
@@ -18,15 +18,16 @@ public class PlayerPanel extends JPanel {
     private JButton unselectButton;
     JPanel capturedPieces;
 
-    private static final int HEIGHT = 100;
+    public static final int HEIGHT = 100;
     private static final int PLAYER_ICON_SIZE = 70;
     private static final int CAPTURED_DISPLAY_HEIGHT = 80;
     private static final int CAPTURED_DISPLAY_WIDTH = 600;
 
+    // EFFECTS: instantiates a PlayerPanel object and set up all fields
     public PlayerPanel(Player p, GameFrame f) {
         frame = f;
         player = p;
-        setPreferredSize(new Dimension(100, HEIGHT));
+        setPreferredSize(new Dimension(0, HEIGHT));
         setBackground(Color.WHITE);
         setLayout(null);
         if (player.isRed()) {
@@ -42,10 +43,13 @@ public class PlayerPanel extends JPanel {
         setVisible(true);
     }
 
+    // MODIFIES: this
+    // EFFECTS: update the player panel to display the current state of the player
     public void update() {
         displayCapturedPieces();
     }
 
+    // EFFECTS: add the unselect button to the panel
     private void addUnselectButton() {
         unselectButton = new GameButton("unselect");
         unselectButton.setBackground(colour);
@@ -57,6 +61,8 @@ public class PlayerPanel extends JPanel {
         unselectButton.addActionListener(frame.getActionListener());
     }
 
+    // MODIFIES: this
+    // EFFECTS: add the player icon to the panel
     private void displayPlayerIcon() {
         playerLabel = new JLabel();
         playerLabel.setOpaque(true);
@@ -67,6 +73,8 @@ public class PlayerPanel extends JPanel {
         this.add(playerLabel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: add a panel that displays all pieces captured by the represented player
     private void displayCapturedPieces() {
         capturedPieces.removeAll();
         capturedPieces.setLayout(new FlowLayout());
@@ -81,5 +89,7 @@ public class PlayerPanel extends JPanel {
             pieceLabel.setForeground(colour);
             capturedPieces.add(pieceLabel);
         }
+        capturedPieces.revalidate();
+        capturedPieces.repaint();
     }
 }
