@@ -7,24 +7,36 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a panel that displays the game board
+ */
 public class XiangQiPanel extends JPanel {
     private GameFrame frame;
     private GameBoard board;
     private Map<String, GameButton> locButton;
 
+    // EFFECTS: instantiate a XiangQiPanel
     public XiangQiPanel(GameFrame gameFrame, GameBoard gb) {
         board = gb;
+        frame = gameFrame;
+        locButton = new HashMap<>();
+        setupProperties();
+        setUpButtons();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: setup basic properties of the panel
+    private void setupProperties() {
         this.setBackground(new Color(184, 175, 162));
         this.setOpaque(false);
         this.setBounds(50, 50, 96 * 9, 96 * 10);
         this.setPreferredSize(new Dimension(96 * 9, 96 * 10));
-        this.setVisible(true);
-        frame = gameFrame;
-        locButton = new HashMap<>();
         this.setLayout(new GridLayout(10, 9));
-        setUpButtons();
+        this.setVisible(true);
     }
 
+    // MODIFIES: this
+    // EFFECTS: setup all the game buttons on the panel
     private void setUpButtons() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 9; x++) {
@@ -36,7 +48,9 @@ public class XiangQiPanel extends JPanel {
         }
     }
 
-    public synchronized void updateDisplay() {
+    // MODIFIES: this
+    // EFFECTS: update the panel to display the current status of the board
+    public void updateDisplay() {
         for (String loc : locButton.keySet()) {
             int x = Integer.parseInt(loc) / 10;
             int y = Integer.parseInt(loc) % 10;

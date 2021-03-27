@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Represents the frame of the game
+ */
 public class GameFrame extends JFrame {
     private ActionListener actionListener;
     private GameBoard gb;
@@ -19,35 +22,54 @@ public class GameFrame extends JFrame {
 
     public static final String DEFAULT_FONT = "Ariel";
 
+    // EFFECTS: instantiates a GameFrame and setup all components
     public GameFrame(GameBoard b, GraphicalXiangQi gameRunner) {
         actionListener = gameRunner;
         gb = b;
-        setUpFrame();
+        setupFrame();
+        setupGameboardDisplay();
         setUpMenu();
         setUpPlayerPanels();
         setUpApPanel();
         pack();
     }
 
+    // MODIFIES: this
+    // EFFECTS: update all panels to display the current status of the game
     public void updateAll() {
         panel.updateDisplay();
         redP.update();
         blackP.update();
     }
 
+    // getter
     public ActionListener getActionListener() {
         return actionListener;
     }
 
+    // EFFECTS: return the user input in the text pane
     public String getTextEntry() {
         return apPanel.getInput();
     }
+    
+    // MODIFIES: this
+    // EFFECTS: setup basic properties of the frame
+    private void setupFrame() {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setLayout(new BorderLayout());
+        setVisible(true);
+    }
 
+    // MODIFIES: this
+    // EFFECTS: sets up an AddPiecePanel
     private void setUpApPanel() {
         apPanel = new AddPiecePanel(actionListener);
         this.add(apPanel, BorderLayout.EAST);
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets up two PlayerPanels for each player
     private void setUpPlayerPanels() {
         redP = new PlayerPanel(gb.getRed(), this);
         blackP = new PlayerPanel(gb.getBlack(), this);
@@ -55,6 +77,8 @@ public class GameFrame extends JFrame {
         this.add(blackP, BorderLayout.NORTH);
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets up the menu
     private void setUpMenu() {
         menu = new JMenuBar();
         JMenu fileItem = new JMenu("File");
@@ -75,7 +99,9 @@ public class GameFrame extends JFrame {
         this.setJMenuBar(menu);
     }
 
-    private void setUpFrame() {
+    // MODIFIES: this
+    // EFFECTS: sets up the game board display
+    private void setupGameboardDisplay() {
         JLayeredPane layeredPane = new JLayeredPane();
         JPanel bgPanel = new JPanel();
         ImageIcon bgIcon = new ImageIcon(".\\data\\boardbg.png");
@@ -88,12 +114,9 @@ public class GameFrame extends JFrame {
         layeredPane.setVisible(true);
         layeredPane.setOpaque(true);
         layeredPane.setPreferredSize(new Dimension(bgIcon.getIconWidth(), bgIcon.getIconHeight()));
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
-        this.setLayout(new BorderLayout());
         this.panel = new XiangQiPanel(this, gb);
         layeredPane.add(panel, JLayeredPane.POPUP_LAYER);
         this.add(layeredPane, BorderLayout.CENTER);
-        setVisible(true);
+
     }
 }
