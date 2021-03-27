@@ -51,7 +51,7 @@ public class PlayerPanel extends JPanel {
 
     // EFFECTS: add the unselect button to the panel
     private void addUnselectButton() {
-        unselectButton = new GameButton("unselect");
+        unselectButton = new UtilityButton("unselect");
         unselectButton.setBackground(colour);
         unselectButton.setForeground(Color.WHITE);
         unselectButton.setFocusable(false);

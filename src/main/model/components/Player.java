@@ -42,11 +42,6 @@ public class Player implements Writable {
         pieces.remove(p);
     }
 
-    // EFFECTS: returns a list of all the pieces this player has
-    public List<Piece> getPieces() {
-        return pieces;
-    }
-
     // EFFECTS: returns true if this player is on the red side, false otherwise
     public boolean isRed() {
         return isRed;
@@ -106,7 +101,12 @@ public class Player implements Writable {
         return Objects.hash(isRed, pieces, captured);
     }
 
+    // getters
     public List<Piece> getCapturedPieces() {
         return captured;
+    }
+
+    public List<Piece> getPieces() {
+        return pieces;
     }
 }

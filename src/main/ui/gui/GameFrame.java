@@ -88,13 +88,9 @@ public class GameFrame extends JFrame {
         layeredPane.setVisible(true);
         layeredPane.setOpaque(true);
         layeredPane.setPreferredSize(new Dimension(bgIcon.getIconWidth(), bgIcon.getIconHeight()));
-        this.setPreferredSize(new Dimension(bgIcon.getIconWidth() + 300, 1043 + 288));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
-        this.setIconImage(new ImageIcon(".\\data\\katana-sword-icon.png").getImage());
-        // image source: <a target="_blank" href="https://icons8.com/icons/set/katana-sword">Katana Sword icon</a> icon
-        // by <a target="_blank" href="https://icons8.com">Icons8</a>
         this.panel = new XiangQiPanel(this, gb);
         layeredPane.add(panel, JLayeredPane.POPUP_LAYER);
         this.add(layeredPane, BorderLayout.CENTER);

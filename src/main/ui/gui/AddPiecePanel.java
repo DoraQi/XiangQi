@@ -10,18 +10,24 @@ import java.awt.event.ActionListener;
 public class AddPiecePanel extends JPanel {
     public static final int WIDTH = 300;
     private JTextPane textPane;
-    private GameButton submitButton;
+    private UtilityButton submitButton;
 
     // EFFECTS: instantiate an AddPiecePanel and set up its fields and settings
     public AddPiecePanel(ActionListener listener) {
-        setLayout(null);
-        setPreferredSize(new Dimension(WIDTH, 100));
-        setOpaque(true);
-        setBackground(Color.WHITE);
+        setupPanel();
         setUpTextPane();
         setUpSubmitButton(listener);
     }
 
+    // EFFECTS: setup the panel
+    private void setupPanel() {
+        setLayout(null);
+        setPreferredSize(new Dimension(WIDTH, 100));
+        setOpaque(true);
+        setBackground(Color.WHITE);
+    }
+
+    // EFFECTS: setup the text pane going onto the panel
     private void setUpTextPane() {
         textPane = new JTextPane();
         textPane.setBackground(Color.lightGray);
@@ -30,11 +36,11 @@ public class AddPiecePanel extends JPanel {
         this.add(textPane);
     }
 
+    // EFFECTS: setup the submit button
     private void setUpSubmitButton(ActionListener listener) {
-        submitButton = new GameButton("submit");
+        submitButton = new UtilityButton("submit");
         submitButton.setBounds(WIDTH / 3, WIDTH / 8 + WIDTH / 4 + WIDTH, WIDTH / 3, 30);
         submitButton.addActionListener(listener);
-        submitButton.setBackground(Color.lightGray);
         this.add(submitButton);
     }
 

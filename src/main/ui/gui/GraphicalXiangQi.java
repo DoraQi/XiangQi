@@ -1,6 +1,7 @@
 package ui.gui;
 
 import exception.IllegalInputException;
+import exception.IllegalNumGeneralException;
 import exception.QuitGameException;
 import model.components.GameBoard;
 import persistence.JsonReader;
@@ -14,35 +15,61 @@ import java.io.IOException;
 import static model.components.PieceFactory.createPiece;
 import static model.components.PieceFactory.setUpClassicGame;
 
+/**
+ * Represents the GUI for a XiangQi game
+ */
 public class GraphicalXiangQi extends JFrame implements ActionListener {
     private boolean redMoving;
+    private boolean gameOngoing;
     private GameBoard gameBoard;
     private GameFrame gameFrame;
-    private BoardButton previousSelectedButton;
+    private GameButton previousSelectedButton;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
+    // EFFECTS: instantiates a new GraphicalXiangQi
     public GraphicalXiangQi() {
         previousSelectedButton = null;
+        setupComponents();
+        setUpClassicGame(gameBoard);
+        redMoving = true;
+        gameOngoing = true;
+        gameFrame.updateAll();
+        gameFrame.setVisible(true);
+        pack();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: setup all components of the GUI
+    private void setupComponents() {
         gameBoard = new GameBoard();
         jsonWriter = new JsonWriter();
         jsonReader = new JsonReader();
         gameFrame = new GameFrame(gameBoard, this);
-        setUpClassicGame(gameBoard);
-        redMoving = true;
-        gameFrame.updateAll();
-        gameFrame.setVisible(true);
     }
 
+    // MODIFIES: this
+    // EFFECTS: handles any action performed by the user if game is still ongoing, ignores it if not
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (!gameOngoing) {
+            return;
+        }
         Object source = e.getSource();
-        if (source instanceof BoardButton) {
+        findHandlerForAction(source);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: handles any action performed by the user
+    private void findHandlerForAction(Object source) {
+        if (source instanceof GameButton) {
             try {
-                handleGameButtonResponse((BoardButton) e.getSource());
+                handleGameButtonResponse((GameButton) source);
                 gameFrame.updateAll();
-            } catch (IllegalInputException | QuitGameException ignored) {
-                System.out.println("Don't rlly care");
+            } catch (IllegalInputException | IllegalNumGeneralException ignored) {
+                System.out.println("ignored");
+            } catch (QuitGameException quit) {
+                gameOngoing = false;
             }
         } else if (source instanceof CustomMenuItem) {
             CustomMenuItem item = (CustomMenuItem) source;
@@ -51,16 +78,18 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
             } catch (IOException | IllegalInputException fileNotFoundException) {
                 throw new RuntimeException("Error loading / saving game");
             }
-        } else if (source instanceof GameButton) {
+        } else if (source instanceof UtilityButton) {
             try {
-                handleFuntionalButtonResponse((GameButton) source);
+                handleUtilityButtonResponse((UtilityButton) source);
             } catch (IllegalInputException illegalInputException) {
                 System.out.println("Don't rlly care");
             }
         }
     }
 
-    private void handleFuntionalButtonResponse(GameButton button) throws IllegalInputException {
+    // MODIFIES: this
+    // EFFECTS: handles any actions from a UtilityButton
+    private void handleUtilityButtonResponse(UtilityButton button) throws IllegalInputException {
         if (button.getText().equalsIgnoreCase("unselect")) {
             unselect();
         } else {
@@ -74,7 +103,10 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
         }
     }
 
-    private void handleGameButtonResponse(BoardButton button) throws IllegalInputException, QuitGameException {
+    // MODIFIES: this
+    // EFFECTS: handles any actions from a GameButton
+    private void handleGameButtonResponse(GameButton button) throws IllegalInputException, QuitGameException,
+            IllegalNumGeneralException {
         int x = button.getPosX();
         int y = button.getPosY();
         if (previousSelectedButton == null) {
@@ -88,13 +120,12 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
                     + previousSelectedButton.getPosY() + " " + button.getPosX() + button.getPosY(), redMoving);
             redMoving = !redMoving;
             unselect();
+            gameOngoing = !gameBoard.checkWin();
         }
     }
 
-    private void unselect() {
-        previousSelectedButton = null;
-    }
-
+    // MODIFIES: this
+    // EFFECTS: handles any actions from a MenuItem
     private void handleMenuItemResponse(CustomMenuItem item) throws IOException, IllegalInputException {
         if (item.getText().equalsIgnoreCase("save")) {
             jsonWriter.saveGame(gameBoard, redMoving);
@@ -107,4 +138,11 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
             gameFrame.updateAll();
         }
     }
+
+    // MODIFIES: this
+    // EFFECTS: clear any selected buttons
+    private void unselect() {
+        previousSelectedButton = null;
+    }
+
 }

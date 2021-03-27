@@ -10,7 +10,7 @@ import java.util.Map;
 public class XiangQiPanel extends JPanel {
     private GameFrame frame;
     private GameBoard board;
-    private Map<String, BoardButton> locButton;
+    private Map<String, GameButton> locButton;
 
     public XiangQiPanel(GameFrame gameFrame, GameBoard gb) {
         board = gb;
@@ -28,7 +28,7 @@ public class XiangQiPanel extends JPanel {
     private void setUpButtons() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 9; x++) {
-                BoardButton button = new BoardButton(x, 9 - y);
+                GameButton button = new GameButton(x, 9 - y);
                 locButton.put(String.valueOf(x) + (9 - y), button);
                 this.add(button, x + y * 9);
                 button.addActionListener(frame.getActionListener());
@@ -40,7 +40,7 @@ public class XiangQiPanel extends JPanel {
         for (String loc : locButton.keySet()) {
             int x = Integer.parseInt(loc) / 10;
             int y = Integer.parseInt(loc) % 10;
-            BoardButton button = locButton.get(loc);
+            GameButton button = locButton.get(loc);
             if (board.isEmptyAt(x, y)) {
                 button.toDefaultDisplay();
             } else {
