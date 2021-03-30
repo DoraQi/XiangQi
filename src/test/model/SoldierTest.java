@@ -1,6 +1,8 @@
 package model;
 
 
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Soldier;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SoldierTest extends PieceTest{
     @BeforeEach
-    public void setup() {
+    public void setup() throws LocationOccupiedException, OutOfBoundPositionException {
         board = new GameBoard();
         redP = new Soldier(2, 4, board, true);
         blackP = new Soldier(3, 7, board, false);
@@ -49,7 +51,7 @@ public class SoldierTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveAftCrossingRiverRed() {
+    public void testCanMoveAftCrossingRiverRed() throws LocationOccupiedException {
         redP.move(4,6);
 
         // moving one grid
@@ -68,7 +70,7 @@ public class SoldierTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveAftCrossingRiverBlack() {
+    public void testCanMoveAftCrossingRiverBlack() throws LocationOccupiedException {
         blackP.move(3, 3);
 
         // moving one grid

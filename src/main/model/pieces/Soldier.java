@@ -1,5 +1,7 @@
 package model.pieces;
 
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 
 /**
@@ -10,7 +12,8 @@ public class Soldier extends Piece {
 
     // REQUIRES: given (x, y) is a valid empty position on board b
     // EFFECTS: create an instance of a Soldier
-    public Soldier(int x, int y, GameBoard b, boolean isRed) {
+    public Soldier(int x, int y, GameBoard b, boolean isRed)
+            throws LocationOccupiedException, OutOfBoundPositionException {
         super(x, y, isRed, b, PieceClass.SOLDIER);
         updateCrossRiver();
     }
@@ -39,7 +42,7 @@ public class Soldier extends Piece {
 
     // REQUIRES: to is a valid position on the board that this pawn can move to
     // EFFECTS: move to given position, check if crossed river
-    public void move(int x, int y) {
+    public void move(int x, int y) throws LocationOccupiedException {
         super.move(x, y);
         updateCrossRiver();
     }

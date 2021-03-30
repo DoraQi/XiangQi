@@ -1,5 +1,7 @@
 package model;
 
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.components.Player;
 import model.pieces.Horse;
@@ -29,21 +31,21 @@ public class PlayerTest {
     }
 
     @Test
-    public void testCapture() {
+    public void testCapture() throws LocationOccupiedException, OutOfBoundPositionException {
         Piece p = new Horse(1, 2, new GameBoard(), false);
         redP.capture(p);
         assertTrue(redP.hasCaptured(p));
     }
 
     @Test
-    public void testAddPiece() {
+    public void testAddPiece() throws LocationOccupiedException, OutOfBoundPositionException {
         Piece p = new Horse(1, 2, new GameBoard(), false);
         blackP.addPiece(p);
         assertTrue(blackP.has(p));
     }
 
     @Test
-    public void testRemovePiece() {
+    public void testRemovePiece() throws LocationOccupiedException, OutOfBoundPositionException {
         Piece p = new Horse(1, 2, new GameBoard(), false);
         blackP.addPiece(p);
         assertTrue(blackP.has(p));
@@ -53,7 +55,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testGetPieces() {
+    public void testGetPieces() throws LocationOccupiedException, OutOfBoundPositionException {
         GameBoard b = new GameBoard();
         ArrayList<Piece> lst = new ArrayList<>();
         for (int i = 0; i <5; i++) {
@@ -75,7 +77,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testHas() {
+    public void testHas() throws LocationOccupiedException, OutOfBoundPositionException {
         Piece p = new Horse(1, 2, new GameBoard(), false);
         blackP.addPiece(p);
         assertTrue(blackP.has(p));
@@ -83,7 +85,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testHasCaptured() {
+    public void testHasCaptured() throws LocationOccupiedException, OutOfBoundPositionException {
         Piece p = new Horse(1, 2, new GameBoard(), false);
         redP.capture(p);
         assertTrue(redP.hasCaptured(p));

@@ -1,6 +1,8 @@
 package model;
 
 import exception.IllegalInputException;
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Cannon;
 import model.pieces.Chariot;
@@ -12,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ChariotTest extends PieceTest{
     @BeforeEach
-    public void setup() {
+    public void setup() throws LocationOccupiedException, OutOfBoundPositionException {
         board = new GameBoard();
         redP = new Chariot(1, 2, board, true);
         blackP = new Chariot(4, 7, board, false);
@@ -44,7 +46,7 @@ public class ChariotTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToBlocked() {
+    public void testCanMoveToBlocked() throws LocationOccupiedException, OutOfBoundPositionException {
         new Chariot(1, 6, board, false);
         new Chariot(5, 2, board, true);
 
@@ -60,40 +62,33 @@ public class ChariotTest extends PieceTest{
 
     @Test
     public void testEqualsNoFieldsSame() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("horse", 2, 4, board, false)));
+        assertNotEquals(makeNewPiece("horse", 2, 4, board, false), redP);
     }
 
     @Test
     public void testEqualsSamePieceClassOnly() {
-        assertFalse(redP.equals(blackP));
+        assertNotEquals(blackP, redP);
     }
 
     @Test
     public void testEqualsSameXPosOnly() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("horse", 1, 3, board, false)));
+        assertNotEquals(makeNewPiece("horse", 1, 3, board, false), redP);
     }
 
     @Test
     public void testEqualsSameYPosOnly() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("horse", 6, 2, board, false)));
+        assertNotEquals(makeNewPiece("horse", 6, 2, board, false), redP);
     }
 
     @Test
     public void testEqualsSameSideOnly() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("horse", 6, 3, board, true)));
+        assertNotEquals(makeNewPiece("horse", 6, 3, board, true), redP);
     }
 
     @Test
     public void testEqualsMultipleFieldsSame() throws IllegalInputException {
-        assertFalse(redP.equals(makeNewPiece("chariot", 3, 0, board, true)));
-        assertFalse(redP.equals(makeNewPiece("chariot", 1, 0, board, true)));
-        assertFalse(redP.equals(makeNewPiece("chariot", 1, 2, board, false)));
-    }
-
-    @Test
-    public void testEqualsSameFieldsDiffObj() throws IllegalInputException {
-        assertTrue(redP.equals(makeNewPiece("chariot", 1, 2, board, true)));
-        assertTrue(blackP.equals(makeNewPiece("chariot", 4, 7, board, false)));
+        assertNotEquals(makeNewPiece("chariot", 3, 0, board, true), redP);
+        assertNotEquals(makeNewPiece("chariot", 1, 0, board, true), redP);
     }
 
     @Test

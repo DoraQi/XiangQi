@@ -1,6 +1,8 @@
 package model;
 
 import exception.IllegalInputException;
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Horse;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HorseTest extends PieceTest{
     @BeforeEach
-    public void setup() {
+    public void setup() throws LocationOccupiedException, OutOfBoundPositionException {
         board = new GameBoard();
         redP = new Horse(3, 4, board,true);
         blackP = new Horse(7, 7, board, false);

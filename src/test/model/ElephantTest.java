@@ -1,5 +1,6 @@
 package model;
 
+import exception.LocationOccupiedException;
 import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Elephant;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ElephantTest extends PieceTest{
     @BeforeEach
-    public void setUp() throws OutOfBoundPositionException {
+    public void setUp() throws OutOfBoundPositionException, LocationOccupiedException {
         board = new GameBoard();
         redP = new Elephant(4, 2, board, true);
         blackP = new Elephant(4, 7, board, false);
@@ -34,6 +35,8 @@ public class ElephantTest extends PieceTest{
         try {
             new Elephant(2, 7, board, true);
             fail();
+        } catch (LocationOccupiedException e) {
+            fail();
         } catch (OutOfBoundPositionException ignored) {
 
         }
@@ -44,14 +47,15 @@ public class ElephantTest extends PieceTest{
         try {
             new Elephant(2, 2, board, false);
             fail();
+        } catch (LocationOccupiedException e) {
+            fail();
         } catch (OutOfBoundPositionException ignored) {
 
         }
     }
 
     @Test
-    public void testCanMoveToRedEBfRiverNotBlocked() throws OutOfBoundPositionException {
-        redP = new Elephant(4, 2, board, true);
+    public void testCanMoveToRedEBfRiverNotBlocked() {
         assertTrue(redP.canMoveTo(2, 4));
         assertTrue(redP.canMoveTo(2, 0));
         assertTrue(redP.canMoveTo(6, 4));
@@ -69,8 +73,7 @@ public class ElephantTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToBlackBfRiverNotBlocked() throws OutOfBoundPositionException {
-        blackP = new Elephant(4, 7, board, false);
+    public void testCanMoveToBlackBfRiverNotBlocked() {
         assertTrue(blackP.canMoveTo(2, 9));
         assertTrue(blackP.canMoveTo(2, 5));
         assertTrue(blackP.canMoveTo(6, 9));
@@ -88,7 +91,7 @@ public class ElephantTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToCrossRiverNotBlocked() throws OutOfBoundPositionException {
+    public void testCanMoveToCrossRiverNotBlocked() throws OutOfBoundPositionException, LocationOccupiedException {
         redP = new Elephant(3, 4, board, true);
         blackP = new Elephant(6, 5, board, false);
         assertFalse(redP.canMoveTo(1, 6));
@@ -98,8 +101,7 @@ public class ElephantTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToBlockedRed() throws OutOfBoundPositionException {
-        redP = new Elephant(4, 2, board, true);
+    public void testCanMoveToBlockedRed() throws LocationOccupiedException, OutOfBoundPositionException {
         new Horse(3, 3, board, false);
         assertFalse(redP.canMoveTo(2, 4));
 

@@ -1,5 +1,7 @@
 package model;
 
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Cannon;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CannonTest extends PieceTest{
     @BeforeEach
-    public void setup() {
+    public void setup() throws LocationOccupiedException, OutOfBoundPositionException {
         board = new GameBoard();
         redP = new Cannon(1, 2, board, true);
         blackP = new Cannon(4, 7, board, false);
@@ -44,7 +46,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToRBlock() {
+    public void testCanMoveToRBlock() throws LocationOccupiedException, OutOfBoundPositionException {
         addPiece(5, 2);
         assertTrue(redP.canMoveTo(4, 2));
         assertTrue(redP.canMoveTo(0, 2));
@@ -55,7 +57,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToVBlock() {
+    public void testCanMoveToVBlock() throws LocationOccupiedException, OutOfBoundPositionException {
         addPiece(1, 4);
         assertTrue(redP.canMoveTo(1, 3));
         assertTrue(redP.canMoveTo(1, 1));
@@ -84,7 +86,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanCapture1OnBoardH() {
+    public void testCanCapture1OnBoardH() throws LocationOccupiedException, OutOfBoundPositionException {
         addPiece(5, 2);
         assertTrue(redP.canCapture(6, 2));
         assertTrue(redP.canCapture(7, 2));
@@ -93,7 +95,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanCaptureMultipleInBetweenersH() {
+    public void testCanCaptureMultipleInBetweenersH() throws LocationOccupiedException, OutOfBoundPositionException {
         addPiece(5, 2);
         addPiece(7, 2);
         assertTrue(redP.canCapture(6, 2));
@@ -109,7 +111,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanCapture1OnBoardV() {
+    public void testCanCapture1OnBoardV() throws LocationOccupiedException, OutOfBoundPositionException {
         addPiece(1, 4);
         assertTrue(redP.canCapture(1, 5));
         assertTrue(redP.canCapture(1, 7));
@@ -118,7 +120,7 @@ public class CannonTest extends PieceTest{
     }
 
     @Test
-    public void testCanCaptureMultipleInBetweenersV() {
+    public void testCanCaptureMultipleInBetweenersV() throws LocationOccupiedException, OutOfBoundPositionException {
         addPiece(1, 4);
         addPiece(1, 6);
         assertTrue(redP.canCapture(1, 5));
@@ -134,7 +136,7 @@ public class CannonTest extends PieceTest{
     }
 
 
-    private void addPiece(int x, int y) {
+    private void addPiece(int x, int y) throws LocationOccupiedException, OutOfBoundPositionException {
         Cannon c2 = new Cannon(x, y, board, false);
     }
 }

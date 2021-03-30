@@ -1,5 +1,7 @@
 package model.pieces;
 
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 
 /**
@@ -9,7 +11,8 @@ public class Chariot extends Piece {
 
     // REQUIRES: given (x, y) is a valid empty position on board b
     // EFFECTS: creates a Chariot
-    public Chariot(int x, int y, GameBoard b, boolean side) {
+    public Chariot(int x, int y, GameBoard b, boolean side)
+            throws LocationOccupiedException, OutOfBoundPositionException {
         super(x, y, side, b, PieceClass.CHARIOT);
     }
 

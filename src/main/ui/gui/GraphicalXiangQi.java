@@ -68,8 +68,6 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
                 gameFrame.updateAll();
             } catch (IllegalInputException | IllegalNumGeneralException ignored) {
                 System.out.println("ignored");
-            } catch (QuitGameException quit) {
-                gameOngoing = false;
             }
         } else if (source instanceof CustomMenuItem) {
             CustomMenuItem item = (CustomMenuItem) source;
@@ -105,7 +103,7 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
 
     // MODIFIES: this
     // EFFECTS: handles any actions from a GameButton
-    private void handleGameButtonResponse(GameButton button) throws IllegalInputException, QuitGameException,
+    private void handleGameButtonResponse(GameButton button) throws IllegalInputException,
             IllegalNumGeneralException {
         int x = button.getPosX();
         int y = button.getPosY();
@@ -116,8 +114,8 @@ public class GraphicalXiangQi extends JFrame implements ActionListener {
                 previousSelectedButton = button;
             }
         } else {
-            gameBoard.playerMove(String.valueOf(previousSelectedButton.getPosX())
-                    + previousSelectedButton.getPosY() + " " + button.getPosX() + button.getPosY(), redMoving);
+            gameBoard.makeMove(previousSelectedButton.getPosX(), button.getPosX(), previousSelectedButton.getPosY(),
+                    button.getPosY(), redMoving);
             redMoving = !redMoving;
             unselect();
             gameOngoing = !gameBoard.checkWin();

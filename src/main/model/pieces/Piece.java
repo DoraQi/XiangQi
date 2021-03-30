@@ -1,6 +1,8 @@
 package model.pieces;
 
 
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -18,15 +20,19 @@ public abstract class Piece implements Writable {
 
     private final PieceClass pieceClass;
 
-    // REQUIRES: b is a valid board or null for a captured piece.
-    //           given (x, y) is a valid empty position on board b
     // EFFECTS: constructs elements common to all Piece
-    public Piece(int x, int y, boolean isRed, GameBoard b, PieceClass c) {
-        move(x, y);
+    public Piece(int x, int y, boolean isRed, GameBoard b, PieceClass c)
+            throws OutOfBoundPositionException, LocationOccupiedException {
+        if (x > GameBoard.MAX_X_COORD || x < GameBoard.MIN_X_COORD
+                || y > GameBoard.MAX_Y_COORD || y < GameBoard.MIN_Y_COORD) {
+            throw new OutOfBoundPositionException();
+        }
+        posX = x;
+        posY = y;
         board = b;
         this.isRed = isRed;
         if (b != null) {
-            b.placeNewPiece(this);
+            b.placePiece(this);
         }
         this.pieceClass = c;
     }
@@ -34,9 +40,12 @@ public abstract class Piece implements Writable {
     // REQUIRES: this piece can move to the given coordinate and that it's empty on board
     // MODIFIES: this
     // EFFECTS: move this piece from current position to target position
-    public void move(int x, int y) {
-        posX = x;
-        posY = y;
+    public void move(int x, int y) throws LocationOccupiedException {
+        if (x != posX || y != posY) {
+            posX = x;
+            posY = y;
+            board.updatePieceLocation(this);
+        }
     }
 
     // REQUIRES: given coordinate is a valid position on the board and occupied by an opponent's piece

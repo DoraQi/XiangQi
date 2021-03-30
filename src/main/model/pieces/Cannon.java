@@ -1,5 +1,7 @@
 package model.pieces;
 
+import exception.LocationOccupiedException;
+import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 
 /**
@@ -9,7 +11,8 @@ public class Cannon extends Piece {
 
     // REQUIRES: given (x, y) is a valid empty position on board b
     // EFFECTS: instantiates an instance of Cannon
-    public Cannon(int x, int y, GameBoard b, boolean isRed) {
+    public Cannon(int x, int y, GameBoard b, boolean isRed)
+            throws LocationOccupiedException, OutOfBoundPositionException {
         super(x, y, isRed, b, PieceClass.CANNON);
     }
 

@@ -156,7 +156,6 @@ public class XiangQi {
         }
     }
 
-    // REQUIRES: a game has been set up
     // MODIFIES: this
     // EFFECTS: repeatedly get user to make moves until <= 1 general is left on board, if any invalid input is
     //          given, ask the user to re-enter
@@ -178,20 +177,26 @@ public class XiangQi {
         }
     }
 
-    // REQUIRES: a game has been set up
     // MODIFIES: this
     // EFFECTS: prompts to get user input for a move and make the move, throws Exception if the given input is invalid
     //          throws QuitGameException if user chooses to quit
     //          throws IllegalInputException if given move is invalid in format or cannot be performed
     private void playerMove(boolean redMoving) throws IllegalInputException, QuitGameException {
+        if (redMoving) {
+            System.out.print("RED move: ");
+        } else {
+            System.out.print("BLACK move: ");
+        }
+        String inpt = console.nextLine().trim().toLowerCase();
+        if (inpt.equalsIgnoreCase("quit")) {
+            throw new QuitGameException(redMoving);
+        }
         try {
-            if (redMoving) {
-                System.out.print("RED move: ");
-            } else {
-                System.out.print("BLACK move: ");
-            }
-            String inpt = console.nextLine().trim().toLowerCase();
-            game.playerMove(inpt, redMoving);
+            int fromX = Integer.parseInt(inpt.substring(0, 1));
+            int fromY = Integer.parseInt(inpt.substring(1, 2));
+            int toX = Integer.parseInt(inpt.substring(3, 4));
+            int toY = Integer.parseInt(inpt.substring(4, 5));
+            game.makeMove(fromX, toX, toY, fromY, redMoving);
         } catch (RuntimeException e) {
             throw new IllegalInputException();
         }

@@ -1,9 +1,11 @@
 package model;
 
 import exception.IllegalInputException;
+import exception.LocationOccupiedException;
 import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Advisor;
+import model.pieces.Horse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdvisorTest extends PieceTest{
 
     @BeforeEach
-    public void setup() throws OutOfBoundPositionException {
+    public void setup() throws OutOfBoundPositionException, LocationOccupiedException {
         board = new GameBoard();
         redP = new Advisor(4, 1, board, true);
         blackP = new Advisor(4, 8, board, false);
@@ -27,9 +29,21 @@ public class AdvisorTest extends PieceTest{
     }
 
     @Test
+    void testConstructorTwoPiecesOnSameLoc() throws OutOfBoundPositionException {
+        try {
+            new Horse(4, 1, board, false);
+            fail();
+        } catch (LocationOccupiedException e) {
+            assertEquals(redP, board.getPAt(4, 1));
+        }
+    }
+
+    @Test
     public void testConstructorOutOfPalace() {
         try {
             Advisor a1 = new Advisor(0, 0, board, true);
+            fail();
+        } catch (LocationOccupiedException e) {
             fail();
         } catch (OutOfBoundPositionException ignored) {
 
@@ -41,6 +55,8 @@ public class AdvisorTest extends PieceTest{
         try {
             Advisor a1 = new Advisor(4, 7, board, true);
             fail();
+        } catch (LocationOccupiedException e) {
+            fail();
         } catch (OutOfBoundPositionException ignored) {
 
         }
@@ -51,6 +67,8 @@ public class AdvisorTest extends PieceTest{
         try {
             Advisor a1 = new Advisor(4, 0, board, false);
             fail();
+        } catch (LocationOccupiedException e) {
+            fail();
         } catch (OutOfBoundPositionException ignored) {
 
         }
@@ -60,6 +78,8 @@ public class AdvisorTest extends PieceTest{
     public void testConstructorOutOfPalace4() {
         try {
             Advisor a1 = new Advisor(7, 0, board, true);
+            fail();
+        } catch (LocationOccupiedException e) {
             fail();
         } catch (OutOfBoundPositionException ignored) {
 
@@ -94,7 +114,7 @@ public class AdvisorTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToOutPalaceRed() {
+    public void testCanMoveToOutPalaceRed() throws LocationOccupiedException {
         redP.move(3, 2);
         assertFalse(redP.canMoveTo(2, 3));
         assertFalse(redP.canMoveTo(4, 3));
@@ -107,7 +127,7 @@ public class AdvisorTest extends PieceTest{
     }
 
     @Test
-    public void testCanMoveToOutPalaceBlack() {
+    public void testCanMoveToOutPalaceBlack() throws LocationOccupiedException {
         redP.move(3, 7);
         assertFalse(redP.canMoveTo(2, 8));
         assertFalse(redP.canMoveTo(4, 6));

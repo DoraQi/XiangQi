@@ -1,5 +1,6 @@
 package model.pieces;
 
+import exception.LocationOccupiedException;
 import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 
@@ -14,7 +15,8 @@ public class Advisor extends Piece {
 
     // EFFECTS: instantiate an Advisor with given positions and side
     //          throws OutOfBoundPositionException if position is outside of designated palace
-    public Advisor(int x, int y, GameBoard b, boolean isRed) throws OutOfBoundPositionException {
+    public Advisor(int x, int y, GameBoard b, boolean isRed) throws OutOfBoundPositionException,
+            LocationOccupiedException {
         super(x, y, isRed, b, PieceClass.ADVISOR);
         minX = 3;
         maxX = 5;

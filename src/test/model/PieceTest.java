@@ -1,11 +1,11 @@
 package model;
 
+import exception.LocationOccupiedException;
 import model.components.GameBoard;
 import model.pieces.Piece;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class PieceTest {
     Piece redP;
@@ -14,12 +14,16 @@ public abstract class PieceTest {
 
     @Test
     public void testMove() {
-        redP.move(1, 3);
-        blackP.move(7, 6);
-        assertEquals(1, redP.getPosX());
-        assertEquals(3, redP.getPosY());
-        assertEquals(7, blackP.getPosX());
-        assertEquals(6, blackP.getPosY());
+        try {
+            redP.move(1, 3);
+            blackP.move(7, 6);
+            assertEquals(1, redP.getPosX());
+            assertEquals(3, redP.getPosY());
+            assertEquals(7, blackP.getPosX());
+            assertEquals(6, blackP.getPosY());
+        } catch (LocationOccupiedException e) {
+            fail();
+        }
     }
 
     @Test

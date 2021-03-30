@@ -1,9 +1,7 @@
 package model.components;
 
 
-import exception.IllegalInputException;
-import exception.IllegalNumGeneralException;
-import exception.QuitGameException;
+import exception.*;
 import model.pieces.*;
 
 import static model.components.PieceFactory.*;
@@ -115,31 +113,21 @@ public class GameBoard implements Writable {
         return strBuilder.toString().trim();
     }
 
-    // REQUIRES: position of p is currently empty on this board
     // MODIFIES: this
     // EFFECT: place given piece onto the correct position on board and add to player
-    public void placeNewPiece(Piece p) {
-        placePiece(p);
-        if (p.isRed()) {
-            red.addPiece(p);
-        } else {
-            black.addPiece(p);
+    public void placePiece(Piece p) throws LocationOccupiedException {
+        if (!isEmptyAt(p.getPosX(), p.getPosY())) {
+            throw new LocationOccupiedException();
         }
-    }
-
-    // REQUIRES: given coordinate (x, y) is a valid position on board,
-    //           given position is occupied by a Piece
-    // EFFECTS: return the piece on the given position
-    public Piece getPAt(int x, int y) {
-        return board.get(toStrLoc(x, y));
-    }
-
-    public Player getRed() {
-        return red;
-    }
-
-    public Player getBlack() {
-        return black;
+        if (! board.containsValue(p)) {
+            if (p.isRed()) {
+                red.addPiece(p);
+            } else {
+                black.addPiece(p);
+            }
+        }
+        updatePieceLocation(p);
+        assert p == board.get(toStrLoc(p.getPosX(), p.getPosY()));
     }
 
     // MODIFIES: this
@@ -150,6 +138,20 @@ public class GameBoard implements Writable {
         } else {
             black.capture(makeNewPiece(pc.toLowerCase(), x, y, null, true));
         }
+    }
+
+    // EFFECTS: return the piece on the given position or null if the position isn't occupied
+    public Piece getPAt(int x, int y) {
+        return board.get(toStrLoc(x, y));
+    }
+
+    // getters
+    public Player getRed() {
+        return red;
+    }
+
+    public Player getBlack() {
+        return black;
     }
 
     @Override
@@ -173,36 +175,17 @@ public class GameBoard implements Writable {
     }
 
     // MODIFIES: this, moving, other
-    // EFFECTS: move the piece at given location to the specified location
-    //          throws IllegalInputException if given move cannot be performed
-    //          throws QuitGameException if given move is "quit"
-    public void playerMove(String move, boolean redMoving)
-            throws IllegalInputException, QuitGameException {
-        if (move.equalsIgnoreCase("quit")) {
-            throw new QuitGameException(redMoving);
-        }
-        int fromX = Integer.parseInt(move.substring(0, 1));
-        int fromY = Integer.parseInt(move.substring(1, 2));
-        int toX = Integer.parseInt(move.substring(3, 4));
-        int toY = Integer.parseInt(move.substring(4, 5));
-
-        if (redMoving) {
-            makeMove(red, black, fromX, toX, toY, fromY);
-        } else {
-            makeMove(black, red, fromX, toX, toY, fromY);
-        }
-    }
-
-    // MODIFIES: this, moving, other
     // EFFECTS: moves piece at (fromX, fromY) to (toX, toY) and captures any opponent piece if possible
     //          throws IllegalInputException if given move cannot be performed
-    private void makeMove(Player moving, Player other, int fromX, int toX, int toY, int fromY)
+    public void makeMove(int fromX, int toX, int fromY, int toY, boolean redMoving)
             throws IllegalInputException {
         if (isEmptyAt(fromX, fromY)) {
             throw new IllegalInputException();
         }
+        Player playing = (redMoving ? red : black);
+        Player other = (redMoving ? black : red);
         Piece p = getPAt(fromX, fromY);
-        if (p.isRed() == moving.isRed()) {
+        if (p.isRed() == redMoving) {
             if (isEmptyAt(toX, toY)) {
                 if (p.canMoveTo(toX, toY)) {
                     movePiece(p, toX, toY);
@@ -210,8 +193,8 @@ public class GameBoard implements Writable {
                 }
             } else {
                 Piece prey = getPAt(toX, toY);
-                if (prey.isRed() == other.isRed() && p.canCapture(toX, toY)) {
-                    capture(p, prey, moving, other);
+                if (prey.isRed() != redMoving && p.canCapture(toX, toY)) {
+                    capture(p, prey, playing, other);
                     return;
                 }
             }
@@ -219,41 +202,47 @@ public class GameBoard implements Writable {
         throw new IllegalInputException();
     }
 
+    // MODIFIES: this
+    // EFFECTS: update the board's information to reflect the piece's location
+    public void updatePieceLocation(Piece piece) {
+        String keyToRemove = null;
+        for (String key : board.keySet()) {
+            if (piece.equals(board.get(key))) {
+                if (toStrLoc(piece.getPosX(), piece.getPosY()).equals(key)) {
+                    return;
+                } else {
+                    keyToRemove = key;
+                    break;
+                }
+            }
+        }
+        board.remove(keyToRemove);
+        board.put(toStrLoc(piece.getPosX(), piece.getPosY()), piece);
+    }
+
     // REQUIRES: hunter is a piece owned by playing and prey is a piece owned by other
     // MODIFIES: this, hunter, playing, other
     // EFFECTS: playing captures p from other, removing p from the board and moving hunter to prey's position
-    private void capture(Piece hunter, Piece prey, Player playing, Player other) {
+    private void capture(Piece hunter, Piece prey, Player playing, Player other) throws LocationOccupiedException {
         prey.remove();
-        removePiece(prey.getPosX(), prey.getPosY());
+        removePieceFromBoard(prey.getPosX(), prey.getPosY());
         playing.capture(prey);
         other.removePiece(prey);
         movePiece(hunter, prey.getPosX(), prey.getPosY());
     }
 
-
-    // REQUIRES: position of p is currently empty on this board
-    // MODIFIES: this
-    // EFFECT: place given piece onto the correct position on board
-    private void placePiece(Piece p) {
-        board.put(toStrLoc(p.getPosX(), p.getPosY()), p);
-    }
-
     // REQUIRES: given piece can be moved to given coordinate (x, y)
     // MODIFIES: this, p
     // EFFECTS: move p to location (x, y)
-    private void movePiece(Piece p, int x, int y) {
-        // remove p from board
-        removePiece(p.getPosX(), p.getPosY());
-        // update position in p
+    private void movePiece(Piece p, int x, int y) throws LocationOccupiedException {
         p.move(x, y);
-        // update position on board
-        placePiece(p);
+        updatePieceLocation(p);
     }
 
     // REQUIRES: position (x, y) is a valid position on the board and occupied by a piece
     // MODIFIES: this
     // EFFECTS: vacant the given spot
-    void removePiece(int x, int y) {
+    void removePieceFromBoard(int x, int y) {
         board.remove(toStrLoc(x, y));
     }
 
@@ -261,5 +250,4 @@ public class GameBoard implements Writable {
     private String toStrLoc(int x, int y) {
         return x + String.valueOf(y);
     }
-
 }

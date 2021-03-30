@@ -1,5 +1,6 @@
 package model;
 
+import exception.LocationOccupiedException;
 import exception.OutOfBoundPositionException;
 import model.components.GameBoard;
 import model.pieces.Advisor;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GeneralTest extends PieceTest{
     @BeforeEach
-    public void setup() throws OutOfBoundPositionException {
+    public void setup() throws OutOfBoundPositionException, LocationOccupiedException {
         board = new GameBoard();
         redP = new General(4, 1, board, true);
         blackP = new General(4, 9, board, false);
@@ -31,6 +32,8 @@ public class GeneralTest extends PieceTest{
         try {
             General a1 = new General(0, 0, board, true);
             fail();
+        } catch (LocationOccupiedException e) {
+            fail();
         } catch (OutOfBoundPositionException ignored) {
 
         }
@@ -40,6 +43,8 @@ public class GeneralTest extends PieceTest{
     public void testConstructorOutOfPalace2() {
         try {
             General a1 = new General(4, 7, board, true);
+            fail();
+        } catch (LocationOccupiedException e) {
             fail();
         } catch (OutOfBoundPositionException ignored) {
 
@@ -51,6 +56,8 @@ public class GeneralTest extends PieceTest{
         try {
             General a1 = new General(4, 0, board, false);
             fail();
+        } catch (LocationOccupiedException e) {
+            fail();
         } catch (OutOfBoundPositionException ignored) {
 
         }
@@ -60,6 +67,8 @@ public class GeneralTest extends PieceTest{
     public void testConstructorOutOfPalace4() {
         try {
             General a1 = new General(7, 0, board, true);
+            fail();
+        } catch (LocationOccupiedException e) {
             fail();
         } catch (OutOfBoundPositionException ignored) {
 
@@ -81,19 +90,24 @@ public class GeneralTest extends PieceTest{
 
     @Test
     public void testCanMoveToInPalaceMultipleGrids() throws OutOfBoundPositionException {
-        redP = new General(3, 0, board, true);
-        assertFalse(redP.canMoveTo(5, 0));
-        assertFalse(redP.canMoveTo(3, 2));
-        assertFalse(redP.canMoveTo(5, 2));
+        try {
+            redP = new General(3, 0, board, true);
+            assertFalse(redP.canMoveTo(5, 0));
+            assertFalse(redP.canMoveTo(3, 2));
+            assertFalse(redP.canMoveTo(5, 2));
 
-        redP = new General(5, 2, board, true);
-        assertFalse(redP.canMoveTo(3, 2));
-        assertFalse(redP.canMoveTo(5, 0));
-        assertFalse(redP.canMoveTo(3, 0));
+            redP = new General(5, 2, board, true);
+            assertFalse(redP.canMoveTo(3, 2));
+            assertFalse(redP.canMoveTo(5, 0));
+            assertFalse(redP.canMoveTo(3, 0));
+        } catch (LocationOccupiedException e) {
+            fail();
+        }
+
     }
 
     @Test
-    public void testCanMoveToOutOfPalace() throws OutOfBoundPositionException {
+    public void testCanMoveToOutOfPalace() throws OutOfBoundPositionException, LocationOccupiedException {
         redP = new General(3, 2, board, true);
         assertFalse(redP.canMoveTo(2, 2));
         assertFalse(redP.canMoveTo(2, 3));
@@ -122,7 +136,7 @@ public class GeneralTest extends PieceTest{
     }
 
     @Test
-    public void testCanCaptureOppGeneral() throws OutOfBoundPositionException {
+    public void testCanCaptureOppGeneral() throws OutOfBoundPositionException, LocationOccupiedException {
         assertTrue(redP.canCapture(4, 9));
 
         new Advisor(4, 8, board, false);
