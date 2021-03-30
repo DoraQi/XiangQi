@@ -8,13 +8,9 @@ import java.util.Objects;
  * Represents a utility button on the side panels of XiangQi
  */
 public class UtilityButton extends JButton {
-
-    private final String buttonName;
-
     // EFFECTS: instantiates an UtilityButton
     public UtilityButton(String buttonName) {
         super(buttonName);
-        this.buttonName = buttonName;
         this.setVisible(true);
         this.setBorder(BorderFactory.createBevelBorder(0));
         this.setBackground(Color.lightGray);

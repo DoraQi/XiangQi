@@ -42,11 +42,6 @@ public class GameFrame extends JFrame {
         blackP.update();
     }
 
-    // getter
-    public ActionListener getActionListener() {
-        return actionListener;
-    }
-
     // EFFECTS: return the user input in the text pane
     public String getTextEntry() {
         return apPanel.getInput();
@@ -71,8 +66,8 @@ public class GameFrame extends JFrame {
     // MODIFIES: this
     // EFFECTS: sets up two PlayerPanels for each player
     private void setUpPlayerPanels() {
-        redP = new PlayerPanel(gb.getRed(), this);
-        blackP = new PlayerPanel(gb.getBlack(), this);
+        redP = new PlayerPanel(gb.getRed(), actionListener);
+        blackP = new PlayerPanel(gb.getBlack(), actionListener);
         this.add(redP, BorderLayout.SOUTH);
         this.add(blackP, BorderLayout.NORTH);
     }
@@ -114,7 +109,7 @@ public class GameFrame extends JFrame {
         layeredPane.setVisible(true);
         layeredPane.setOpaque(true);
         layeredPane.setPreferredSize(new Dimension(bgIcon.getIconWidth(), bgIcon.getIconHeight()));
-        this.panel = new XiangQiPanel(this, gb);
+        this.panel = new XiangQiPanel(actionListener, gb);
         layeredPane.add(panel, JLayeredPane.POPUP_LAYER);
         this.add(layeredPane, BorderLayout.CENTER);
 

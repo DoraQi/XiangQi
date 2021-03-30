@@ -5,13 +5,13 @@ import model.pieces.Piece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
  *  Represents a panel that displays an icon of the player, the pieces this player has captured, and an unselect button
  */
 public class PlayerPanel extends JPanel {
-    private GameFrame frame;
     private Player player;
     private final Color colour;
     private JLabel playerLabel;
@@ -24,8 +24,7 @@ public class PlayerPanel extends JPanel {
     private static final int CAPTURED_DISPLAY_WIDTH = 600;
 
     // EFFECTS: instantiates a PlayerPanel object and set up all fields
-    public PlayerPanel(Player p, GameFrame f) {
-        frame = f;
+    public PlayerPanel(Player p, ActionListener listener) {
         player = p;
         setPreferredSize(new Dimension(0, HEIGHT));
         setBackground(Color.WHITE);
@@ -39,7 +38,7 @@ public class PlayerPanel extends JPanel {
         this.add(capturedPieces);
         displayPlayerIcon();
         displayCapturedPieces();
-        addUnselectButton();
+        addUnselectButton(listener);
         setVisible(true);
     }
 
@@ -50,7 +49,7 @@ public class PlayerPanel extends JPanel {
     }
 
     // EFFECTS: add the unselect button to the panel
-    private void addUnselectButton() {
+    private void addUnselectButton(ActionListener listener) {
         unselectButton = new UtilityButton("unselect");
         unselectButton.setBackground(colour);
         unselectButton.setForeground(Color.WHITE);
@@ -58,7 +57,7 @@ public class PlayerPanel extends JPanel {
         unselectButton.setBorder(BorderFactory.createSoftBevelBorder(1, colour, Color.lightGray));
         unselectButton.setBounds(250 + CAPTURED_DISPLAY_WIDTH, (HEIGHT - 50) / 2, 100, 50);
         this.add(unselectButton);
-        unselectButton.addActionListener(frame.getActionListener());
+        unselectButton.addActionListener(listener);
     }
 
     // MODIFIES: this

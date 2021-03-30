@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 public class AddPiecePanel extends JPanel {
     public static final int WIDTH = 300;
     private JTextPane textPane;
-    private UtilityButton submitButton;
 
     // EFFECTS: instantiate an AddPiecePanel and set up its fields and settings
     public AddPiecePanel(ActionListener listener) {
@@ -38,7 +37,7 @@ public class AddPiecePanel extends JPanel {
 
     // EFFECTS: setup the submit button
     private void setUpSubmitButton(ActionListener listener) {
-        submitButton = new UtilityButton("submit");
+        UtilityButton submitButton = new UtilityButton("submit");
         submitButton.setBounds(WIDTH / 3, WIDTH / 8 + WIDTH / 4 + WIDTH, WIDTH / 3, 30);
         submitButton.addActionListener(listener);
         this.add(submitButton);
