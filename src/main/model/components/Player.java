@@ -17,6 +17,7 @@ public class Player implements Writable {
     private List<Piece> pieces;
     private List<Piece> captured;
 
+    // EFFECTS: instantiate a Player instance
     public Player(boolean isRed) {
         this.isRed = isRed;
         pieces = new ArrayList<>();
