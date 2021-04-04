@@ -15,7 +15,7 @@ public class PlayerPanel extends JPanel {
     private Player player;
     private final Color colour;
     private JLabel playerLabel;
-    private JButton unselectButton;
+    private UtilityButton unselectButton;
     JPanel capturedPieces;
 
     public static final int HEIGHT = 100;
