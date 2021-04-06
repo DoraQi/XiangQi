@@ -21,8 +21,8 @@ public class XiangQi {
     private final Scanner console = new Scanner(System.in);
     private GameBoard game;
 
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
     private static final String RULES =
             "Rules: https://ancientchess.com/page/play-xiangqi.htm \n\n"

@@ -9,8 +9,8 @@ import java.awt.*;
  * Represents a button on board that displays a piece or an empty square
  */
 public class GameButton extends JButton {
-    private int posX;
-    private int posY;
+    private final int posX;
+    private final int posY;
 
     private static final Color DEFAULT_ICON_COLOUR = new Color(0, 0, 0, 0);
     private static final ImageIcon DEFAULT_ICON = new ImageIcon(".\\data\\transparentImage.png");

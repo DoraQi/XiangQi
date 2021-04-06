@@ -12,8 +12,8 @@ import java.util.Map;
  * Represents a panel that displays the game board
  */
 public class XiangQiPanel extends JPanel {
-    private GameBoard board;
-    private Map<String, GameButton> locButton;
+    private final GameBoard board;
+    private final Map<String, GameButton> locButton;
 
     // EFFECTS: instantiate a XiangQiPanel
     public XiangQiPanel(ActionListener listener, GameBoard gb) {

@@ -12,9 +12,8 @@ import java.util.List;
  *  Represents a panel that displays an icon of the player, the pieces this player has captured, and an unselect button
  */
 public class PlayerPanel extends JPanel {
-    private Player player;
+    private final Player player;
     private final Color colour;
-    private JLabel playerLabel;
     private UtilityButton unselectButton;
     JPanel capturedPieces;
 
@@ -63,7 +62,7 @@ public class PlayerPanel extends JPanel {
     // MODIFIES: this
     // EFFECTS: add the player icon to the panel
     private void displayPlayerIcon() {
-        playerLabel = new JLabel();
+        JLabel playerLabel = new JLabel();
         playerLabel.setOpaque(true);
         playerLabel.setPreferredSize(new Dimension(100, 100));
         playerLabel.setBackground(colour);

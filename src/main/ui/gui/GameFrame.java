@@ -10,12 +10,9 @@ import java.awt.event.ActionListener;
  * Represents the frame of the game
  */
 public class GameFrame extends JFrame {
-    private ActionListener actionListener;
-    private GameBoard gb;
+    private final ActionListener actionListener;
+    private final GameBoard gb;
     private XiangQiPanel panel;
-    private JMenuBar menu;
-    private JMenuItem loadButton;
-    private JMenuItem saveButton;
     private PlayerPanel redP;
     private PlayerPanel blackP;
     private AddPiecePanel apPanel;
@@ -75,10 +72,10 @@ public class GameFrame extends JFrame {
     // MODIFIES: this
     // EFFECTS: sets up the menu
     private void setUpMenu() {
-        menu = new JMenuBar();
+        JMenuBar menu = new JMenuBar();
         JMenu fileItem = new JMenu("File");
-        saveButton = new CustomMenuItem("Save");
-        loadButton = new CustomMenuItem("Load");
+        JMenuItem saveButton = new CustomMenuItem("Save");
+        JMenuItem loadButton = new CustomMenuItem("Load");
         fileItem.add(saveButton);
         fileItem.add(loadButton);
         saveButton.addActionListener(actionListener);
