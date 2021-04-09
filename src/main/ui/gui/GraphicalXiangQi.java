@@ -2,7 +2,6 @@ package ui.gui;
 
 import exception.IllegalInputException;
 import exception.IllegalNumGeneralException;
-import exception.QuitGameException;
 import model.components.GameBoard;
 import persistence.JsonReader;
 import persistence.JsonWriter;
