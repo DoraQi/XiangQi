@@ -26,8 +26,5 @@ classes.
       field for GameBoard. The HashMap representation of the piece's location and the piece's own stored location 
       information really increased the amount of coupling.
     - Refactor the GUI classes to achieve single-point of control. I currently have numbers flying around and not using
-      width and height fields in each class enough. Currently, if I were to change the size of the board later, it would 
-      mess up the entire setup of the frame.
-    - Implement Observer pattern between GameBoard and XiangQiPanel, and Player and PlayerPanel. This helps to make the
-      code more organized, and allow the gui to only updates when a change has been made.
-
+      width and height fields in each class enough. Currently, if I were to change the size of the board later, it would mess up 
+      the entire setup of the frame.
